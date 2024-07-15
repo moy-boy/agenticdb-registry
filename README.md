@@ -1,5 +1,12 @@
 # AgenticDB
 
+Run Server
+
+```shell
+python server.py
+```
+
+
 ## Add Agent
 
 ```shell
