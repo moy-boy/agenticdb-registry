@@ -1,5 +1,14 @@
 # AgenticDB
 
+An implementation of a VectorDB that stores GenAI Agent manifests. It supports adding and searching for agents.
+When searching for an agent (see example), similarity search is used, a 
+maximum of 4 agents are returned
+
+It comes with a built-in example agent that tells jokes to show remote execution of agent code chains 
+based on the URL in the manifest. 
+
+## Server
+
 Run Server
 
 ```shell
