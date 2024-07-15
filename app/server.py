@@ -207,7 +207,6 @@ async def get_agents(query: str, app_state: AppState = Depends(lambda: get_app_s
     return JSONResponse(content={"agents": concatenated_yaml})
 
 
-
 if __name__ == "__main__":
     import uvicorn
 
