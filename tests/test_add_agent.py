@@ -1,13 +1,16 @@
 import unittest
 from fastapi.testclient import TestClient
-from app.server import app
+from fastapi import FastAPI
+from app.server import app, lifespan
+from unittest import IsolatedAsyncioTestCase
 
 
-class TestAgentEndpoint(unittest.TestCase):
+class TestAgentEndpoint(IsolatedAsyncioTestCase):
 
     @classmethod
     def setUpClass(cls):
         # Create a TestClient instance
+        cls.app = FastAPI(lifespan=lifespan)
         cls.client = TestClient(app)
         # Ensure app state is initialized
         with cls.client as c:

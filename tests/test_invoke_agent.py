@@ -1,14 +1,18 @@
 import unittest
+from unittest import IsolatedAsyncioTestCase
+
+from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from langserve import RemoteRunnable
-from app.server import app
+from app.server import app, lifespan
 
 
-class TestInvokeAgent(unittest.TestCase):
+class TestAgent(IsolatedAsyncioTestCase):
 
     @classmethod
     def setUpClass(cls):
         # Create a TestClient instance
+        cls.app = FastAPI(lifespan=lifespan)
         cls.client = TestClient(app)
         # Ensure app state is initialized
         with cls.client as c:
@@ -48,16 +52,17 @@ class TestInvokeAgent(unittest.TestCase):
 
         # Define a local function to mock RemoteRunnable invoke method using TestClient
         def mock_invoke(url, payload):
-            response = self.client.post(url, json=payload)
+            headers = {'Content-Type': 'application/json'}
+            response = self.client.post(url, json=payload, headers=headers)
             return response.json()
 
         joke_chain = RemoteRunnable("http://localhost:8000/joke/")  # Or any relevant endpoint
-        joke_chain.invoke = lambda payload: mock_invoke("/joke/", payload)  # Override the invoke method
+        joke_chain.invoke = lambda payload: mock_invoke("/joke/invoke", payload)  # Override the invoke method
 
-        response = joke_chain.invoke({"topic": "parrots"})
-        print(response)
-        self.assertIsNotNone(response)
-        self.assertIn("joke", response)
+        response = joke_chain.invoke({'input': {'topic': 'cats'}})
+        self.assertIn("output", response)
+        print(response["output"]["content"])
+        self.assertIsNotNone(response["output"]["content"])
 
 
 if __name__ == '__main__':

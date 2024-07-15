@@ -91,6 +91,8 @@ async def lifespan(fast_app: FastAPI):
     try:
         load_env_file()
         add_agent_routes(fast_app)
+        routes = [route.path for route in app.router.routes]
+        logging.info(f"Available routes: {routes}")
         fast_app.state.app_state = AppState()
         fast_app.state.app_state.text_splitter = get_text_splitter()
         fast_app.state.app_state.embedding_function = get_embedding_function()
