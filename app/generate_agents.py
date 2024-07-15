@@ -2,6 +2,7 @@ import yaml
 import uuid
 
 base_yaml = """
+---
 metadata:
   id: {id}
   name: {name}

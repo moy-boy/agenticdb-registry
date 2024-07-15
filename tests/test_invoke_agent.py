@@ -1,4 +1,5 @@
 import unittest
+import yaml
 from unittest import IsolatedAsyncioTestCase
 
 from fastapi import FastAPI
@@ -43,7 +44,7 @@ class TestAgent(IsolatedAsyncioTestCase):
 
     def test_invoke_agent(self):
         headers = {'Content-Type': 'application/x-yaml'}
-        response = self.client.post("/agent", content=self.test_yaml, headers=headers)
+        response = self.client.post("/agents", content=self.test_yaml, headers=headers)
         self.assertEqual(response.status_code, 200)
         response_json = response.json()
         self.assertIn("original_content", response_json)
@@ -61,8 +62,14 @@ class TestAgent(IsolatedAsyncioTestCase):
 
         response = joke_chain.invoke({'input': {'topic': 'cats'}})
         self.assertIn("output", response)
-        print(response["output"]["content"])
         self.assertIsNotNone(response["output"]["content"])
+        # Parse the YAML string to a dictionary
+        agents_yaml = response["output"]["content"]
+        try:
+            agents_dict = yaml.safe_load(agents_yaml)
+            print(agents_dict)
+        except yaml.YAMLError as e:
+            self.fail(f"Failed to parse YAML: {str(e)}")
 
 
 if __name__ == '__main__':

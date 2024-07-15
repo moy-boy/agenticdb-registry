@@ -1,0 +1,1100 @@
+
+---
+metadata:
+  id: 1a885acd-a986-4599-aaf2-8a56ffe15955
+  name: agent-1
+  namespace: sandbox
+  description: |
+    Retrieves financial price data for a variety of tickers and timeframes.
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner1@example.com
+  access_level: PRIVATE
+  category: Finance
+  url: https://api.example.com/agent-1
+  input:
+    type: string
+    description: Input description for agent-1
+  output:
+    type: integer
+    description: Output description for agent-1
+
+
+---
+metadata:
+  id: 2a80e794-f5d5-4eb2-86b9-2d67ab314e22
+  name: agent-2
+  namespace: production
+  description: |
+    Assists customers with their queries and issues in real-time.
+spec:
+  type: agent
+  lifecycle: stable
+  owner: owner2@company.com
+  access_level: PUBLIC
+  category: Customer Support
+  url: https://api.company.com/agent-2
+  input:
+    type: integer
+    description: Input description for agent-2
+  output:
+    type: boolean
+    description: Output description for agent-2
+
+
+---
+metadata:
+  id: 9229ca87-b3ef-423c-9a3d-393be41c998c
+  name: agent-3
+  namespace: sandbox
+  description: |
+    Provides accurate and timely weather forecasts for various regions.
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner3@service.com
+  access_level: PRIVATE
+  category: Weather
+  url: https://api.service.com/agent-3
+  input:
+    type: boolean
+    description: Input description for agent-3
+  output:
+    type: object
+    description: Output description for agent-3
+
+
+---
+metadata:
+  id: 567a8c7e-3c3d-4afe-bc19-4f677723c17d
+  name: agent-4
+  namespace: production
+  description: |
+    Automates stock trading based on market analysis and trends.
+spec:
+  type: agent
+  lifecycle: stable
+  owner: owner4@platform.com
+  access_level: PUBLIC
+  category: Health
+  url: https://api.platform.com/agent-4
+  input:
+    type: object
+    description: Input description for agent-4
+  output:
+    type: array
+    description: Output description for agent-4
+
+
+---
+metadata:
+  id: 18b1338a-4850-4826-8bb8-c3a178aeb08d
+  name: agent-5
+  namespace: sandbox
+  description: |
+    Monitors health metrics and provides insights for better health management.
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner5@business.com
+  access_level: PRIVATE
+  category: E-commerce
+  url: https://api.business.com/agent-5
+  input:
+    type: array
+    description: Input description for agent-5
+  output:
+    type: string
+    description: Output description for agent-5
+
+
+---
+metadata:
+  id: d0ed382a-651e-49d0-bf80-e469d52ada3e
+  name: agent-6
+  namespace: sandbox
+  description: |
+    Description for agent-6
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner6@example.com
+  access_level: PRIVATE
+  category: Finance
+  url: https://api.example.com/agent-6
+  input:
+    type: string
+    description: Input description for agent-6
+  output:
+    type: integer
+    description: Output description for agent-6
+
+
+---
+metadata:
+  id: d5c0e15f-d4d7-486d-8c0f-3f852ec335d6
+  name: agent-7
+  namespace: production
+  description: |
+    Description for agent-7
+spec:
+  type: agent
+  lifecycle: stable
+  owner: owner7@company.com
+  access_level: PUBLIC
+  category: Customer Support
+  url: https://api.company.com/agent-7
+  input:
+    type: integer
+    description: Input description for agent-7
+  output:
+    type: boolean
+    description: Output description for agent-7
+
+
+---
+metadata:
+  id: 54f70b44-1088-4fc4-8569-a9183e32eb18
+  name: agent-8
+  namespace: sandbox
+  description: |
+    Description for agent-8
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner8@service.com
+  access_level: PRIVATE
+  category: Weather
+  url: https://api.service.com/agent-8
+  input:
+    type: boolean
+    description: Input description for agent-8
+  output:
+    type: object
+    description: Output description for agent-8
+
+
+---
+metadata:
+  id: fcb0939d-0f15-4d4b-a981-906fe189ecfa
+  name: agent-9
+  namespace: production
+  description: |
+    Description for agent-9
+spec:
+  type: agent
+  lifecycle: stable
+  owner: owner9@platform.com
+  access_level: PUBLIC
+  category: Health
+  url: https://api.platform.com/agent-9
+  input:
+    type: object
+    description: Input description for agent-9
+  output:
+    type: array
+    description: Output description for agent-9
+
+
+---
+metadata:
+  id: 9b2b0b93-09ab-46e6-8cd3-9f981fc2ce42
+  name: agent-10
+  namespace: sandbox
+  description: |
+    Description for agent-10
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner10@business.com
+  access_level: PRIVATE
+  category: E-commerce
+  url: https://api.business.com/agent-10
+  input:
+    type: array
+    description: Input description for agent-10
+  output:
+    type: string
+    description: Output description for agent-10
+
+
+---
+metadata:
+  id: 60b098ec-daa7-4447-91cf-34ea69627896
+  name: agent-11
+  namespace: production
+  description: |
+    Description for agent-11
+spec:
+  type: agent
+  lifecycle: stable
+  owner: owner11@example.com
+  access_level: PUBLIC
+  category: Education
+  url: https://api.example.com/agent-11
+  input:
+    type: string
+    description: Input description for agent-11
+  output:
+    type: integer
+    description: Output description for agent-11
+
+
+---
+metadata:
+  id: 044ed783-0da7-4367-a95c-b04ed20f6373
+  name: agent-12
+  namespace: sandbox
+  description: |
+    Description for agent-12
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner12@company.com
+  access_level: PRIVATE
+  category: Technology
+  url: https://api.company.com/agent-12
+  input:
+    type: integer
+    description: Input description for agent-12
+  output:
+    type: boolean
+    description: Output description for agent-12
+
+
+---
+metadata:
+  id: e6e3094f-7b6f-46e9-89ab-9bf9152f28b0
+  name: agent-13
+  namespace: production
+  description: |
+    Description for agent-13
+spec:
+  type: agent
+  lifecycle: stable
+  owner: owner13@service.com
+  access_level: PUBLIC
+  category: Transport
+  url: https://api.service.com/agent-13
+  input:
+    type: boolean
+    description: Input description for agent-13
+  output:
+    type: object
+    description: Output description for agent-13
+
+
+---
+metadata:
+  id: 56c39ac9-cce2-45fa-98fa-5b2ad1a86c5a
+  name: agent-14
+  namespace: sandbox
+  description: |
+    Description for agent-14
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner14@platform.com
+  access_level: PRIVATE
+  category: Media
+  url: https://api.platform.com/agent-14
+  input:
+    type: object
+    description: Input description for agent-14
+  output:
+    type: array
+    description: Output description for agent-14
+
+
+---
+metadata:
+  id: 7d06e943-11c0-4d4b-9c40-90b55a9c43e5
+  name: agent-15
+  namespace: production
+  description: |
+    Description for agent-15
+spec:
+  type: agent
+  lifecycle: stable
+  owner: owner15@business.com
+  access_level: PUBLIC
+  category: Sports
+  url: https://api.business.com/agent-15
+  input:
+    type: array
+    description: Input description for agent-15
+  output:
+    type: string
+    description: Output description for agent-15
+
+
+---
+metadata:
+  id: ba3dfecd-e129-4df2-ab50-d995c0eeee2d
+  name: agent-16
+  namespace: sandbox
+  description: |
+    Description for agent-16
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner16@example.com
+  access_level: PRIVATE
+  category: Finance
+  url: https://api.example.com/agent-16
+  input:
+    type: string
+    description: Input description for agent-16
+  output:
+    type: integer
+    description: Output description for agent-16
+
+
+---
+metadata:
+  id: 9427156a-90fc-46c7-a140-72f06b9fb83b
+  name: agent-17
+  namespace: production
+  description: |
+    Description for agent-17
+spec:
+  type: agent
+  lifecycle: stable
+  owner: owner17@company.com
+  access_level: PUBLIC
+  category: Customer Support
+  url: https://api.company.com/agent-17
+  input:
+    type: integer
+    description: Input description for agent-17
+  output:
+    type: boolean
+    description: Output description for agent-17
+
+
+---
+metadata:
+  id: b6859ac1-85dd-404e-b008-a865a6b0e0b5
+  name: agent-18
+  namespace: sandbox
+  description: |
+    Description for agent-18
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner18@service.com
+  access_level: PRIVATE
+  category: Weather
+  url: https://api.service.com/agent-18
+  input:
+    type: boolean
+    description: Input description for agent-18
+  output:
+    type: object
+    description: Output description for agent-18
+
+
+---
+metadata:
+  id: 347ee5a6-a952-4602-ab3a-3b4b5d5d1d6e
+  name: agent-19
+  namespace: production
+  description: |
+    Description for agent-19
+spec:
+  type: agent
+  lifecycle: stable
+  owner: owner19@platform.com
+  access_level: PUBLIC
+  category: Health
+  url: https://api.platform.com/agent-19
+  input:
+    type: object
+    description: Input description for agent-19
+  output:
+    type: array
+    description: Output description for agent-19
+
+
+---
+metadata:
+  id: 9d91991c-2e1f-4386-90a3-5df3f5f7ab97
+  name: agent-20
+  namespace: sandbox
+  description: |
+    Description for agent-20
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner20@business.com
+  access_level: PRIVATE
+  category: E-commerce
+  url: https://api.business.com/agent-20
+  input:
+    type: array
+    description: Input description for agent-20
+  output:
+    type: string
+    description: Output description for agent-20
+
+
+---
+metadata:
+  id: 87ad967d-d581-4c78-a4ec-34bf6841237d
+  name: agent-21
+  namespace: production
+  description: |
+    Description for agent-21
+spec:
+  type: agent
+  lifecycle: stable
+  owner: owner21@example.com
+  access_level: PUBLIC
+  category: Education
+  url: https://api.example.com/agent-21
+  input:
+    type: string
+    description: Input description for agent-21
+  output:
+    type: integer
+    description: Output description for agent-21
+
+
+---
+metadata:
+  id: 172b092a-df9b-468e-963c-f83693bf88ee
+  name: agent-22
+  namespace: sandbox
+  description: |
+    Description for agent-22
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner22@company.com
+  access_level: PRIVATE
+  category: Technology
+  url: https://api.company.com/agent-22
+  input:
+    type: integer
+    description: Input description for agent-22
+  output:
+    type: boolean
+    description: Output description for agent-22
+
+
+---
+metadata:
+  id: dad0260b-57bd-4824-b74a-7a0fa76da2de
+  name: agent-23
+  namespace: production
+  description: |
+    Description for agent-23
+spec:
+  type: agent
+  lifecycle: stable
+  owner: owner23@service.com
+  access_level: PUBLIC
+  category: Transport
+  url: https://api.service.com/agent-23
+  input:
+    type: boolean
+    description: Input description for agent-23
+  output:
+    type: object
+    description: Output description for agent-23
+
+
+---
+metadata:
+  id: 51631f0c-0bf5-42a6-8d3f-8a708b4c69ab
+  name: agent-24
+  namespace: sandbox
+  description: |
+    Description for agent-24
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner24@platform.com
+  access_level: PRIVATE
+  category: Media
+  url: https://api.platform.com/agent-24
+  input:
+    type: object
+    description: Input description for agent-24
+  output:
+    type: array
+    description: Output description for agent-24
+
+
+---
+metadata:
+  id: 15823c5b-7eae-4a05-ba36-59b8b8e9d775
+  name: agent-25
+  namespace: production
+  description: |
+    Description for agent-25
+spec:
+  type: agent
+  lifecycle: stable
+  owner: owner25@business.com
+  access_level: PUBLIC
+  category: Sports
+  url: https://api.business.com/agent-25
+  input:
+    type: array
+    description: Input description for agent-25
+  output:
+    type: string
+    description: Output description for agent-25
+
+
+---
+metadata:
+  id: 364a6fb3-d54b-41d8-b23c-5af9694d0d83
+  name: agent-26
+  namespace: sandbox
+  description: |
+    Description for agent-26
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner26@example.com
+  access_level: PRIVATE
+  category: Finance
+  url: https://api.example.com/agent-26
+  input:
+    type: string
+    description: Input description for agent-26
+  output:
+    type: integer
+    description: Output description for agent-26
+
+
+---
+metadata:
+  id: 14a3a788-d5d0-40b4-b750-81c05ecfbd23
+  name: agent-27
+  namespace: production
+  description: |
+    Description for agent-27
+spec:
+  type: agent
+  lifecycle: stable
+  owner: owner27@company.com
+  access_level: PUBLIC
+  category: Customer Support
+  url: https://api.company.com/agent-27
+  input:
+    type: integer
+    description: Input description for agent-27
+  output:
+    type: boolean
+    description: Output description for agent-27
+
+
+---
+metadata:
+  id: 6a281d1d-0b4b-4680-8d26-fddb11e8382c
+  name: agent-28
+  namespace: sandbox
+  description: |
+    Description for agent-28
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner28@service.com
+  access_level: PRIVATE
+  category: Weather
+  url: https://api.service.com/agent-28
+  input:
+    type: boolean
+    description: Input description for agent-28
+  output:
+    type: object
+    description: Output description for agent-28
+
+
+---
+metadata:
+  id: d8b103ce-9ab0-41f6-b4d0-a7635f67bcc2
+  name: agent-29
+  namespace: production
+  description: |
+    Description for agent-29
+spec:
+  type: agent
+  lifecycle: stable
+  owner: owner29@platform.com
+  access_level: PUBLIC
+  category: Health
+  url: https://api.platform.com/agent-29
+  input:
+    type: object
+    description: Input description for agent-29
+  output:
+    type: array
+    description: Output description for agent-29
+
+
+---
+metadata:
+  id: cb69b08b-3099-4861-9348-90685bb16762
+  name: agent-30
+  namespace: sandbox
+  description: |
+    Description for agent-30
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner30@business.com
+  access_level: PRIVATE
+  category: E-commerce
+  url: https://api.business.com/agent-30
+  input:
+    type: array
+    description: Input description for agent-30
+  output:
+    type: string
+    description: Output description for agent-30
+
+
+---
+metadata:
+  id: 0901ba8a-ee33-4544-8019-497c7ebc2c92
+  name: agent-31
+  namespace: production
+  description: |
+    Description for agent-31
+spec:
+  type: agent
+  lifecycle: stable
+  owner: owner31@example.com
+  access_level: PUBLIC
+  category: Education
+  url: https://api.example.com/agent-31
+  input:
+    type: string
+    description: Input description for agent-31
+  output:
+    type: integer
+    description: Output description for agent-31
+
+
+---
+metadata:
+  id: 951eb5e8-0568-40d3-9be6-89798198bd34
+  name: agent-32
+  namespace: sandbox
+  description: |
+    Description for agent-32
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner32@company.com
+  access_level: PRIVATE
+  category: Technology
+  url: https://api.company.com/agent-32
+  input:
+    type: integer
+    description: Input description for agent-32
+  output:
+    type: boolean
+    description: Output description for agent-32
+
+
+---
+metadata:
+  id: 31beff3d-9cc8-4e91-82f1-924c035c029e
+  name: agent-33
+  namespace: production
+  description: |
+    Description for agent-33
+spec:
+  type: agent
+  lifecycle: stable
+  owner: owner33@service.com
+  access_level: PUBLIC
+  category: Transport
+  url: https://api.service.com/agent-33
+  input:
+    type: boolean
+    description: Input description for agent-33
+  output:
+    type: object
+    description: Output description for agent-33
+
+
+---
+metadata:
+  id: 43717bb3-022f-4ac7-bb2e-f08af9300918
+  name: agent-34
+  namespace: sandbox
+  description: |
+    Description for agent-34
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner34@platform.com
+  access_level: PRIVATE
+  category: Media
+  url: https://api.platform.com/agent-34
+  input:
+    type: object
+    description: Input description for agent-34
+  output:
+    type: array
+    description: Output description for agent-34
+
+
+---
+metadata:
+  id: e3853786-7a1b-4b47-ae0b-4d7f22e30c3d
+  name: agent-35
+  namespace: production
+  description: |
+    Description for agent-35
+spec:
+  type: agent
+  lifecycle: stable
+  owner: owner35@business.com
+  access_level: PUBLIC
+  category: Sports
+  url: https://api.business.com/agent-35
+  input:
+    type: array
+    description: Input description for agent-35
+  output:
+    type: string
+    description: Output description for agent-35
+
+
+---
+metadata:
+  id: 67cf3c34-c31d-4d18-a250-d31d590b113a
+  name: agent-36
+  namespace: sandbox
+  description: |
+    Description for agent-36
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner36@example.com
+  access_level: PRIVATE
+  category: Finance
+  url: https://api.example.com/agent-36
+  input:
+    type: string
+    description: Input description for agent-36
+  output:
+    type: integer
+    description: Output description for agent-36
+
+
+---
+metadata:
+  id: e3a6e293-b9cb-4f16-b4ea-4738435e3232
+  name: agent-37
+  namespace: production
+  description: |
+    Description for agent-37
+spec:
+  type: agent
+  lifecycle: stable
+  owner: owner37@company.com
+  access_level: PUBLIC
+  category: Customer Support
+  url: https://api.company.com/agent-37
+  input:
+    type: integer
+    description: Input description for agent-37
+  output:
+    type: boolean
+    description: Output description for agent-37
+
+
+---
+metadata:
+  id: f67ea4c4-3461-488c-85e8-f60ac32cdd00
+  name: agent-38
+  namespace: sandbox
+  description: |
+    Description for agent-38
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner38@service.com
+  access_level: PRIVATE
+  category: Weather
+  url: https://api.service.com/agent-38
+  input:
+    type: boolean
+    description: Input description for agent-38
+  output:
+    type: object
+    description: Output description for agent-38
+
+
+---
+metadata:
+  id: 89d8f40a-c8c2-403d-8ce4-4df13488a978
+  name: agent-39
+  namespace: production
+  description: |
+    Description for agent-39
+spec:
+  type: agent
+  lifecycle: stable
+  owner: owner39@platform.com
+  access_level: PUBLIC
+  category: Health
+  url: https://api.platform.com/agent-39
+  input:
+    type: object
+    description: Input description for agent-39
+  output:
+    type: array
+    description: Output description for agent-39
+
+
+---
+metadata:
+  id: 8c7ad0dc-9def-4ad9-a7b3-a8bd07ab617a
+  name: agent-40
+  namespace: sandbox
+  description: |
+    Description for agent-40
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner40@business.com
+  access_level: PRIVATE
+  category: E-commerce
+  url: https://api.business.com/agent-40
+  input:
+    type: array
+    description: Input description for agent-40
+  output:
+    type: string
+    description: Output description for agent-40
+
+
+---
+metadata:
+  id: f785d39b-8f5f-475c-82eb-382bfaaa5c86
+  name: agent-41
+  namespace: production
+  description: |
+    Description for agent-41
+spec:
+  type: agent
+  lifecycle: stable
+  owner: owner41@example.com
+  access_level: PUBLIC
+  category: Education
+  url: https://api.example.com/agent-41
+  input:
+    type: string
+    description: Input description for agent-41
+  output:
+    type: integer
+    description: Output description for agent-41
+
+
+---
+metadata:
+  id: cab44162-9a30-4928-b6cd-151767bdd1df
+  name: agent-42
+  namespace: sandbox
+  description: |
+    Description for agent-42
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner42@company.com
+  access_level: PRIVATE
+  category: Technology
+  url: https://api.company.com/agent-42
+  input:
+    type: integer
+    description: Input description for agent-42
+  output:
+    type: boolean
+    description: Output description for agent-42
+
+
+---
+metadata:
+  id: aba903b5-aaa9-449d-bed7-026a289bc486
+  name: agent-43
+  namespace: production
+  description: |
+    Description for agent-43
+spec:
+  type: agent
+  lifecycle: stable
+  owner: owner43@service.com
+  access_level: PUBLIC
+  category: Transport
+  url: https://api.service.com/agent-43
+  input:
+    type: boolean
+    description: Input description for agent-43
+  output:
+    type: object
+    description: Output description for agent-43
+
+
+---
+metadata:
+  id: c43ec9cc-e326-4263-8469-23168f2a8e73
+  name: agent-44
+  namespace: sandbox
+  description: |
+    Description for agent-44
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner44@platform.com
+  access_level: PRIVATE
+  category: Media
+  url: https://api.platform.com/agent-44
+  input:
+    type: object
+    description: Input description for agent-44
+  output:
+    type: array
+    description: Output description for agent-44
+
+
+---
+metadata:
+  id: 3590552b-b317-4944-b2a0-f91c4b31cfce
+  name: agent-45
+  namespace: production
+  description: |
+    Description for agent-45
+spec:
+  type: agent
+  lifecycle: stable
+  owner: owner45@business.com
+  access_level: PUBLIC
+  category: Sports
+  url: https://api.business.com/agent-45
+  input:
+    type: array
+    description: Input description for agent-45
+  output:
+    type: string
+    description: Output description for agent-45
+
+
+---
+metadata:
+  id: f28cbb7d-bb6d-4ca7-a365-7cec209c3618
+  name: agent-46
+  namespace: sandbox
+  description: |
+    Description for agent-46
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner46@example.com
+  access_level: PRIVATE
+  category: Finance
+  url: https://api.example.com/agent-46
+  input:
+    type: string
+    description: Input description for agent-46
+  output:
+    type: integer
+    description: Output description for agent-46
+
+
+---
+metadata:
+  id: 9d55b809-e9e7-44de-8868-88962e910e8f
+  name: agent-47
+  namespace: production
+  description: |
+    Description for agent-47
+spec:
+  type: agent
+  lifecycle: stable
+  owner: owner47@company.com
+  access_level: PUBLIC
+  category: Customer Support
+  url: https://api.company.com/agent-47
+  input:
+    type: integer
+    description: Input description for agent-47
+  output:
+    type: boolean
+    description: Output description for agent-47
+
+
+---
+metadata:
+  id: abcb13fa-af2c-41da-9189-4f8b1dcf6ef3
+  name: agent-48
+  namespace: sandbox
+  description: |
+    Description for agent-48
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner48@service.com
+  access_level: PRIVATE
+  category: Weather
+  url: https://api.service.com/agent-48
+  input:
+    type: boolean
+    description: Input description for agent-48
+  output:
+    type: object
+    description: Output description for agent-48
+
+
+---
+metadata:
+  id: 3b849341-0ec4-489f-b967-43138ffa71fb
+  name: agent-49
+  namespace: production
+  description: |
+    Description for agent-49
+spec:
+  type: agent
+  lifecycle: stable
+  owner: owner49@platform.com
+  access_level: PUBLIC
+  category: Health
+  url: https://api.platform.com/agent-49
+  input:
+    type: object
+    description: Input description for agent-49
+  output:
+    type: array
+    description: Output description for agent-49
+
+
+---
+metadata:
+  id: 6aa792f5-85b3-4b23-8976-f22fa37b5929
+  name: agent-50
+  namespace: sandbox
+  description: |
+    Description for agent-50
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: owner50@business.com
+  access_level: PRIVATE
+  category: E-commerce
+  url: https://api.business.com/agent-50
+  input:
+    type: array
+    description: Input description for agent-50
+  output:
+    type: string
+    description: Output description for agent-50
+

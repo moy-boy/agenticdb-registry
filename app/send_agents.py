@@ -7,7 +7,7 @@ with open("agents.yaml", "r") as file:
 # Split the file content into individual YAML documents
 agents = list(yaml.safe_load_all(agents_yaml))
 
-url = "http://127.0.0.1:8000/agent"
+url = "http://127.0.0.1:8000/agents"
 
 headers = {'Content-Type': 'application/x-yaml'}
 

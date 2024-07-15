@@ -7,7 +7,8 @@ from typing import Any, Dict
 import openai
 import yaml
 from dotenv import load_dotenv, find_dotenv
-from fastapi import Depends, FastAPI, HTTPException, Request
+from fastapi import Depends, FastAPI, HTTPException, Request, Query
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, field_validator
 
@@ -121,7 +122,7 @@ app.add_middleware(
 )
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logging.basicConfig(level=logging.ERROR, format="%(asctime)s - %(levelname)s - %(message)s")
 
 
 @app.get("/")
@@ -130,8 +131,8 @@ async def root():
     return {"message": "Hello World"}
 
 
-@app.post("/agent")
-async def parse_yaml(request: Request, app_state: AppState = Depends(lambda: get_app_state(app))):
+@app.post("/agents")
+async def add_agent(request: Request, app_state: AppState = Depends(lambda: get_app_state(app))):
     if app_state.chroma_db is None:
         logging.error("Chroma DB not initialized")
         raise HTTPException(status_code=500, detail="Chroma DB not initialized")
@@ -178,8 +179,19 @@ async def parse_yaml(request: Request, app_state: AppState = Depends(lambda: get
         logging.error(f"Failed to add documents to Chroma DB: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to add documents to Chroma DB")
 
-    # Query example (replace with actual queries as needed)
-    query = "Which agents have a category of Natural Language?"
+    return {
+        "original_content": yaml_content_str,
+        "parsed_content": parsed_content,
+        "agent_id": agent_id
+    }
+
+
+@app.get("/agents")
+async def get_agents(query: str, app_state: AppState = Depends(lambda: get_app_state(app))):
+    if app_state.chroma_db is None:
+        logging.error("Chroma DB not initialized")
+        raise HTTPException(status_code=500, detail="Chroma DB not initialized")
+
     try:
         results = app_state.chroma_db.similarity_search(query)
         logging.info("Similarity search query executed successfully")
@@ -187,12 +199,13 @@ async def parse_yaml(request: Request, app_state: AppState = Depends(lambda: get
         logging.error(f"Failed to execute similarity search query: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to execute similarity search query")
 
-    return {
-        "original_content": yaml_content_str,
-        "parsed_content": parsed_content,
-        "query_results": results,
-        "agent_id": agent_id
-    }
+    concatenated_yaml = "\n---\n".join(result.page_content.strip() for result in results)
+
+    # Ensure the final document has "---" at the beginning
+    concatenated_yaml = "---\n" + concatenated_yaml
+
+    return JSONResponse(content={"agents": concatenated_yaml})
+
 
 
 if __name__ == "__main__":

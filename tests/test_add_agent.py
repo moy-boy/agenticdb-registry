@@ -1,4 +1,6 @@
 import unittest
+import yaml
+import json
 from fastapi.testclient import TestClient
 from fastapi import FastAPI
 from app.server import app, lifespan
@@ -41,12 +43,25 @@ class TestAgentEndpoint(IsolatedAsyncioTestCase):
 
     def test_post_yaml(self):
         headers = {'Content-Type': 'application/x-yaml'}
-        response = self.client.post("/agent", content=self.test_yaml, headers=headers)
+        response = self.client.post("/agents", content=self.test_yaml, headers=headers)
         self.assertEqual(response.status_code, 200)
         response_json = response.json()
         self.assertIn("original_content", response_json)
         self.assertIn("parsed_content", response_json)
         self.assertIn("agent_id", response_json)
+
+        query = "Which agents have a category of Natural Language?"
+        response = self.client.get("/agents", params={"query": query})
+        self.assertEqual(response.status_code, 200)
+        response_json = response.json()
+        agents_yaml = response_json["agents"]
+        try:
+            agents_dict = yaml.safe_load(agents_yaml)
+            self.assertIn("name", agents_dict["metadata"])
+            self.assertEqual("financial-data-oracle", agents_dict["metadata"]["name"])
+            print(yaml.safe_dump(agents_dict))
+        except yaml.YAMLError as e:
+            self.fail(f"Failed to parse YAML: {str(e)}")
 
 
 if __name__ == "__main__":
