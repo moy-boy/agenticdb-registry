@@ -37,10 +37,21 @@ curl -G "http://127.0.0.1:8000/agents" \
 
 ```
 
-## Invoke Example Cat Agent
+## Invoke Example Joke Agent with cURL
 
 ```shell
 curl -X POST "http://127.0.0.1:8000/joke/invoke" \
      -H "Content-Type: application/json" \
      -d '{"input": {"topic": "cats"}}'
+```
+
+## Invoke Example Joke Agent with Remote Execution
+
+```python
+from langserve import RemoteRunnable
+
+joke_chain = RemoteRunnable("http://localhost:8000/joke/")
+
+response = joke_chain.invoke({"topic": "parrots"})
+print(response.content)
 ```
