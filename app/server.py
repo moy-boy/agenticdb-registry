@@ -1,15 +1,21 @@
 import logging
+import os
 import uuid
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, HTTPException, Depends, Request
-from pydantic import BaseModel, field_validator
 from typing import Any, Dict
-import yaml
-from langchain_chroma import Chroma
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_openai import OpenAIEmbeddings
-from dotenv import load_dotenv, find_dotenv
+
 import openai
+import yaml
+from dotenv import load_dotenv, find_dotenv
+from fastapi import Depends, FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel, field_validator
+
+from langchain_chroma import Chroma
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langserve import add_routes
 
 
 def load_env_file():
@@ -70,10 +76,21 @@ def get_app_state(fast_app: FastAPI) -> AppState:
     return fast_app.state.app_state
 
 
+def add_agent_routes(fast_app: FastAPI):
+    chat_model = ChatOpenAI(model=os.getenv("OPENAI_MODEL_NAME")),
+    chat_prompt = ChatPromptTemplate.from_template("tell me a joke about {topic}")
+    add_routes(
+        app=fast_app,
+        runnable=chat_prompt | chat_model[0],
+        path="/joke",
+    )
+
+
 @asynccontextmanager
 async def lifespan(fast_app: FastAPI):
     try:
         load_env_file()
+        add_agent_routes(fast_app)
         fast_app.state.app_state = AppState()
         fast_app.state.app_state.text_splitter = get_text_splitter()
         fast_app.state.app_state.embedding_function = get_embedding_function()
@@ -88,10 +105,22 @@ async def lifespan(fast_app: FastAPI):
         logging.info("App shutdown")
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(lifespan=lifespan, title="Agentic DB API", description="API for managing Agentic DB",
+              version="0.1.0")
+
+# Set all CORS enabled origins
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["*"],
+)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+
 
 @app.get("/")
 async def root():
