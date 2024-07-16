@@ -33,9 +33,8 @@ class TestAgentEndpoint(IsolatedAsyncioTestCase):
                 response = self.client.post("/agents", content=agent_yaml, headers=headers)
                 self.assertEqual(response.status_code, 200)
                 response_json = response.json()
-                self.assertIn("original_content", response_json)
-                self.assertIn("parsed_content", response_json)
-                self.assertIn("agent_id", response_json)
+                required_keys = {"original_content", "parsed_content", "agent_id", "ratings_manifest", "ratings_id"}
+                self.assertTrue(required_keys.issubset(response_json.keys()))
 
         query = "Which agents have a category of Customer Support?"
         response = self.client.get("/agents", params={"query": query})
@@ -45,7 +44,8 @@ class TestAgentEndpoint(IsolatedAsyncioTestCase):
         try:
             agents = list(yaml.safe_load_all(agents_yaml))
             for agent in agents:
-                self.assertIn("name", agent["metadata"])
+                required_keys = {"metadata", "ratings", "spec"}
+                self.assertTrue(required_keys.issubset(agent.keys()))
                 print(yaml.safe_dump(agent))
         except yaml.YAMLError as e:
             self.fail(f"Failed to parse YAML: {str(e)}")

@@ -57,7 +57,7 @@ class TestAgent(IsolatedAsyncioTestCase):
             response = self.client.post(url, json=payload, headers=headers)
             return response.json()
 
-        joke_chain = RemoteRunnable("http://localhost:8000/joke/")  # Or any relevant endpoint
+        joke_chain = RemoteRunnable(self.base_url + "/joke")  # Or any relevant endpoint
         joke_chain.invoke = lambda payload: mock_invoke("/joke/invoke", payload)  # Override the invoke method
 
         response = joke_chain.invoke({'input': {'topic': 'cats'}})

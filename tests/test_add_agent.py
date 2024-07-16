@@ -19,7 +19,6 @@ class TestAgentEndpoint(IsolatedAsyncioTestCase):
             c.get("/")
 
     def setUp(self):
-        self.base_url = "http://127.0.0.1:8000"
         self.test_yaml = """
         metadata:
           name: financial-data-oracle
@@ -44,22 +43,26 @@ class TestAgentEndpoint(IsolatedAsyncioTestCase):
     def test_post_yaml(self):
         headers = {'Content-Type': 'application/x-yaml'}
         response = self.client.post("/agents", content=self.test_yaml, headers=headers)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(200, response.status_code)
         response_json = response.json()
-        self.assertIn("original_content", response_json)
-        self.assertIn("parsed_content", response_json)
-        self.assertIn("agent_id", response_json)
+        required_keys = {"original_content", "parsed_content", "agent_id", "ratings_manifest", "ratings_id"}
+        self.assertTrue(required_keys.issubset(response_json.keys()))
+        print(json.dumps(response_json, indent=2))
 
         query = "Which agents have a category of Natural Language?"
         response = self.client.get("/agents", params={"query": query})
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(200, response.status_code)
         response_json = response.json()
         agents_yaml = response_json["agents"]
         try:
-            agents_dict = yaml.safe_load(agents_yaml)
-            self.assertIn("name", agents_dict["metadata"])
-            self.assertEqual("financial-data-oracle", agents_dict["metadata"]["name"])
-            print(yaml.safe_dump(agents_dict))
+            agents = list(yaml.safe_load_all(agents_yaml))
+            for agent in agents:
+                required_keys = {"metadata", "ratings", "spec"}
+                self.assertTrue(required_keys.issubset(agent.keys()))
+                self.assertIn("name", agent["metadata"])
+                self.assertIn("score", agent["ratings"]["ratings"])
+                self.assertEqual("financial-data-oracle", agent["metadata"]["name"])
+                print(yaml.safe_dump(agent))
         except yaml.YAMLError as e:
             self.fail(f"Failed to parse YAML: {str(e)}")
 
