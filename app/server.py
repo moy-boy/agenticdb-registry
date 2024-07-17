@@ -243,6 +243,9 @@ async def add_agent(request: Request, app_state: AppState = Depends(lambda: get_
     # Read the raw YAML content from the request body
     try:
         yaml_content_str = await request.body()
+        if yaml_content_str == "":
+            logging.error("Empty YAML content received")
+            raise HTTPException(status_code=400, detail="Empty YAML content received")
         yaml_content_str = yaml_content_str.decode('utf-8')
         logging.info("YAML content received")
     except Exception as e:

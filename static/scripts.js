@@ -1,5 +1,8 @@
 async function submitAdd() {
-    const content = document.getElementById('add-textbox').value;
+    let content = document.getElementById('add-textbox').value;
+    if (!content) {
+        content = document.getElementById('add-textbox').placeholder;
+    }
     try {
         const response = await fetch('/agents', {
             method: 'POST',
@@ -8,37 +11,48 @@ async function submitAdd() {
             },
             body: content,
         });
+        const responseText = await response.json();
         if (response.ok) {
             alert('Agent added successfully!');
+            document.getElementById('add-textbox').value += `\n\nResponse:\n${JSON.stringify(responseText, null, 2)}`;
         } else {
-            const errorText = await response.text();
-            alert('Failed to add agent: ' + errorText);
+            alert('Failed to add agent: ' + JSON.stringify(responseText, null, 2));
+            document.getElementById('add-textbox').value += `\n\nError:\n${JSON.stringify(responseText, null, 2)}`;
         }
     } catch (error) {
         alert('Error: ' + error.message);
+        document.getElementById('add-textbox').value += `\n\nError:\n${error.message}`;
     }
 }
 
 async function submitSearch() {
-    const query = document.getElementById('search-textbox').value;
+    let query = document.getElementById('search-textbox').value;
+    if (!query) {
+        query = document.getElementById('search-textbox').placeholder;
+    }
     try {
         const response = await fetch(`/agents?query=${encodeURIComponent(query)}`, {
             method: 'GET',
         });
+        const responseText = await response.json();
         if (response.ok) {
-            const result = await response.json();
-            alert('Search successful: ' + JSON.stringify(result, null, 2));
+            document.getElementById('search-textbox').value += `\n\nResponse:\n${JSON.stringify(responseText, null, 2)}`;
+            alert('Search successful: ' + JSON.stringify(responseText, null, 2));
         } else {
-            const errorText = await response.text();
-            alert('Search failed: ' + errorText);
+            alert('Search failed: ' + JSON.stringify(responseText, null, 2));
+            document.getElementById('search-textbox').value += `\n\nError:\n${JSON.stringify(responseText, null, 2)}`;
         }
     } catch (error) {
         alert('Error: ' + error.message);
+        document.getElementById('search-textbox').value += `\n\nError:\n${error.message}`;
     }
 }
 
 async function submitRate() {
-    const content = document.getElementById('rate-textbox').value;
+    let content = document.getElementById('rate-textbox').value;
+    if (!content) {
+        content = document.getElementById('rate-textbox').placeholder;
+    }
     try {
         const response = await fetch('/ratings', {
             method: 'POST',
@@ -47,19 +61,25 @@ async function submitRate() {
             },
             body: content,
         });
+        const responseText = await response.json();
         if (response.ok) {
             alert('Rating submitted successfully!');
+            document.getElementById('rate-textbox').value += `\n\nResponse:\n${JSON.stringify(responseText, null, 2)}`;
         } else {
-            const errorText = await response.text();
-            alert('Failed to submit rating: ' + errorText);
+            alert('Failed to submit rating: ' + JSON.stringify(responseText, null, 2));
+            document.getElementById('rate-textbox').value += `\n\nError:\n${JSON.stringify(responseText, null, 2)}`;
         }
     } catch (error) {
         alert('Error: ' + error.message);
+        document.getElementById('rate-textbox').value += `\n\nError:\n${error.message}`;
     }
 }
 
 async function submitInvoke() {
-    const content = document.getElementById('invoke-textbox').value;
+    let content = document.getElementById('invoke-textbox').value;
+    if (!content) {
+        content = document.getElementById('invoke-textbox').placeholder;
+    }
     try {
         const response = await fetch('/joke/invoke', {
             method: 'POST',
@@ -68,13 +88,16 @@ async function submitInvoke() {
             },
             body: content,
         });
+        const responseText = await response.json();
         if (response.ok) {
             alert('Invoke successful!');
+            document.getElementById('invoke-textbox').value += `\n\nResponse:\n${JSON.stringify(responseText, null, 2)}`;
         } else {
-            const errorText = await response.text();
-            alert('Failed to invoke: ' + errorText);
+            alert('Failed to invoke: ' + JSON.stringify(responseText, null, 2));
+            document.getElementById('invoke-textbox').value += `\n\nError:\n${JSON.stringify(responseText, null, 2)}`;
         }
     } catch (error) {
         alert('Error: ' + error.message);
+        document.getElementById('invoke-textbox').value += `\n\nError:\n${error.message}`;
     }
 }
