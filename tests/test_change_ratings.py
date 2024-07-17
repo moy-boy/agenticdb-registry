@@ -1,6 +1,9 @@
 import unittest
 import warnings
+import random
 from unittest import IsolatedAsyncioTestCase
+
+import yaml
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from langserve import RemoteRunnable
@@ -23,7 +26,7 @@ class TestAgent(IsolatedAsyncioTestCase):
 
     def setUp(self):
         self.base_url = "http://127.0.0.1:8000"
-        self.test_yaml = """
+        self.test_agent_yaml = """
         metadata:
           name: financial-data-oracle
           namespace: sandbox
@@ -43,28 +46,37 @@ class TestAgent(IsolatedAsyncioTestCase):
             type: string
             description: Output description for financial-data-oracle
         """
+        self.ratings_yaml = f"""
+        ratings:
+          agent_id: placeholder_agent_id
+          id: placeholder_some_id
+          data:
+            score: {random.randint(1, 5)}
+        """
 
-    def test_invoke_agent(self):
+    def test_change_ratings(self):
         headers = {'Content-Type': 'application/x-yaml'}
-        response = self.client.post("/agents", content=self.test_yaml, headers=headers)
+        response = self.client.post("/agents", content=self.test_agent_yaml, headers=headers)
         self.assertEqual(response.status_code, 200)
         response_json = response.json()
         required_keys = {"original_content", "parsed_content", "agent_id", "ratings_manifest", "ratings_id"}
         self.assertTrue(required_keys.issubset(response_json.keys()))
 
-        # Define a local function to mock RemoteRunnable invoke method using TestClient
-        def mock_invoke(url, payload):
-            headers = {'Content-Type': 'application/json'}
-            response = self.client.post(url, json=payload, headers=headers)
-            return response.json()
-
-        joke_chain = RemoteRunnable(self.base_url + "/joke")  # Or any relevant endpoint
-        joke_chain.invoke = lambda payload: mock_invoke("/joke/invoke", payload)  # Override the invoke method
-
-        response = joke_chain.invoke({'input': {'topic': 'cats'}})
-        self.assertIn("output", response)
-        self.assertIsNotNone(response["output"]["content"])
-        print(response["output"]["content"])
+        headers = {'Content-Type': 'application/x-yaml'}
+        ratings_dict = yaml.safe_load(self.ratings_yaml)
+        ratings_dict["ratings"]["agent_id"] = response_json["agent_id"]
+        ratings_dict["ratings"]["id"] = response_json["ratings_id"]
+        updated_ratings_yaml = yaml.dump(ratings_dict)
+        response = self.client.post("/ratings", content=updated_ratings_yaml, headers=headers)
+        self.assertEqual(response.status_code, 200)
+        response_json = response.json()
+        self.assertEqual(ratings_dict["ratings"]["data"]["score"], response_json["ratings"]["data"]["score"])
+        response = self.client.get("/ratings", params={"ratings_id": ratings_dict["ratings"]["id"]})
+        self.assertEqual(200, response.status_code)
+        response_json = response.json()
+        self.assertEqual(ratings_dict["ratings"]["data"]["score"], response_json["data"]["score"])
+        self.assertEqual(ratings_dict["ratings"]["id"], response_json["id"])
+        print(response.content.decode("utf-8"))
 
 
 if __name__ == '__main__':

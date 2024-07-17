@@ -1,10 +1,14 @@
 import unittest
 import yaml
 import json
+import warnings
 from fastapi.testclient import TestClient
 from fastapi import FastAPI
 from app.server import app, lifespan
 from unittest import IsolatedAsyncioTestCase
+
+# Suppress DeprecationWarnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
 class TestAgentEndpoint(IsolatedAsyncioTestCase):
@@ -60,7 +64,7 @@ class TestAgentEndpoint(IsolatedAsyncioTestCase):
                 required_keys = {"metadata", "ratings", "spec"}
                 self.assertTrue(required_keys.issubset(agent.keys()))
                 self.assertIn("name", agent["metadata"])
-                self.assertIn("score", agent["ratings"]["ratings"])
+                self.assertIn("score", agent["ratings"]["data"])
                 self.assertEqual("financial-data-oracle", agent["metadata"]["name"])
                 print(yaml.safe_dump(agent))
         except yaml.YAMLError as e:

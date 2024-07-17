@@ -1,8 +1,10 @@
+import datetime
+import json
 import logging
 import os
 import uuid
 from contextlib import asynccontextmanager
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 import openai
 import yaml
@@ -57,8 +59,8 @@ class AppState:
     def __init__(self):
         self.text_splitter = None
         self.embedding_function = None
-        self.agents_db = None
-        self.ratings_db = None
+        self.agents_db: Optional[Chroma] = None
+        self.ratings_db: Optional[Chroma] = None
 
 
 class YAMLContent(BaseModel):
@@ -139,6 +141,84 @@ async def root():
     return {"message": "Hello World"}
 
 
+@app.get("/ratings")
+async def get_agents(ratings_id: str, app_state: AppState = Depends(lambda: get_app_state(app))):
+    if app_state.agents_db is None or app_state.ratings_db is None:
+        logging.error("Chroma DB not initialized")
+        raise HTTPException(status_code=500, detail="Chroma DB not initialized")
+    try:
+        results = app_state.ratings_db.get(ratings_id)
+        ratings_str = results["documents"][0]
+        ratings_dict = yaml.safe_load(ratings_str)
+        logging.info(f"Search query executed successfully for ratings ID: {ratings_id}")
+    except Exception as e:
+        logging.error(f"Failed to execute similarity search query for ratings: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to execute similarity search query for ratings")
+
+    return JSONResponse(content=ratings_dict)
+
+
+@app.post("/ratings")
+async def add_rating(request: Request, app_state: AppState = Depends(lambda: get_app_state(app))):
+    if app_state.agents_db is None or app_state.ratings_db is None:
+        logging.error("Chroma DB not initialized")
+        raise HTTPException(status_code=500, detail="Chroma DB not initialized")
+    # Read the raw YAML content from the request body
+    try:
+        yaml_content_str = await request.body()
+        yaml_content_str = yaml_content_str.decode('utf-8')
+        logging.info("YAML content received")
+    except Exception as e:
+        logging.error(f"Failed to read request body: {str(e)}")
+        raise HTTPException(status_code=400, detail="Failed to read request body")
+    try:
+        parsed_content = yaml.safe_load(yaml_content_str)
+        logging.info("YAML content parsed successfully")
+    except yaml.YAMLError as e:
+        logging.error(f"Invalid YAML content: {str(e)}")
+        raise HTTPException(status_code=400, detail=f"Invalid YAML content: {str(e)}")
+    updated_ratings = parsed_content.get("ratings")
+    ratings_id = updated_ratings.get("id")
+
+    # Get existing document from Chroma DB
+    try:
+        results = app_state.ratings_db.get(ratings_id)
+        ratings_str = results["documents"][0]
+        ratings_dict = yaml.safe_load(ratings_str)
+        logging.info(f"Search query executed successfully for ratings ID: {ratings_id}")
+    except Exception as e:
+        logging.error(f"Failed to execute similarity search query for ratings: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to execute similarity search query for ratings")
+
+    # Update the ratings
+    ratings_dict["data"]["samples"] = ratings_dict.get("data").get("samples") + 1
+    ratings_dict["data"]["score"] = (ratings_dict.get("data").get("score") +
+                                     updated_ratings.get("data").get("score")) / ratings_dict["data"]["samples"]
+    # convert back to YAML
+    ratings_yaml_content_str = yaml.dump(ratings_dict)
+    # Split the YAML content into documents but carry metadata from before
+    try:
+        ratings_docs = app_state.text_splitter.create_documents([ratings_yaml_content_str],
+                                                                metadatas=results["metadatas"])
+        logging.info("YAML content split into documents")
+    except Exception as e:
+        logging.error(f"Failed to split YAML content: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to split YAML content")
+
+    try:
+        # Update document
+        app_state.ratings_db.update_document(ratings_id, ratings_docs[0])
+        logging.info("Update document in Chroma DBs")
+    except openai.RateLimitError as e:
+        logging.error(f"OpenAI rate limit error: {str(e)}")
+        raise HTTPException(status_code=500, detail="OpenAI rate limit error")
+    except Exception as e:
+        logging.error(f"Failed to update documents in Chroma DB: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to add documents to Chroma DB")
+
+    return JSONResponse(content={"ratings": ratings_dict})
+
+
 @app.post("/agents")
 async def add_agent(request: Request, app_state: AppState = Depends(lambda: get_app_state(app))):
     if app_state.agents_db is None or app_state.ratings_db is None:
@@ -171,8 +251,9 @@ async def add_agent(request: Request, app_state: AppState = Depends(lambda: get_
     ratings_manifest = {
         "id": ratings_id,
         "agent_id": agent_id,
-        "ratings": {
-            "score": None  # Placeholder for the actual rating, can be set to a value between 1 and 5
+        "data": {
+            "score": 0,
+            "samples": 0
         }
     }
 
@@ -182,8 +263,14 @@ async def add_agent(request: Request, app_state: AppState = Depends(lambda: get_
 
     # Split the YAML content into documents
     try:
-        agent_docs = app_state.text_splitter.create_documents([agent_yaml_content_str])
-        ratings_docs = app_state.text_splitter.create_documents([ratings_yaml_content_str])
+        # Generate the current UTC time down to milliseconds
+        current_utc_time = datetime.datetime.now(datetime.UTC).isoformat(timespec='milliseconds') + 'Z'
+        agent_docs = app_state.text_splitter.create_documents(texts=[agent_yaml_content_str],
+                                                              metadatas=[{"id": agent_id, "version": 1,
+                                                                          "timestamp": current_utc_time}])
+        ratings_docs = app_state.text_splitter.create_documents(texts=[ratings_yaml_content_str],
+                                                                metadatas=[{"id": ratings_id, "version": 1,
+                                                                            "timestamp": current_utc_time}])
         logging.info("YAML content split into documents")
     except Exception as e:
         logging.error(f"Failed to split YAML content: {str(e)}")
@@ -191,8 +278,8 @@ async def add_agent(request: Request, app_state: AppState = Depends(lambda: get_
 
     try:
         # Insert documents into the respective Chroma databases
-        app_state.agents_db.add_documents(agent_docs)
-        app_state.ratings_db.add_documents(ratings_docs)
+        app_state.agents_db.add_documents(agent_docs, ids=[agent_id])
+        app_state.ratings_db.add_documents(ratings_docs, ids=[ratings_id])
         logging.info("Documents added to Chroma DBs")
     except openai.RateLimitError as e:
         logging.error(f"OpenAI rate limit error: {str(e)}")
@@ -230,18 +317,18 @@ async def get_agents(query: str, app_state: AppState = Depends(lambda: get_app_s
         ratings_id = agent_data['metadata'].get('ratings')
 
         try:
-            ratings_results = app_state.ratings_db.similarity_search(ratings_id)
+            ratings_results = app_state.ratings_db.get(ratings_id)
             logging.info(f"Similarity search query executed successfully for ratings with ID: {ratings_id}")
         except Exception as e:
             logging.error(f"Failed to execute similarity search query for ratings: {str(e)}")
             raise HTTPException(status_code=500, detail="Failed to execute similarity search query for ratings")
 
         if ratings_results:
-            ratings_content = ratings_results[0].page_content.strip()
-            ratings_data = yaml.safe_load(ratings_content)
-            agent_data['ratings'] = ratings_data
+            ratings_str = ratings_results["documents"][0]
+            ratings_dict = yaml.safe_load(ratings_str)
+            agent_data['ratings'] = ratings_dict
 
-        agent_yaml_content_str = yaml.dump(agent_data, default_flow_style=False)
+        agent_yaml_content_str = yaml.dump(agent_data)
         concatenated_yaml += agent_yaml_content_str + "\n---\n"
 
     # Remove the last separator if it exists

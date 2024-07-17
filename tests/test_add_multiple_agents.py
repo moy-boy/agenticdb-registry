@@ -1,10 +1,13 @@
 import unittest
 import yaml
-import json
+import warnings
 from fastapi.testclient import TestClient
 from fastapi import FastAPI
 from app.server import app, lifespan
 from unittest import IsolatedAsyncioTestCase
+
+# Suppress DeprecationWarnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
 class TestAgentEndpoint(IsolatedAsyncioTestCase):
@@ -17,9 +20,6 @@ class TestAgentEndpoint(IsolatedAsyncioTestCase):
         # Ensure app state is initialized
         with cls.client as c:
             c.get("/")
-
-    def setUp(self):
-        self.base_url = "http://127.0.0.1:8000"
 
     def test_post_yaml(self):
         headers = {'Content-Type': 'application/x-yaml'}
