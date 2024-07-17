@@ -187,7 +187,7 @@ async def add_rating(request: Request, app_state: AppState = Depends(lambda: get
         ratings_dict = yaml.safe_load(ratings_str)
         logging.info(f"Search query executed successfully for ratings ID: {ratings_id}")
     except Exception as e:
-        logging.error(f"Failed to execute similarity search query for ratings: {str(e)}")
+        logging.error(f"Failed to execute search query for ratings: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to execute similarity search query for ratings")
 
     # Update the ratings
@@ -195,7 +195,7 @@ async def add_rating(request: Request, app_state: AppState = Depends(lambda: get
     ratings_dict["data"]["score"] = (ratings_dict.get("data").get("score") +
                                      updated_ratings.get("data").get("score")) / ratings_dict["data"]["samples"]
     # convert back to YAML
-    ratings_yaml_content_str = yaml.dump(ratings_dict)
+    ratings_yaml_content_str = yaml.dump(ratings_dict , sort_keys=False)
     # Split the YAML content into documents but carry metadata from before
     try:
         ratings_docs = app_state.text_splitter.create_documents([ratings_yaml_content_str],
@@ -258,8 +258,8 @@ async def add_agent(request: Request, app_state: AppState = Depends(lambda: get_
     }
 
     # Convert the updated parsed content and ratings manifest back to YAML strings
-    agent_yaml_content_str = yaml.dump(parsed_content)
-    ratings_yaml_content_str = yaml.dump(ratings_manifest)
+    agent_yaml_content_str = yaml.dump(parsed_content, sort_keys=False)
+    ratings_yaml_content_str = yaml.dump(ratings_manifest, sort_keys=False)
 
     # Split the YAML content into documents
     try:
@@ -328,7 +328,7 @@ async def get_agents(query: str, app_state: AppState = Depends(lambda: get_app_s
             ratings_dict = yaml.safe_load(ratings_str)
             agent_data['ratings'] = ratings_dict
 
-        agent_yaml_content_str = yaml.dump(agent_data)
+        agent_yaml_content_str = yaml.dump(agent_data, sort_keys=False)
         concatenated_yaml += agent_yaml_content_str + "\n---\n"
 
     # Remove the last separator if it exists
