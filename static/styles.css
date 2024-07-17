@@ -1,0 +1,24 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.container {
+    margin-top: 50px;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.form-group textarea,
+.form-group input {
+    margin-bottom: 20px; /* Add space below text areas and inputs */
+}
+
+.form-group .btn {
+    margin-top: 20px; /* Add space above buttons */
+}

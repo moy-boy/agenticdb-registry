@@ -4,6 +4,7 @@ import logging
 import os
 import uuid
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import Any, Dict, Optional
 
 import openai
@@ -12,6 +13,8 @@ from dotenv import load_dotenv, find_dotenv
 from fastapi import Depends, FastAPI, HTTPException, Request, Query
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel, field_validator
 
 from langchain_chroma import Chroma
@@ -134,11 +137,23 @@ app.add_middleware(
 # Configure logging
 logging.basicConfig(level=logging.ERROR, format="%(asctime)s - %(levelname)s - %(message)s")
 
+# Determine the absolute path to the 'static' directory
+current_file_path = os.path.abspath(__file__)
+current_dir = os.path.dirname(current_file_path)
+static_directory = os.path.join(current_dir, '..', 'static')
 
-@app.get("/")
-async def root():
-    logging.info("Root endpoint called")
-    return {"message": "Hello World"}
+# Serve the static files
+app.mount("/static", StaticFiles(directory=static_directory), name="static")
+
+
+@app.get("/", response_class=FileResponse)
+async def read_root():
+    return os.path.join(static_directory, "index.html")
+
+
+@app.get("/", response_class=FileResponse)
+async def read_root():
+    return os.path.join(static_directory, "index.html")
 
 
 @app.get("/ratings")
@@ -195,7 +210,7 @@ async def add_rating(request: Request, app_state: AppState = Depends(lambda: get
     ratings_dict["data"]["score"] = (ratings_dict.get("data").get("score") +
                                      updated_ratings.get("data").get("score")) / ratings_dict["data"]["samples"]
     # convert back to YAML
-    ratings_yaml_content_str = yaml.dump(ratings_dict , sort_keys=False)
+    ratings_yaml_content_str = yaml.dump(ratings_dict, sort_keys=False)
     # Split the YAML content into documents but carry metadata from before
     try:
         ratings_docs = app_state.text_splitter.create_documents([ratings_yaml_content_str],
