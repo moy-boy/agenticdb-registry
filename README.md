@@ -1,11 +1,20 @@
 # AgenticDB
 
-An implementation of a VectorDB that stores GenAI Agent manifests. It supports adding and searching for agents.
+Wouldn't be cool if you could store and search for GenAI agents in a database? And when you found one you liked, you could invoke it remotely?
+
+The icing on the cake is that you can also rate your experience with the agent and provide feedback to the agent owner.
+
+This is an implementation of a VectorDB that stores GenAI Agent manifests. It supports adding and searching for agents.
 When searching for an agent (see example), similarity search is used, a 
 maximum of 4 agents are returned
 
 It comes with a built-in example agent that tells jokes to show remote execution of agent code chains 
-based on the URL in the manifest. 
+based on the URL in the manifest. In order to invoke the agent you need a `.env` file with the following content:
+
+```shell
+OPENAI_API_KEY=<openai key>
+OPENAI_MODEL_NAME=gpt-4o
+````
 
 ## Server
 
@@ -45,6 +54,8 @@ EOF
 
 ```
 
+## Search for Agents (similarity search)
+
 ```shell
 
 curl -G "http://127.0.0.1:8000/agents" \
@@ -70,4 +81,25 @@ joke_chain = RemoteRunnable("http://localhost:8000/joke/")
 
 response = joke_chain.invoke({"topic": "parrots"})
 print(response.content)
+```
+
+## Rate an Agent ★★★★☆
+
+```shell
+curl -X POST "http://127.0.0.1:8000/ratings" \
+     -H "Content-Type: application/x-yaml" \
+     --data-binary @- <<EOF
+ratings:
+  agent_id: placeholder_agent_id  # Replace with actual agent_id
+  id: placeholder_some_id         # Replace with actual ratings_id
+  data:
+    score: <score>                # Example with 3 stars: ★★★☆☆
+EOF
+
+```
+
+## Retrieve Ratings
+
+```shell
+curl -X GET "http://127.0.0.1:8000/ratings?ratings_id=<ratings_id>"
 ```
