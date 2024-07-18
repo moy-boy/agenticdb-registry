@@ -218,8 +218,11 @@ async def add_rating(request: Request, app_state: AppState = Depends(lambda: get
 
     # Update the ratings
     ratings_dict["data"]["samples"] = ratings_dict.get("data").get("samples") + 1
-    ratings_dict["data"]["score"] = (ratings_dict.get("data").get("score") +
-                                     updated_ratings.get("data").get("score")) / ratings_dict["data"]["samples"]
+    ratings_dict["data"]["score"] = round(
+        (ratings_dict.get("data").get("score") +
+         updated_ratings.get("data").get("score")) / ratings_dict["data"]["samples"],
+        2
+    )
     # convert back to YAML
     ratings_yaml_content_str = yaml.dump(ratings_dict, sort_keys=False)
     # Split the YAML content into documents but carry metadata from before
