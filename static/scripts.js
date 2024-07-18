@@ -9,6 +9,7 @@ function setPlaceholderText() {
 
 async function submitAdd() {
     let content = document.getElementById('add-textbox').value;
+    document.getElementById('add-response').value = ''; // Clear response area
     if (!content) {
         content = document.getElementById('add-textbox').placeholder;
     }
@@ -21,21 +22,21 @@ async function submitAdd() {
             body: content,
         });
         const responseText = await response.json();
+        document.getElementById('add-response').value = JSON.stringify(responseText, null, 2);
         if (response.ok) {
             alert('Agent added successfully!');
-            document.getElementById('add-textbox').value += `\n\nResponse:\n${JSON.stringify(responseText, null, 2)}`;
         } else {
             alert('Failed to add agent: ' + JSON.stringify(responseText, null, 2));
-            document.getElementById('add-textbox').value += `\n\nError:\n${JSON.stringify(responseText, null, 2)}`;
         }
     } catch (error) {
         alert('Error: ' + error.message);
-        document.getElementById('add-textbox').value += `\n\nError:\n${error.message}`;
+        document.getElementById('add-response').value = `Error: ${error.message}`;
     }
 }
 
 async function submitSearch() {
     let query = document.getElementById('search-textbox').value;
+    document.getElementById('search-response').value = ''; // Clear response area
     if (!query) {
         query = document.getElementById('search-textbox').placeholder;
     }
@@ -44,21 +45,21 @@ async function submitSearch() {
             method: 'GET',
         });
         const responseText = await response.json();
+        document.getElementById('search-response').value = JSON.stringify(responseText, null, 2);
         if (response.ok) {
-            document.getElementById('search-textbox').value += `\n\nResponse:\n${JSON.stringify(responseText, null, 2)}`;
-            alert('Search successful: ' + JSON.stringify(responseText, null, 2));
+            alert('Search successful!');
         } else {
             alert('Search failed: ' + JSON.stringify(responseText, null, 2));
-            document.getElementById('search-textbox').value += `\n\nError:\n${JSON.stringify(responseText, null, 2)}`;
         }
     } catch (error) {
         alert('Error: ' + error.message);
-        document.getElementById('search-textbox').value += `\n\nError:\n${error.message}`;
+        document.getElementById('search-response').value = `Error: ${error.message}`;
     }
 }
 
 async function submitRate() {
     let content = document.getElementById('rate-textbox').value;
+    document.getElementById('rate-response').value = ''; // Clear response area
     if (!content) {
         content = document.getElementById('rate-textbox').placeholder;
     }
@@ -71,21 +72,21 @@ async function submitRate() {
             body: content,
         });
         const responseText = await response.json();
+        document.getElementById('rate-response').value = JSON.stringify(responseText, null, 2);
         if (response.ok) {
             alert('Rating submitted successfully!');
-            document.getElementById('rate-textbox').value += `\n\nResponse:\n${JSON.stringify(responseText, null, 2)}`;
         } else {
             alert('Failed to submit rating: ' + JSON.stringify(responseText, null, 2));
-            document.getElementById('rate-textbox').value += `\n\nError:\n${JSON.stringify(responseText, null, 2)}`;
         }
     } catch (error) {
         alert('Error: ' + error.message);
-        document.getElementById('rate-textbox').value += `\n\nError:\n${error.message}`;
+        document.getElementById('rate-response').value = `Error: ${error.message}`;
     }
 }
 
 async function submitInvoke() {
     let content = document.getElementById('invoke-textbox').value;
+    document.getElementById('invoke-response').value = ''; // Clear response area
     if (!content) {
         content = document.getElementById('invoke-textbox').placeholder;
     }
@@ -106,15 +107,14 @@ async function submitInvoke() {
             body: JSON.stringify(payload),
         });
         const responseText = await response.json();
+        document.getElementById('invoke-response').value = JSON.stringify(responseText, null, 2);
         if (response.ok) {
             alert('Invoke successful!');
-            document.getElementById('invoke-textbox').value += `\n\nResponse:\n${JSON.stringify(responseText, null, 2)}`;
         } else {
             alert('Failed to invoke: ' + JSON.stringify(responseText, null, 2));
-            document.getElementById('invoke-textbox').value += `\n\nError:\n${JSON.stringify(responseText, null, 2)}`;
         }
     } catch (error) {
         alert('Error: ' + error.message);
-        document.getElementById('invoke-textbox').value += `\n\nError:\n${error.message}`;
+        document.getElementById('invoke-response').value = `Error: ${error.message}`;
     }
 }

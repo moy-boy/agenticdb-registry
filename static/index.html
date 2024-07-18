@@ -28,9 +28,10 @@
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="add" role="tabpanel" aria-labelledby="add-tab">
                 <form id="add-form">
-                    <div class="form-group mt-3">
-                        <label for="add-textbox">YAML Content:</label>
-                        <textarea class="form-control" id="add-textbox" rows="10" placeholder="metadata:
+                    <div class="form-group mt-3 row">
+                        <div class="col-md-6">
+                            <label for="add-textbox">YAML Content:</label>
+                            <textarea class="form-control" id="add-textbox" rows="10" placeholder="metadata:
   name: financial-data-oracle
   namespace: sandbox
   description: |
@@ -48,39 +49,62 @@ spec:
   output:
     type: string
     description: Output description for financial-data-oracle"></textarea>
-                        <button type="button" class="btn btn-primary" onclick="submitAdd()">Submit</button>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="add-response">Response:</label>
+                            <textarea class="form-control" id="add-response" rows="10" readonly></textarea>
+                        </div>
                     </div>
+                    <button type="button" class="btn btn-primary mt-3" onclick="submitAdd()">Submit</button>
                 </form>
             </div>
             <div class="tab-pane fade" id="search" role="tabpanel" aria-labelledby="search-tab">
                 <form id="search-form">
-                    <div class="form-group mt-3">
-                        <label for="search-textbox">Query:</label>
-                        <textarea class="form-control" id="search-textbox" rows="10" placeholder="Which agents have a category of Customer support?"></textarea>
-                        <button type="button" class="btn btn-primary" onclick="submitSearch()">Search</button>
+                    <div class="form-group mt-3 row">
+                        <div class="col-md-6">
+                            <label for="search-textbox">Query:</label>
+                            <textarea class="form-control" id="search-textbox" rows="10" placeholder="Which agents have a category of Customer support?"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="search-response">Response:</label>
+                            <textarea class="form-control" id="search-response" rows="10" readonly></textarea>
+                        </div>
                     </div>
+                    <button type="button" class="btn btn-primary mt-3" onclick="submitSearch()">Search</button>
                 </form>
             </div>
             <div class="tab-pane fade" id="rate" role="tabpanel" aria-labelledby="rate-tab">
                 <form id="rate-form">
-                    <div class="form-group mt-3">
-                        <label for="rate-textbox">Rating YAML:</label>
-                        <textarea class="form-control" id="rate-textbox" rows="10" placeholder="ratings:
+                    <div class="form-group mt-3 row">
+                        <div class="col-md-6">
+                            <label for="rate-textbox">Rating YAML:</label>
+                            <textarea class="form-control" id="rate-textbox" rows="10" placeholder="ratings:
   agent_id: placeholder_agent_id
   id: placeholder_some_id
   data:
     score: 5"></textarea>
-                        <button type="button" class="btn btn-primary" onclick="submitRate()">Submit Rating</button>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="rate-response">Response:</label>
+                            <textarea class="form-control" id="rate-response" rows="10" readonly></textarea>
+                        </div>
                     </div>
+                    <button type="button" class="btn btn-primary mt-3" onclick="submitRate()">Submit Rating</button>
                 </form>
             </div>
             <div class="tab-pane fade" id="invoke" role="tabpanel" aria-labelledby="invoke-tab">
                 <form id="invoke-form">
-                    <div class="form-group mt-3">
-                        <label for="invoke-textbox">Invoke Content:</label>
-                        <textarea class="form-control" id="invoke-textbox" rows="10" placeholder="Enter invoke content here"></textarea>
-                        <button type="button" class="btn btn-primary" onclick="submitInvoke()">Invoke</button>
+                    <div class="form-group mt-3 row">
+                        <div class="col-md-6">
+                            <label for="invoke-textbox">Invoke Content:</label>
+                            <textarea class="form-control" id="invoke-textbox" rows="10" placeholder="Enter invoke content here"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="invoke-response">Response:</label>
+                            <textarea class="form-control" id="invoke-response" rows="10" readonly></textarea>
+                        </div>
                     </div>
+                    <button type="button" class="btn btn-primary mt-3" onclick="submitInvoke()">Invoke</button>
                 </form>
             </div>
         </div>
