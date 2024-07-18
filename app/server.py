@@ -151,11 +151,6 @@ async def read_root():
     return os.path.join(static_directory, "index.html")
 
 
-@app.get("/", response_class=FileResponse)
-async def read_root():
-    return os.path.join(static_directory, "index.html")
-
-
 @app.get("/ratings")
 async def get_agents(ratings_id: str, app_state: AppState = Depends(lambda: get_app_state(app))):
     if app_state.agents_db is None or app_state.ratings_db is None:
@@ -178,22 +173,38 @@ async def add_rating(request: Request, app_state: AppState = Depends(lambda: get
     if app_state.agents_db is None or app_state.ratings_db is None:
         logging.error("Chroma DB not initialized")
         raise HTTPException(status_code=500, detail="Chroma DB not initialized")
-    # Read the raw YAML content from the request body
     try:
+        # Read the raw YAML content from the request body
         yaml_content_str = await request.body()
-        yaml_content_str = yaml_content_str.decode('utf-8')
+        if not yaml_content_str.strip():
+            logging.error("Empty or whitespace-only YAML content received")
+            raise HTTPException(status_code=400, detail="Empty or whitespace-only YAML content received")
+
+        yaml_content_str = yaml_content_str.decode('utf-8').strip()
         logging.info("YAML content received")
+
+        # Attempt to parse the YAML content to check for validity
+        try:
+            parsed_yaml = yaml.safe_load(yaml_content_str)
+            if parsed_yaml is None:
+                raise ValueError("YAML content is empty after parsing")
+        except yaml.YAMLError as e:
+            logging.error(f"Invalid YAML content: {str(e)}")
+            raise HTTPException(status_code=400, detail="Invalid YAML content received")
+
+    except HTTPException as http_exc:
+        # Catch explicitly raised HTTPException and re-raise
+        raise http_exc
     except Exception as e:
         logging.error(f"Failed to read request body: {str(e)}")
-        raise HTTPException(status_code=400, detail="Failed to read request body")
+        raise HTTPException(status_code=400, detail=f"Failed to read request body: {str(e)}")
+
     try:
-        parsed_content = yaml.safe_load(yaml_content_str)
-        logging.info("YAML content parsed successfully")
-    except yaml.YAMLError as e:
-        logging.error(f"Invalid YAML content: {str(e)}")
-        raise HTTPException(status_code=400, detail=f"Invalid YAML content: {str(e)}")
-    updated_ratings = parsed_content.get("ratings")
-    ratings_id = updated_ratings.get("id")
+        updated_ratings = parsed_yaml.get("ratings")
+        ratings_id = updated_ratings.get("id")
+    except KeyError as e:
+        logging.error(f"Ratings ID not found in YAML content: {str(e)}")
+        raise HTTPException(status_code=400, detail="Ratings ID not found in YAML content")
 
     # Get existing document from Chroma DB
     try:
@@ -240,17 +251,31 @@ async def add_agent(request: Request, app_state: AppState = Depends(lambda: get_
         logging.error("Chroma DB not initialized")
         raise HTTPException(status_code=500, detail="Chroma DB not initialized")
 
-    # Read the raw YAML content from the request body
     try:
+        # Read the raw YAML content from the request body
         yaml_content_str = await request.body()
-        if yaml_content_str == "":
-            logging.error("Empty YAML content received")
-            raise HTTPException(status_code=400, detail="Empty YAML content received")
-        yaml_content_str = yaml_content_str.decode('utf-8')
+        if not yaml_content_str.strip():
+            logging.error("Empty or whitespace-only YAML content received")
+            raise HTTPException(status_code=400, detail="Empty or whitespace-only YAML content received")
+
+        yaml_content_str = yaml_content_str.decode('utf-8').strip()
         logging.info("YAML content received")
+
+        # Attempt to parse the YAML content to check for validity
+        try:
+            parsed_yaml = yaml.safe_load(yaml_content_str)
+            if parsed_yaml is None:
+                raise ValueError("YAML content is empty after parsing")
+        except yaml.YAMLError as e:
+            logging.error(f"Invalid YAML content: {str(e)}")
+            raise HTTPException(status_code=400, detail="Invalid YAML content received")
+
+    except HTTPException as http_exc:
+        # Catch explicitly raised HTTPException and re-raise
+        raise http_exc
     except Exception as e:
         logging.error(f"Failed to read request body: {str(e)}")
-        raise HTTPException(status_code=400, detail="Failed to read request body")
+        raise HTTPException(status_code=400, detail=f"Failed to read request body: {str(e)}")
 
     try:
         parsed_content = yaml.safe_load(yaml_content_str)
@@ -262,8 +287,13 @@ async def add_agent(request: Request, app_state: AppState = Depends(lambda: get_
     # Generate UUIDs for the agent and its ratings
     agent_id = str(uuid.uuid4())
     ratings_id = str(uuid.uuid4())
-    parsed_content['metadata']['id'] = agent_id
-    parsed_content['metadata']['ratings'] = ratings_id
+
+    try:
+        parsed_content['metadata']['id'] = agent_id
+        parsed_content['metadata']['ratings'] = ratings_id
+    except KeyError as e:
+        logging.error(f"metadata not found in YAML content: {str(e)}")
+        raise HTTPException(status_code=400, detail="Metadata not found in YAML content")
 
     # Create the ratings manifest
     ratings_manifest = {
@@ -307,10 +337,7 @@ async def add_agent(request: Request, app_state: AppState = Depends(lambda: get_
         raise HTTPException(status_code=500, detail="Failed to add documents to Chroma DB")
 
     return {
-        "original_content": agent_yaml_content_str,
-        "parsed_content": parsed_content,
-        "agent_id": agent_id,
-        "ratings_id": ratings_id,
+        "agent_content": parsed_content,
         "ratings_manifest": ratings_manifest
     }
 

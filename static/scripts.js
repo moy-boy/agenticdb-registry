@@ -1,3 +1,12 @@
+function setPlaceholderText() {
+    const textareas = document.querySelectorAll('textarea');
+    textareas.forEach(textarea => {
+        if (textarea.value.trim() === '') {
+            textarea.value = textarea.placeholder;
+        }
+    });
+}
+
 async function submitAdd() {
     let content = document.getElementById('add-textbox').value;
     if (!content) {
