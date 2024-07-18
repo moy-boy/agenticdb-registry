@@ -89,13 +89,21 @@ async function submitInvoke() {
     if (!content) {
         content = document.getElementById('invoke-textbox').placeholder;
     }
+
+    // Construct the JSON object with the input topic
+    const payload = {
+        'input': {
+            'topic': content
+        }
+    };
+
     try {
         const response = await fetch('/joke/invoke', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-yaml',
+                'Content-Type': 'application/json',
             },
-            body: content,
+            body: JSON.stringify(payload),
         });
         const responseText = await response.json();
         if (response.ok) {

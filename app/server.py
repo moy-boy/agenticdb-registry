@@ -161,6 +161,9 @@ async def get_agents(ratings_id: str, app_state: AppState = Depends(lambda: get_
         ratings_str = results["documents"][0]
         ratings_dict = yaml.safe_load(ratings_str)
         logging.info(f"Search query executed successfully for ratings ID: {ratings_id}")
+    except HTTPException as http_exc:
+        # Handle HTTPException separately
+        raise http_exc
     except Exception as e:
         logging.error(f"Failed to execute similarity search query for ratings: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to execute similarity search query for ratings")
@@ -209,12 +212,18 @@ async def add_rating(request: Request, app_state: AppState = Depends(lambda: get
     # Get existing document from Chroma DB
     try:
         results = app_state.ratings_db.get(ratings_id)
+        if len(results["documents"]) == 0:
+            logging.error(f"Ratings ID not found in Chroma DB: {ratings_id}")
+            raise HTTPException(status_code=404, detail="Ratings ID not found in Chroma DB")
         ratings_str = results["documents"][0]
         ratings_dict = yaml.safe_load(ratings_str)
         logging.info(f"Search query executed successfully for ratings ID: {ratings_id}")
+    except HTTPException as http_exc:
+        # Handle HTTPException separately
+        raise http_exc
     except Exception as e:
         logging.error(f"Failed to execute search query for ratings: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to execute similarity search query for ratings")
+        raise HTTPException(status_code=500, detail="Failed to execute search query for ratings")
 
     # Update the ratings
     ratings_dict["data"]["samples"] = ratings_dict.get("data").get("samples") + 1
@@ -354,6 +363,9 @@ async def get_agents(query: str, app_state: AppState = Depends(lambda: get_app_s
     try:
         results = app_state.agents_db.similarity_search(query)
         logging.info("Similarity search query executed successfully for agents")
+    except HTTPException as http_exc:
+        # Handle HTTPException separately
+        raise http_exc
     except Exception as e:
         logging.error(f"Failed to execute similarity search query for agents: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to execute similarity search query for agents")
@@ -366,10 +378,16 @@ async def get_agents(query: str, app_state: AppState = Depends(lambda: get_app_s
 
         try:
             ratings_results = app_state.ratings_db.get(ratings_id)
+            if len(ratings_results["documents"]) == 0:
+                logging.error(f"Ratings ID not found in Chroma DB: {ratings_id}")
+                raise HTTPException(status_code=404, detail="Ratings ID not found in Chroma DB")
             logging.info(f"Similarity search query executed successfully for ratings with ID: {ratings_id}")
+        except HTTPException as http_exc:
+            # Catch explicitly raised HTTPException and re-raise
+            raise http_exc
         except Exception as e:
-            logging.error(f"Failed to execute similarity search query for ratings: {str(e)}")
-            raise HTTPException(status_code=500, detail="Failed to execute similarity search query for ratings")
+            logging.error(f"Failed to execute search query for ratings: {str(e)}")
+            raise HTTPException(status_code=500, detail="Failed to execute search query for ratings")
 
         if ratings_results:
             ratings_str = ratings_results["documents"][0]
