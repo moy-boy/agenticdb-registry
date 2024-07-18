@@ -1,5 +1,7 @@
 # AgenticDB
 
+![Agentic Dashboard](docs/images/landing.png "Agentic Dashboard Screenshot")
+
 Wouldn't be cool if you could store and search for GenAI agents in a database? And when you found one you liked, you could invoke it remotely?
 
 The icing on the cake is that you can also rate your experience with the agent and provide feedback to the agent owner.
