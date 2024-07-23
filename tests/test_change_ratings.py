@@ -27,25 +27,25 @@ class TestAgent(IsolatedAsyncioTestCase):
     def setUp(self):
         self.base_url = "http://127.0.0.1:8000"
         self.test_agent_yaml = """
-        metadata:
-          name: financial-data-oracle
-          namespace: sandbox
-          description: |
-            Retrieves financial price data for a variety of tickers and timeframes.
-        spec:
-          type: agent
-          lifecycle: experimental
-          owner: buddy@example.com
-          access_level: PRIVATE
-          category: Natural Language
-          url: https://api.example.com/financial-data-oracle
-          input:
-            type: string
-            description: Input description for financial-data-oracle
-          output:
-            type: string
-            description: Output description for financial-data-oracle
-        """
+metadata:
+  name: financial-data-oracle
+  namespace: sandbox
+  description: |
+    Retrieves financial price data for a variety of tickers and timeframes.
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: buddy@example.com
+  access_level: PRIVATE
+  category: Natural Language
+  url: https://api.example.com/financial-data-oracle
+  input:
+    type: string
+    description: Input description for financial-data-oracle
+  output:
+    type: string
+    description: Output description for financial-data-oracle
+"""
         self.ratings_yaml = f"""
         ratings:
           agent_id: placeholder_agent_id
@@ -59,13 +59,13 @@ class TestAgent(IsolatedAsyncioTestCase):
         response = self.client.post("/agents", content=self.test_agent_yaml, headers=headers)
         self.assertEqual(response.status_code, 200)
         response_json = response.json()
-        required_keys = {"original_content", "parsed_content", "agent_id", "ratings_manifest", "ratings_id"}
+        required_keys = {"agent_manifest", "ratings_manifest"}
         self.assertTrue(required_keys.issubset(response_json.keys()))
 
         headers = {'Content-Type': 'application/x-yaml'}
         ratings_dict = yaml.safe_load(self.ratings_yaml)
-        ratings_dict["ratings"]["agent_id"] = response_json["agent_id"]
-        ratings_dict["ratings"]["id"] = response_json["ratings_id"]
+        ratings_dict["ratings"]["agent_id"] = response_json["agent_manifest"]["metadata"]["id"]
+        ratings_dict["ratings"]["id"] = response_json["agent_manifest"]["metadata"]["ratings_id"]
         updated_ratings_yaml = yaml.dump(ratings_dict)
         response = self.client.post("/ratings", content=updated_ratings_yaml, headers=headers)
         self.assertEqual(response.status_code, 200)

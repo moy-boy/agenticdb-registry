@@ -289,20 +289,13 @@ async def add_agent(request: Request, app_state: AppState = Depends(lambda: get_
         logging.error(f"Failed to read request body: {str(e)}")
         raise HTTPException(status_code=400, detail=f"Failed to read request body: {str(e)}")
 
-    try:
-        parsed_content = yaml.safe_load(yaml_content_str)
-        logging.info("YAML content parsed successfully")
-    except yaml.YAMLError as e:
-        logging.error(f"Invalid YAML content: {str(e)}")
-        raise HTTPException(status_code=400, detail=f"Invalid YAML content: {str(e)}")
-
     # Generate UUIDs for the agent and its ratings
     agent_id = str(uuid.uuid4())
     ratings_id = str(uuid.uuid4())
 
     try:
-        parsed_content['metadata']['id'] = agent_id
-        parsed_content['metadata']['ratings'] = ratings_id
+        parsed_yaml['metadata']['id'] = agent_id
+        parsed_yaml['metadata']['ratings_id'] = ratings_id
     except KeyError as e:
         logging.error(f"metadata not found in YAML content: {str(e)}")
         raise HTTPException(status_code=400, detail="Metadata not found in YAML content")
@@ -318,7 +311,7 @@ async def add_agent(request: Request, app_state: AppState = Depends(lambda: get_
     }
 
     # Convert the updated parsed content and ratings manifest back to YAML strings
-    agent_yaml_content_str = yaml.dump(parsed_content, sort_keys=False)
+    agent_yaml_content_str = yaml.dump(parsed_yaml, sort_keys=False)
     ratings_yaml_content_str = yaml.dump(ratings_manifest, sort_keys=False)
 
     # Split the YAML content into documents
@@ -349,7 +342,7 @@ async def add_agent(request: Request, app_state: AppState = Depends(lambda: get_
         raise HTTPException(status_code=500, detail="Failed to add documents to Chroma DB")
 
     return {
-        "agent_content": parsed_content,
+        "agent_manifest": parsed_yaml,
         "ratings_manifest": ratings_manifest
     }
 

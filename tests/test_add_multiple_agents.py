@@ -33,7 +33,7 @@ class TestAgentEndpoint(IsolatedAsyncioTestCase):
                 response = self.client.post("/agents", content=agent_yaml, headers=headers)
                 self.assertEqual(response.status_code, 200)
                 response_json = response.json()
-                required_keys = {"original_content", "parsed_content", "agent_id", "ratings_manifest", "ratings_id"}
+                required_keys = {"agent_manifest", "ratings_manifest"}
                 self.assertTrue(required_keys.issubset(response_json.keys()))
 
         query = "Which agents have a category of Customer Support?"

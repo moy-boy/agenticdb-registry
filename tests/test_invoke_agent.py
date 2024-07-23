@@ -24,24 +24,24 @@ class TestAgent(IsolatedAsyncioTestCase):
     def setUp(self):
         self.base_url = "http://127.0.0.1:8000"
         self.test_yaml = """
-        metadata:
-          name: financial-data-oracle
-          namespace: sandbox
-          description: |
-            Retrieves financial price data for a variety of tickers and timeframes.
-        spec:
-          type: agent
-          lifecycle: experimental
-          owner: buddy@example.com
-          access_level: PRIVATE
-          category: Natural Language
-          url: https://api.example.com/financial-data-oracle
-          input:
-            type: string
-            description: Input description for financial-data-oracle
-          output:
-            type: string
-            description: Output description for financial-data-oracle
+metadata:
+  name: financial-data-oracle
+  namespace: sandbox
+  description: |
+    Retrieves financial price data for a variety of tickers and timeframes.
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: buddy@example.com
+  access_level: PRIVATE
+  category: Natural Language
+  url: https://api.example.com/financial-data-oracle
+  input:
+    type: string
+    description: Input description for financial-data-oracle
+  output:
+    type: string
+    description: Output description for financial-data-oracle
         """
 
     def test_invoke_agent(self):
@@ -49,7 +49,7 @@ class TestAgent(IsolatedAsyncioTestCase):
         response = self.client.post("/agents", content=self.test_yaml, headers=headers)
         self.assertEqual(response.status_code, 200)
         response_json = response.json()
-        required_keys = {"original_content", "parsed_content", "agent_id", "ratings_manifest", "ratings_id"}
+        required_keys = {"agent_manifest", "ratings_manifest"}
         self.assertTrue(required_keys.issubset(response_json.keys()))
 
         # Define a local function to mock RemoteRunnable invoke method using TestClient

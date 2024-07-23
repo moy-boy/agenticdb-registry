@@ -24,24 +24,24 @@ class TestAgentEndpoint(IsolatedAsyncioTestCase):
 
     def setUp(self):
         self.test_yaml = """
-        metadata:
-          name: financial-data-oracle
-          namespace: sandbox
-          description: |
-            Retrieves financial price data for a variety of tickers and timeframes.
-        spec:
-          type: agent
-          lifecycle: experimental
-          owner: buddy@example.com
-          access_level: PRIVATE
-          category: Natural Language
-          url: https://api.example.com/financial-data-oracle
-          input:
-            type: string
-            description: Input description for financial-data-oracle
-          output:
-            type: string
-            description: Output description for financial-data-oracle
+metadata:
+  name: financial-data-oracle
+  namespace: sandbox
+  description: |
+    Retrieves financial price data for a variety of tickers and timeframes.
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: buddy@example.com
+  access_level: PRIVATE
+  category: Natural Language
+  url: https://api.example.com/financial-data-oracle
+  input:
+    type: string
+    description: Input description for financial-data-oracle
+  output:
+    type: string
+    description: Output description for financial-data-oracle
         """
 
     def test_post_yaml(self):
@@ -49,8 +49,11 @@ class TestAgentEndpoint(IsolatedAsyncioTestCase):
         response = self.client.post("/agents", content=self.test_yaml, headers=headers)
         self.assertEqual(200, response.status_code)
         response_json = response.json()
-        required_keys = {"original_content", "parsed_content", "agent_id", "ratings_manifest", "ratings_id"}
+        required_keys = {"agent_manifest", "ratings_manifest"}
         self.assertTrue(required_keys.issubset(response_json.keys()))
+        metadata = response_json["agent_manifest"]["metadata"]
+        required_metadata_keys = {"id", "ratings_id"}
+        self.assertTrue(required_metadata_keys.issubset(metadata.keys()))
         print(json.dumps(response_json, indent=2))
 
         query = "Which agents have a category of Natural Language?"
