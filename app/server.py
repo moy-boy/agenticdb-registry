@@ -139,6 +139,7 @@ def create_app():
     )
 
     app.mount("/static", StaticFiles(directory=static_directory), name="static")
+    add_handlers(app)
     app.include_router(ratings_router)
     app.include_router(agents_router)
 
