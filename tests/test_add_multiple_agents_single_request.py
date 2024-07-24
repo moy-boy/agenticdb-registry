@@ -9,28 +9,22 @@ from unittest import IsolatedAsyncioTestCase
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
-class TestAddMultipleAgents(IsolatedAsyncioTestCase):
+class TestAddMultipleAgentsSingleRequest(IsolatedAsyncioTestCase):
 
     @classmethod
     def setUpClass(cls):
-        # Create a TestClient instance
         cls.headers = {'Content-Type': 'application/x-yaml'}
 
     def test_post_yaml(self):
         with TestClient(create_app()) as c:
             with open("data/agents.yaml", "r") as file:
                 agents_yaml = file.read()
-                # Split the file content into individual YAML documents
-                agents = list(yaml.safe_load_all(agents_yaml))
-                for agent in agents:
-                    # Serialize each agent back to a YAML string
-                    agent_yaml = yaml.dump(agent)
-                    response = c.post("/agents", content=agent_yaml, headers=self.headers)
-                    self.assertEqual(response.status_code, 200)
-                    response_json = response.json()
-                    required_keys = {"agent_manifest", "ratings_manifest"}
-                    for response_agent in response_json:
-                        self.assertTrue(required_keys.issubset(response_agent.keys()))
+                response = c.post("/agents", content=agents_yaml, headers=self.headers)
+                self.assertEqual(response.status_code, 200)
+                response_json = response.json()
+                required_keys = {"agent_manifest", "ratings_manifest"}
+                for agent in response_json:
+                    self.assertTrue(required_keys.issubset(agent.keys()))
 
             query = "Which agents have a category of Customer Support?"
             response = c.get("/agents", params={"query": query})
