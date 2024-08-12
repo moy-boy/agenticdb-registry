@@ -34,9 +34,11 @@ async function submitAdd() {
         });
         const responseText = await response.json();
         if (response.ok) {
+            alert('Agent added successfully!');
             document.getElementById('add-response').value = JSON.stringify(responseText, null, 2);
         } else {
             alert('Failed to add agent: ' + JSON.stringify(responseText, null, 2));
+            document.getElementById('add-response').value = JSON.stringify(responseText, null, 2);
         }
     } catch (error) {
         alert('Error: ' + error.message);
@@ -59,13 +61,10 @@ async function submitSearch() {
         });
         const responseText = await response.json();
         if (response.ok) {
-            if (responseText.agents) {
-                document.getElementById('search-response').value = responseText.agents; // Display YAML directly
-            } else {
-                document.getElementById('search-response').value = JSON.stringify(responseText, null, 2);
-            }
+            document.getElementById('search-response').value = responseText.agents ? responseText.agents : JSON.stringify(responseText, null, 2);
         } else {
             alert('Search failed: ' + JSON.stringify(responseText, null, 2));
+            document.getElementById('search-response').value = JSON.stringify(responseText, null, 2);
         }
     } catch (error) {
         alert('Error: ' + error.message);
@@ -92,9 +91,11 @@ async function submitRate() {
         });
         const responseText = await response.json();
         if (response.ok) {
+            alert('Rating submitted successfully!');
             document.getElementById('rate-response').value = JSON.stringify(responseText, null, 2);
         } else {
             alert('Failed to submit rating: ' + JSON.stringify(responseText, null, 2));
+            document.getElementById('rate-response').value = JSON.stringify(responseText, null, 2);
         }
     } catch (error) {
         alert('Error: ' + error.message);
@@ -107,19 +108,14 @@ async function submitRate() {
 async function submitInvoke() {
     let content = document.getElementById('invoke-textbox').value;
     document.getElementById('invoke-response').value = ''; // Clear response area
-    if (!content) {
-        content = document.getElementById('invoke-textbox').placeholder;
-    }
 
-    // Construct the JSON object with the input topic
-    const payload = {
-        'input': {
-            'topic': content
-        }
-    };
-    showLoadingSpinner();
     try {
-        const response = await fetch('/joke/invoke', {
+        const jsonContent = JSON.parse(content);
+        const url = jsonContent.url;
+        const payload = { input: jsonContent.input };
+        showLoadingSpinner();
+
+        const response = await fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -128,7 +124,7 @@ async function submitInvoke() {
         });
         const responseText = await response.json();
         if (response.ok) {
-            document.getElementById('invoke-response').value = responseText.output.content;
+            document.getElementById('invoke-response').value = responseText.output.result.output;
         } else {
             alert('Failed to invoke: ' + JSON.stringify(responseText, null, 2));
             document.getElementById('invoke-response').value = JSON.stringify(responseText, null, 2);

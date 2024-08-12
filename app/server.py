@@ -13,6 +13,7 @@ from pydantic import BaseModel, field_validator
 
 from langchain_chroma import Chroma
 from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables import RunnableLambda
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langserve import add_routes
@@ -69,7 +70,7 @@ class YAMLContent(BaseModel):
             raise ValueError(f"Invalid YAML content: {str(e)}")
 
 
-def add_agent_routes(fast_app: FastAPI):
+def add_joke_agent_route(fast_app: FastAPI):
     chat_model = ChatOpenAI(model=os.getenv("OPENAI_MODEL_NAME")),
     chat_prompt = ChatPromptTemplate.from_template("tell me a joke about {topic}")
     add_routes(
@@ -79,11 +80,32 @@ def add_agent_routes(fast_app: FastAPI):
     )
 
 
+def cascade_invoke(input_data: Any = "what is 3 + 4?") -> Any:
+    import requests
+    # inspect the sample inference data and update with your own fields
+    sample = dict()
+    sample["input"] = input_data
+    headers = {"Authorization": "Bearer " + os.getenv("CASCADE_TOKEN")}
+    # invoke the agent
+    url = os.getenv("CASCADE_AGENT_URL")
+    response = requests.post(url, headers=headers, json=sample)
+    return response.json()
+
+
+def add_cascade_agent_route(fast_app: FastAPI):
+    add_routes(
+        app=fast_app,
+        runnable=RunnableLambda(cascade_invoke),
+        path="/cascade",
+    )
+
+
 @asynccontextmanager
 async def lifespan(fast_app: FastAPI):
     try:
         load_env_file()
-        add_agent_routes(fast_app)
+        add_joke_agent_route(fast_app)
+        add_cascade_agent_route(fast_app)
         routes = [route.path for route in fast_app.router.routes]
         logging.info(f"Available routes: {routes}")
 
@@ -108,12 +130,13 @@ async def lifespan(fast_app: FastAPI):
 
 
 # Configure logging
-logging.basicConfig(level=logging.ERROR, format="%(asctime)s - %(levelname)s - %(message)s")
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 # Determine the absolute path to the 'static' directory
 current_file_path = os.path.abspath(__file__)
 current_dir = os.path.dirname(current_file_path)
 static_directory = os.path.join(current_dir, '..', 'static')
+
 
 # Serve the static files
 
@@ -148,7 +171,8 @@ def create_app():
 
 if __name__ == "__main__":
     import uvicorn
+
     app = create_app()
     logging.info("Starting Agentic DB API...")
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="localhost", port=8000)
     logging.info("Application shutdown")
