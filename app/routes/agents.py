@@ -9,6 +9,8 @@ from fastapi import Depends, HTTPException, APIRouter
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from app.state import AppState, get_app_state
+from accept_type import ResponseType
+
 
 router = APIRouter()
 
@@ -124,10 +126,29 @@ async def add_agent(request: Request, app_state: AppState = Depends(get_app_stat
 
 
 @router.get("/agents")
-async def get_agents(query: str, app_state: AppState = Depends(get_app_state)):
+async def get_agents(query: str, request: Request, app_state: AppState = Depends(get_app_state)):
     if app_state.agents_db is None or app_state.ratings_db is None:
         logging.error("Chroma DB not initialized")
         raise HTTPException(status_code=500, detail="Chroma DB not initialized")
+    
+    try:
+        accept_header = request.headers.get('Accept')
+
+        if accept_header == "application/json":
+            accept_type = ResponseType.JSON
+            logging.info("Request for JSON response received")
+        elif accept_header == "application/x-yaml" or accept_header == "text/yaml":
+            accept_type = ResponseType.YAML
+            logging.info("Request for JSON response received")
+        else:
+            logging.error("Unsupported Content-Type")
+            raise HTTPException(status_code=415, detail="Unsupported Content-Type")
+
+    except HTTPException as http_exc:
+        raise http_exc
+    except Exception as e:
+        logging.error(f"Failed to get HTTP headers: {str(e)}")
+        raise HTTPException(status_code=400, detail=f"Failed to get HTTP headers: {str(e)}")    
 
     try:
         results = app_state.agents_db.query(query_texts=[query])
@@ -139,37 +160,39 @@ async def get_agents(query: str, app_state: AppState = Depends(get_app_state)):
         logging.error(f"Failed to execute similarity search query for agents: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to execute similarity search query for agents")
 
-    concatenated_yaml = "---\n"
-    for result in results["documents"]:
-        if len(result) == 0:
-            continue
-        agent_content = result[0].strip()
-        agent_data = yaml.safe_load(agent_content)
-        ratings_id = agent_data['metadata'].get('ratings_id')
+    if accept_type == ResponseType.YAML:
 
-        try:
-            ratings_results = app_state.ratings_db.get(ids=[f"{ratings_id}"])
-            if len(ratings_results["documents"]) == 0:
-                logging.error(f"Ratings ID not found in Chroma DB: {ratings_id}")
-                raise HTTPException(status_code=404, detail="Ratings ID not found in Chroma DB")
-            logging.info(f"Similarity search query executed successfully for ratings with ID: {ratings_id}")
-        except HTTPException as http_exc:
-            # Catch explicitly raised HTTPException and re-raise
-            raise http_exc
-        except Exception as e:
-            logging.error(f"Failed to execute search query for ratings: {str(e)}")
-            raise HTTPException(status_code=500, detail="Failed to execute search query for ratings")
+        concatenated_yaml = "---\n"
+        for result in results["documents"]:
+            if len(result) == 0:
+                continue
+            agent_content = result[0].strip()
+            agent_data = yaml.safe_load(agent_content)
+            ratings_id = agent_data['metadata'].get('ratings_id')
 
-        if ratings_results:
-            ratings_str = ratings_results["documents"][0]
-            ratings_dict = yaml.safe_load(ratings_str)
-            agent_data['ratings'] = ratings_dict
+            try:
+                ratings_results = app_state.ratings_db.get(ids=[f"{ratings_id}"])
+                if len(ratings_results["documents"]) == 0:
+                    logging.error(f"Ratings ID not found in Chroma DB: {ratings_id}")
+                    raise HTTPException(status_code=404, detail="Ratings ID not found in Chroma DB")
+                logging.info(f"Similarity search query executed successfully for ratings with ID: {ratings_id}")
+            except HTTPException as http_exc:
+                # Catch explicitly raised HTTPException and re-raise
+                raise http_exc
+            except Exception as e:
+                logging.error(f"Failed to execute search query for ratings: {str(e)}")
+                raise HTTPException(status_code=500, detail="Failed to execute search query for ratings")
 
-        agent_yaml_content_str = yaml.dump(agent_data, sort_keys=False)
-        concatenated_yaml += agent_yaml_content_str + "\n---\n"
+            if ratings_results:
+                ratings_str = ratings_results["documents"][0]
+                ratings_dict = yaml.safe_load(ratings_str)
+                agent_data['ratings'] = ratings_dict
 
-    # Remove the last separator if it exists
-    if concatenated_yaml.endswith("\n---\n"):
-        concatenated_yaml = concatenated_yaml[:-5]
+            agent_yaml_content_str = yaml.dump(agent_data, sort_keys=False)
+            concatenated_yaml += agent_yaml_content_str + "\n---\n"
 
-    return JSONResponse(content={"agents": concatenated_yaml.strip()})
+        # Remove the last separator if it exists
+        if concatenated_yaml.endswith("\n---\n"):
+            concatenated_yaml = concatenated_yaml[:-5]
+
+        return JSONResponse(content={"agents": concatenated_yaml.strip()})

@@ -16,7 +16,7 @@ from chromadb.utils.embedding_functions import OpenAIEmbeddingFunction
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnableLambda
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain_openai import ChatOpenAI
 from langserve import add_routes
 
 from app.routes.agents import router as agents_router
