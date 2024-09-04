@@ -15,7 +15,8 @@ class TestAddAgent(IsolatedAsyncioTestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.headers = {'Content-Type': 'application/x-yaml'}
+        cls.post_headers = {'Content-Type': 'application/x-yaml'}
+        cls.get_headers = {'Accept': 'application/x-yaml'}
 
     def setUp(self):
         self.test_yaml = """
@@ -56,7 +57,7 @@ spec:
 
     def test_post_yaml(self):
         with TestClient(create_app()) as c:
-            response = c.post("/agents", content=self.test_yaml, headers=self.headers)
+            response = c.post("/agents", content=self.test_yaml, headers=self.post_headers)
             self.assertEqual(200, response.status_code)
             response_json = response.json()
             required_keys = {"agent_manifest", "ratings_manifest"}
@@ -68,12 +69,10 @@ spec:
                 print(json.dumps(response_json, indent=2))
 
             query = "Which agents have a category of Natural Language?"
-            response = c.get("/agents", params={"query": query})
+            response = c.get("/agents", params={"query": query}, headers=self.get_headers)
             self.assertEqual(200, response.status_code)
-            response_json = response.json()
-            agents_yaml = response_json["agents"]
             try:
-                agents = list(yaml.safe_load_all(agents_yaml))
+                agents = list(yaml.safe_load_all(response.content))
                 for agent in agents:
                     required_keys = {"metadata", "ratings", "spec"}
                     self.assertTrue(required_keys.issubset(agent.keys()))

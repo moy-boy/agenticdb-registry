@@ -10,6 +10,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 from app.state import AppState, get_app_state
 from app.routes.accept_type import AcceptType
+from fastapi.responses import Response
 
 
 router = APIRouter()
@@ -151,7 +152,7 @@ async def get_agents(query: str, request: Request, app_state: AppState = Depends
         raise HTTPException(status_code=400, detail=f"Failed to get HTTP headers: {str(e)}")    
 
     try:
-        results = app_state.agents_db.query(query_texts=[query])
+        results = app_state.agents_db.query(query_texts=[query], n_results=10)
         logging.info("Similarity search query executed successfully for agents")
     except HTTPException as http_exc:
         # Handle HTTPException separately
@@ -163,11 +164,9 @@ async def get_agents(query: str, request: Request, app_state: AppState = Depends
     if accept_type == AcceptType.YAML:
 
         concatenated_yaml = "---\n"
-        for result in results["documents"]:
-            if len(result) == 0:
-                continue
-            agent_content = result[0].strip()
-            agent_data = yaml.safe_load(agent_content)
+        agents = results["documents"][0]
+        for agent in agents:
+            agent_data = yaml.safe_load(agent)
             ratings_id = agent_data['metadata'].get('ratings_id')
 
             try:
@@ -184,9 +183,8 @@ async def get_agents(query: str, request: Request, app_state: AppState = Depends
                 raise HTTPException(status_code=500, detail="Failed to execute search query for ratings")
 
             if ratings_results:
-                ratings_str = ratings_results["documents"][0]
-                ratings_dict = yaml.safe_load(ratings_str)
-                agent_data['ratings'] = ratings_dict
+                ratings_str = ratings_results["documents"][0] 
+                agent_data['ratings'] = yaml.safe_load(ratings_str)
 
             agent_yaml_content_str = yaml.dump(agent_data, sort_keys=False)
             concatenated_yaml += agent_yaml_content_str + "\n---\n"
@@ -195,7 +193,8 @@ async def get_agents(query: str, request: Request, app_state: AppState = Depends
         if concatenated_yaml.endswith("\n---\n"):
             concatenated_yaml = concatenated_yaml[:-5]
 
-        return JSONResponse(content={"agents": concatenated_yaml.strip()})
+        return Response(content=concatenated_yaml.strip(), media_type="application/x-yaml")
+        # return JSONResponse(content={"agents": concatenated_yaml.strip()})
 
     if accept_type == AcceptType.JSON:
         json_object = []
@@ -225,5 +224,5 @@ async def get_agents(query: str, request: Request, app_state: AppState = Depends
 
             json_object.append(agent_data)
 
-        return JSONResponse(content={"agents": json_object})
+        return JSONResponse(content=json_object)
 

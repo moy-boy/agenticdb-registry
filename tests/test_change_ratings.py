@@ -16,7 +16,8 @@ class TestChangeRatings(IsolatedAsyncioTestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.headers = {'Content-Type': 'application/x-yaml'}
+        cls.post_headers = {'Content-Type': 'application/x-yaml'}
+        cls.get_headers = {'Accept': 'application/x-yaml'}
 
     def setUp(self):
         self.base_url = "http://127.0.0.1:8000"
@@ -65,7 +66,7 @@ spec:
 
     def test_change_ratings(self):
         with TestClient(create_app()) as c:
-            response = c.post("/agents", content=self.test_agent_yaml, headers=self.headers)
+            response = c.post("/agents", content=self.test_agent_yaml, headers=self.post_headers)
             self.assertEqual(200, response.status_code)
             response_json = response.json()
             required_keys = {"agent_manifest", "ratings_manifest"}
@@ -75,11 +76,11 @@ spec:
                 ratings_dict["ratings"]["agent_id"] = agent["agent_manifest"]["metadata"]["id"]
                 ratings_dict["ratings"]["id"] = agent["agent_manifest"]["metadata"]["ratings_id"]
                 updated_ratings_yaml = yaml.dump(ratings_dict)
-                response = c.post("/ratings", content=updated_ratings_yaml, headers=self.headers)
+                response = c.post("/ratings", content=updated_ratings_yaml, headers=self.post_headers)
                 self.assertEqual(response.status_code, 200)
                 response_json = response.json()
                 self.assertEqual(ratings_dict["ratings"]["data"]["score"], response_json["ratings"]["data"]["score"])
-                response = c.get("/ratings", params={"ratings_id": ratings_dict["ratings"]["id"]})
+                response = c.get("/ratings", params={"ratings_id": ratings_dict["ratings"]["id"]}, headers=self.get_headers)
                 self.assertEqual(200, response.status_code)
                 response_json = response.json()
                 self.assertEqual(ratings_dict["ratings"]["data"]["score"], response_json["data"]["score"])

@@ -70,9 +70,8 @@ class TestAddAgent(IsolatedAsyncioTestCase):
 }
         """
 
-    def test_post_yaml(self):
+    def test_post_json(self):
         with TestClient(create_app()) as c:
-            # Parse the YAML string
             print(self.test_json)
             json_data = json.loads(self.test_json)
             response = c.post("/agents", json=json_data, headers=self.post_headers)
@@ -90,8 +89,7 @@ class TestAddAgent(IsolatedAsyncioTestCase):
             response = c.get("/agents", params={"query": query}, headers=self.get_headers)
             self.assertEqual(200, response.status_code)
             try:
-                response_json = response.json()
-                agents_json = response_json["agents"]
+                agents_json = response.json()
                 for agent in agents_json:
                     required_keys = {"metadata", "ratings", "spec"}
                     self.assertTrue(required_keys.issubset(agent.keys()))
