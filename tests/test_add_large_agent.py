@@ -20,38 +20,44 @@ class TestAddAgent(IsolatedAsyncioTestCase):
     def setUp(self):
         self.test_yaml = """
 metadata:
-  name: financial-data-oracle
-  namespace: sandbox
+  name: agent-2
+  namespace: production
   description: |
-    Retrieves financial price data for a variety of tickers and timeframes.
+    Description for agent-2
 spec:
   type: agent
-  lifecycle: experimental
-  owner: buddy@example.com
-  access_level: PRIVATE
-  category: Natural Language
-  url: https://api.example.com/financial-data-oracle
+  lifecycle: stable
+  owner: owner2@company.com
+  access_level: PUBLIC
+  category: Customer Support
+  url: https://api.company.com/agent-2
   parameters:
     type: object
     properties:
+      flight_number:
+        type: boolean
+        description: "Type of issue reported"
+      issue_type:
+        type: string
+        description: "Ticker symbol for financial data"
+      departure_time:
+        type: float
+        description: "Material of the product"
+      product_id:
+        type: string
+        description: "Ticker symbol for financial data"
       symbol:
-        type: string
-        description: ticker symbol
-      date:
-        type: string
-        description: A specific date in the format yyyy-mm-dd
-      currency:
-        type: string
-        enum:
-          - USD
-          - JPY
-        description: "the currency of the desired output value"
+        type: float
+        description: "Check-out date from the hotel"
     required:
+      - issue_type
+      - departure_time
+      - product_id
       - symbol
     additionalProperties: false
   output:
-    type: float
-    description: Output description for financial-data-oracle
+    type: string
+    description: ID of the created resource
         """
 
     def test_post_yaml(self):
@@ -67,7 +73,7 @@ spec:
                 self.assertTrue(required_metadata_keys.issubset(metadata.keys()))
                 print(json.dumps(response_json, indent=2))
 
-            query = "Which agents have a category of Natural Language?"
+            query = "Which agents have a category of Customer Support?"
             response = c.get("/agents", params={"query": query})
             self.assertEqual(200, response.status_code)
             response_json = response.json()

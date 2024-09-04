@@ -1,6 +1,7 @@
 import unittest
 import yaml
 import warnings
+from pathlib import Path
 from fastapi.testclient import TestClient
 from app.server import create_app
 from unittest import IsolatedAsyncioTestCase
@@ -14,10 +15,15 @@ class TestAddMultipleAgentsSingleRequest(IsolatedAsyncioTestCase):
     @classmethod
     def setUpClass(cls):
         cls.headers = {'Content-Type': 'application/x-yaml'}
+        # Get the absolute path to the current script's directory
+        script_dir = Path(__file__).resolve().parent
+
+        # Define the relative path to your file within the 'data' folder
+        cls.agent_test_file = script_dir / 'data' / 'agents.yaml'        
 
     def test_post_yaml(self):
         with TestClient(create_app()) as c:
-            with open("data/agents.yaml", "r") as file:
+            with open(self.agent_test_file, "r") as file:
                 agents_yaml = file.read()
                 response = c.post("/agents", content=agents_yaml, headers=self.headers)
                 self.assertEqual(response.status_code, 200)

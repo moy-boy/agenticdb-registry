@@ -1,11 +1,10 @@
 
 ---
 metadata:
-  id: 1a885acd-a986-4599-aaf2-8a56ffe15955
   name: agent-1
   namespace: sandbox
   description: |
-    Retrieves financial price data for a variety of tickers and timeframes.
+    Description for agent-1
 spec:
   type: agent
   lifecycle: experimental
@@ -13,21 +12,35 @@ spec:
   access_level: PRIVATE
   category: Finance
   url: https://api.example.com/agent-1
-  input:
-    type: string
-    description: Input description for agent-1
+  parameters:
+    type: object
+    properties:
+      currency:
+        type: float
+        description: "The currency of the transaction"
+      customer_name:
+        type: float
+        description: "Flight number for the airline"
+      support_ticket_id:
+        type: boolean
+        description: "Color of the item"
+      date:
+        type: boolean
+        description: "The seat number for the passenger"
+    required:
+      - customer_name
+    additionalProperties: false
   output:
-    type: integer
-    description: Output description for agent-1
+    type: boolean
+    description: Summary of the processed information
 
 
 ---
 metadata:
-  id: 2a80e794-f5d5-4eb2-86b9-2d67ab314e22
   name: agent-2
   namespace: production
   description: |
-    Assists customers with their queries and issues in real-time.
+    Description for agent-2
 spec:
   type: agent
   lifecycle: stable
@@ -35,21 +48,41 @@ spec:
   access_level: PUBLIC
   category: Customer Support
   url: https://api.company.com/agent-2
-  input:
-    type: integer
-    description: Input description for agent-2
+  parameters:
+    type: object
+    properties:
+      flight_number:
+        type: boolean
+        description: "Type of issue reported"
+      issue_type:
+        type: string
+        description: "Ticker symbol for financial data"
+      departure_time:
+        type: float
+        description: "Material of the product"
+      product_id:
+        type: string
+        description: "Ticker symbol for financial data"
+      symbol:
+        type: float
+        description: "Check-out date from the hotel"
+    required:
+      - issue_type
+      - departure_time
+      - product_id
+      - symbol
+    additionalProperties: false
   output:
-    type: boolean
-    description: Output description for agent-2
+    type: string
+    description: ID of the created resource
 
 
 ---
 metadata:
-  id: 9229ca87-b3ef-423c-9a3d-393be41c998c
   name: agent-3
   namespace: sandbox
   description: |
-    Provides accurate and timely weather forecasts for various regions.
+    Description for agent-3
 spec:
   type: agent
   lifecycle: experimental
@@ -57,21 +90,29 @@ spec:
   access_level: PRIVATE
   category: Weather
   url: https://api.service.com/agent-3
-  input:
-    type: boolean
-    description: Input description for agent-3
-  output:
+  parameters:
     type: object
-    description: Output description for agent-3
+    properties:
+      support_ticket_id:
+        type: string
+        description: "Tracking number for the shipment"
+      arrival_time:
+        type: float
+        description: "The hotel name for the booking"
+    required:
+      - arrival_time
+    additionalProperties: false
+  output:
+    type: boolean
+    description: Output value for the requested data
 
 
 ---
 metadata:
-  id: 567a8c7e-3c3d-4afe-bc19-4f677723c17d
   name: agent-4
   namespace: production
   description: |
-    Automates stock trading based on market analysis and trends.
+    Description for agent-4
 spec:
   type: agent
   lifecycle: stable
@@ -79,21 +120,35 @@ spec:
   access_level: PUBLIC
   category: Health
   url: https://api.platform.com/agent-4
-  input:
+  parameters:
     type: object
-    description: Input description for agent-4
+    properties:
+      user_id:
+        type: boolean
+        description: "The timestamp of the event"
+      material:
+        type: float
+        description: "Tracking number for the shipment"
+      date:
+        type: boolean
+        description: "Tracking number for the shipment"
+      timestamp:
+        type: string
+        description: "The timestamp of the event"
+    required:
+      - user_id
+    additionalProperties: false
   output:
-    type: array
-    description: Output description for agent-4
+    type: boolean
+    description: ID of the created resource
 
 
 ---
 metadata:
-  id: 18b1338a-4850-4826-8bb8-c3a178aeb08d
   name: agent-5
   namespace: sandbox
   description: |
-    Monitors health metrics and provides insights for better health management.
+    Description for agent-5
 spec:
   type: agent
   lifecycle: experimental
@@ -101,1000 +156,1631 @@ spec:
   access_level: PRIVATE
   category: E-commerce
   url: https://api.business.com/agent-5
-  input:
-    type: array
-    description: Input description for agent-5
+  parameters:
+    type: object
+    properties:
+      destination:
+        type: string
+        description: "Check-in date at the hotel"
+      date:
+        type: boolean
+        description: "Tracking number for the shipment"
+      support_ticket_id:
+        type: string
+        description: "Support ticket ID for the issue"
+      delivery_date:
+        type: string
+        description: "Flight number for the airline"
+    required:
+      - support_ticket_id
+    additionalProperties: false
   output:
-    type: string
-    description: Output description for agent-5
+    type: integer
+    description: ID of the created resource
 
 
 ---
 metadata:
-  id: d0ed382a-651e-49d0-bf80-e469d52ada3e
   name: agent-6
-  namespace: sandbox
+  namespace: production
   description: |
     Description for agent-6
 spec:
   type: agent
-  lifecycle: experimental
+  lifecycle: stable
   owner: owner6@example.com
-  access_level: PRIVATE
-  category: Finance
+  access_level: PUBLIC
+  category: Education
   url: https://api.example.com/agent-6
-  input:
-    type: string
-    description: Input description for agent-6
+  parameters:
+    type: object
+    properties:
+      delivery_date:
+        type: integer
+        description: "Check-out date from the hotel"
+      room_type:
+        type: integer
+        description: "Type of issue reported"
+    required:
+      - delivery_date
+      - room_type
+    additionalProperties: false
   output:
-    type: integer
-    description: Output description for agent-6
+    type: string
+    description: Output value for the requested data
 
 
 ---
 metadata:
-  id: d5c0e15f-d4d7-486d-8c0f-3f852ec335d6
   name: agent-7
-  namespace: production
+  namespace: sandbox
   description: |
     Description for agent-7
 spec:
   type: agent
-  lifecycle: stable
+  lifecycle: experimental
   owner: owner7@company.com
-  access_level: PUBLIC
-  category: Customer Support
+  access_level: PRIVATE
+  category: Technology
   url: https://api.company.com/agent-7
-  input:
-    type: integer
-    description: Input description for agent-7
+  parameters:
+    type: object
+    properties:
+      support_ticket_id:
+        type: boolean
+        description: "Flight number for the airline"
+      flight_number:
+        type: float
+        description: "Status of the issue resolution"
+      tracking_number:
+        type: string
+        description: "The product ID for the item"
+      issue_type:
+        type: boolean
+        description: "The hotel name for the booking"
+    required:
+      - support_ticket_id
+      - tracking_number
+    additionalProperties: false
   output:
-    type: boolean
-    description: Output description for agent-7
+    type: float
+    description: Boolean flag indicating success or failure
 
 
 ---
 metadata:
-  id: 54f70b44-1088-4fc4-8569-a9183e32eb18
   name: agent-8
-  namespace: sandbox
+  namespace: production
   description: |
     Description for agent-8
 spec:
   type: agent
-  lifecycle: experimental
+  lifecycle: stable
   owner: owner8@service.com
-  access_level: PRIVATE
-  category: Weather
+  access_level: PUBLIC
+  category: Transport
   url: https://api.service.com/agent-8
-  input:
-    type: boolean
-    description: Input description for agent-8
-  output:
+  parameters:
     type: object
-    description: Output description for agent-8
+    properties:
+      date:
+        type: integer
+        description: "The currency of the transaction"
+      location:
+        type: string
+        description: "The currency of the transaction"
+      check_out_date:
+        type: integer
+        description: "The hotel name for the booking"
+      timestamp:
+        type: integer
+        description: "A specific date in the format yyyy-mm-dd"
+      customer_name:
+        type: boolean
+        description: "Arrival time at the destination"
+    required:
+      - date
+      - customer_name
+    additionalProperties: false
+  output:
+    type: integer
+    description: Status of the operation
 
 
 ---
 metadata:
-  id: fcb0939d-0f15-4d4b-a981-906fe189ecfa
   name: agent-9
-  namespace: production
+  namespace: sandbox
   description: |
     Description for agent-9
 spec:
   type: agent
-  lifecycle: stable
+  lifecycle: experimental
   owner: owner9@platform.com
-  access_level: PUBLIC
-  category: Health
+  access_level: PRIVATE
+  category: Media
   url: https://api.platform.com/agent-9
-  input:
+  parameters:
     type: object
-    description: Input description for agent-9
+    properties:
+      resolution_status:
+        type: integer
+        description: "Type of issue reported"
+      currency:
+        type: float
+        description: "The product ID for the item"
+      order_id:
+        type: float
+        description: "Departure time for the journey"
+      language:
+        type: boolean
+        description: "Name of the customer"
+    required:
+      - resolution_status
+      - currency
+      - language
+    additionalProperties: false
   output:
-    type: array
-    description: Output description for agent-9
+    type: string
+    description: Summary of the processed information
 
 
 ---
 metadata:
-  id: 9b2b0b93-09ab-46e6-8cd3-9f981fc2ce42
   name: agent-10
-  namespace: sandbox
+  namespace: production
   description: |
     Description for agent-10
 spec:
   type: agent
-  lifecycle: experimental
+  lifecycle: stable
   owner: owner10@business.com
-  access_level: PRIVATE
-  category: E-commerce
+  access_level: PUBLIC
+  category: Sports
   url: https://api.business.com/agent-10
-  input:
-    type: array
-    description: Input description for agent-10
+  parameters:
+    type: object
+    properties:
+      transaction_id:
+        type: float
+        description: "The amount for the transaction"
+      support_ticket_id:
+        type: float
+        description: "The currency of the transaction"
+      color:
+        type: float
+        description: "Size of the clothing item"
+    required:
+      - support_ticket_id
+    additionalProperties: false
   output:
-    type: string
-    description: Output description for agent-10
+    type: integer
+    description: Boolean flag indicating success or failure
 
 
 ---
 metadata:
-  id: 60b098ec-daa7-4447-91cf-34ea69627896
   name: agent-11
-  namespace: production
+  namespace: sandbox
   description: |
     Description for agent-11
 spec:
   type: agent
-  lifecycle: stable
+  lifecycle: experimental
   owner: owner11@example.com
-  access_level: PUBLIC
-  category: Education
+  access_level: PRIVATE
+  category: Travel
   url: https://api.example.com/agent-11
-  input:
-    type: string
-    description: Input description for agent-11
+  parameters:
+    type: object
+    properties:
+      material:
+        type: boolean
+        description: "Ticker symbol for financial data"
+      issue_type:
+        type: float
+        description: "The language code for the content"
+    required:
+      - material
+      - issue_type
+    additionalProperties: false
   output:
-    type: integer
-    description: Output description for agent-11
+    type: float
+    description: Summary of the processed information
 
 
 ---
 metadata:
-  id: 044ed783-0da7-4367-a95c-b04ed20f6373
   name: agent-12
-  namespace: sandbox
+  namespace: production
   description: |
     Description for agent-12
 spec:
   type: agent
-  lifecycle: experimental
+  lifecycle: stable
   owner: owner12@company.com
-  access_level: PRIVATE
-  category: Technology
+  access_level: PUBLIC
+  category: Clothing
   url: https://api.company.com/agent-12
-  input:
-    type: integer
-    description: Input description for agent-12
+  parameters:
+    type: object
+    properties:
+      arrival_time:
+        type: boolean
+        description: "Flight number for the airline"
+      seat_number:
+        type: float
+        description: "The amount for the transaction"
+      flight_number:
+        type: float
+        description: "Ticker symbol for financial data"
+    required:
+      - arrival_time
+      - seat_number
+      - flight_number
+    additionalProperties: false
   output:
-    type: boolean
-    description: Output description for agent-12
+    type: string
+    description: Summary of the processed information
 
 
 ---
 metadata:
-  id: e6e3094f-7b6f-46e9-89ab-9bf9152f28b0
   name: agent-13
-  namespace: production
+  namespace: sandbox
   description: |
     Description for agent-13
 spec:
   type: agent
-  lifecycle: stable
+  lifecycle: experimental
   owner: owner13@service.com
-  access_level: PUBLIC
-  category: Transport
+  access_level: PRIVATE
+  category: Logistics
   url: https://api.service.com/agent-13
-  input:
-    type: boolean
-    description: Input description for agent-13
-  output:
+  parameters:
     type: object
-    description: Output description for agent-13
+    properties:
+      issue_type:
+        type: string
+        description: "Ticker symbol for financial data"
+      check_in_date:
+        type: integer
+        description: "Ticker symbol for financial data"
+      transaction_id:
+        type: integer
+        description: "The seat number for the passenger"
+      location:
+        type: integer
+        description: "Flight number for the airline"
+      amount:
+        type: string
+        description: "Material of the product"
+    required:
+      - issue_type
+      - location
+    additionalProperties: false
+  output:
+    type: float
+    description: Output value for the requested data
 
 
 ---
 metadata:
-  id: 56c39ac9-cce2-45fa-98fa-5b2ad1a86c5a
   name: agent-14
-  namespace: sandbox
+  namespace: production
   description: |
     Description for agent-14
 spec:
   type: agent
-  lifecycle: experimental
+  lifecycle: stable
   owner: owner14@platform.com
-  access_level: PRIVATE
-  category: Media
+  access_level: PUBLIC
+  category: Finance
   url: https://api.platform.com/agent-14
-  input:
+  parameters:
     type: object
-    description: Input description for agent-14
+    properties:
+      currency:
+        type: string
+        description: "The user ID for the customer"
+      room_type:
+        type: float
+        description: "Status of the issue resolution"
+      color:
+        type: string
+        description: "Check-out date from the hotel"
+      location:
+        type: boolean
+        description: "Type of issue reported"
+      user_id:
+        type: boolean
+        description: "Ticker symbol for financial data"
+    required:
+      - room_type
+      - location
+    additionalProperties: false
   output:
-    type: array
-    description: Output description for agent-14
+    type: boolean
+    description: Output value for the requested data
 
 
 ---
 metadata:
-  id: 7d06e943-11c0-4d4b-9c40-90b55a9c43e5
   name: agent-15
-  namespace: production
+  namespace: sandbox
   description: |
     Description for agent-15
 spec:
   type: agent
-  lifecycle: stable
+  lifecycle: experimental
   owner: owner15@business.com
-  access_level: PUBLIC
-  category: Sports
+  access_level: PRIVATE
+  category: Customer Support
   url: https://api.business.com/agent-15
-  input:
-    type: array
-    description: Input description for agent-15
+  parameters:
+    type: object
+    properties:
+      seat_number:
+        type: integer
+        description: "Ticker symbol for financial data"
+      order_id:
+        type: integer
+        description: "Support ticket ID for the issue"
+      language:
+        type: string
+        description: "The product ID for the item"
+      support_ticket_id:
+        type: float
+        description: "Color of the item"
+    required:
+      - seat_number
+      - order_id
+      - support_ticket_id
+    additionalProperties: false
   output:
-    type: string
-    description: Output description for agent-15
+    type: boolean
+    description: Status of the operation
 
 
 ---
 metadata:
-  id: ba3dfecd-e129-4df2-ab50-d995c0eeee2d
   name: agent-16
-  namespace: sandbox
+  namespace: production
   description: |
     Description for agent-16
 spec:
   type: agent
-  lifecycle: experimental
+  lifecycle: stable
   owner: owner16@example.com
-  access_level: PRIVATE
-  category: Finance
+  access_level: PUBLIC
+  category: Weather
   url: https://api.example.com/agent-16
-  input:
-    type: string
-    description: Input description for agent-16
+  parameters:
+    type: object
+    properties:
+      date:
+        type: string
+        description: "The language code for the content"
+      destination:
+        type: string
+        description: "Flight number for the airline"
+      transaction_id:
+        type: boolean
+        description: "Departure time for the journey"
+      support_ticket_id:
+        type: boolean
+        description: "The product ID for the item"
+      resolution_status:
+        type: boolean
+        description: "Size of the clothing item"
+    required:
+      - destination
+      - transaction_id
+      - support_ticket_id
+    additionalProperties: false
   output:
-    type: integer
-    description: Output description for agent-16
+    type: boolean
+    description: Boolean flag indicating success or failure
 
 
 ---
 metadata:
-  id: 9427156a-90fc-46c7-a140-72f06b9fb83b
   name: agent-17
-  namespace: production
+  namespace: sandbox
   description: |
     Description for agent-17
 spec:
   type: agent
-  lifecycle: stable
+  lifecycle: experimental
   owner: owner17@company.com
-  access_level: PUBLIC
-  category: Customer Support
+  access_level: PRIVATE
+  category: Health
   url: https://api.company.com/agent-17
-  input:
-    type: integer
-    description: Input description for agent-17
+  parameters:
+    type: object
+    properties:
+      clothing_size:
+        type: boolean
+        description: "Support ticket ID for the issue"
+      location:
+        type: boolean
+        description: "The timestamp of the event"
+    required:
+      - 
+    additionalProperties: false
   output:
     type: boolean
-    description: Output description for agent-17
+    description: ID of the created resource
 
 
 ---
 metadata:
-  id: b6859ac1-85dd-404e-b008-a865a6b0e0b5
   name: agent-18
-  namespace: sandbox
+  namespace: production
   description: |
     Description for agent-18
 spec:
   type: agent
-  lifecycle: experimental
+  lifecycle: stable
   owner: owner18@service.com
-  access_level: PRIVATE
-  category: Weather
+  access_level: PUBLIC
+  category: E-commerce
   url: https://api.service.com/agent-18
-  input:
-    type: boolean
-    description: Input description for agent-18
-  output:
+  parameters:
     type: object
-    description: Output description for agent-18
+    properties:
+      check_out_date:
+        type: boolean
+        description: "The user ID for the customer"
+      delivery_date:
+        type: string
+        description: "The location of the event"
+      room_type:
+        type: boolean
+        description: "Check-out date from the hotel"
+      symbol:
+        type: boolean
+        description: "Color of the item"
+      resolution_status:
+        type: float
+        description: "Expected delivery date"
+    required:
+      - check_out_date
+      - delivery_date
+      - symbol
+      - resolution_status
+    additionalProperties: false
+  output:
+    type: float
+    description: Result of the operation
 
 
 ---
 metadata:
-  id: 347ee5a6-a952-4602-ab3a-3b4b5d5d1d6e
   name: agent-19
-  namespace: production
+  namespace: sandbox
   description: |
     Description for agent-19
 spec:
   type: agent
-  lifecycle: stable
+  lifecycle: experimental
   owner: owner19@platform.com
-  access_level: PUBLIC
-  category: Health
+  access_level: PRIVATE
+  category: Education
   url: https://api.platform.com/agent-19
-  input:
+  parameters:
     type: object
-    description: Input description for agent-19
+    properties:
+      material:
+        type: string
+        description: "The language code for the content"
+      currency:
+        type: integer
+        description: "Tracking number for the shipment"
+      check_in_date:
+        type: integer
+        description: "Name of the customer"
+      seat_number:
+        type: boolean
+        description: "Check-out date from the hotel"
+    required:
+      - currency
+      - seat_number
+    additionalProperties: false
   output:
-    type: array
-    description: Output description for agent-19
+    type: float
+    description: ID of the created resource
 
 
 ---
 metadata:
-  id: 9d91991c-2e1f-4386-90a3-5df3f5f7ab97
   name: agent-20
-  namespace: sandbox
+  namespace: production
   description: |
     Description for agent-20
 spec:
   type: agent
-  lifecycle: experimental
+  lifecycle: stable
   owner: owner20@business.com
-  access_level: PRIVATE
-  category: E-commerce
+  access_level: PUBLIC
+  category: Technology
   url: https://api.business.com/agent-20
-  input:
-    type: array
-    description: Input description for agent-20
+  parameters:
+    type: object
+    properties:
+      product_id:
+        type: boolean
+        description: "Tracking number for the shipment"
+      customer_name:
+        type: float
+        description: "Support ticket ID for the issue"
+      arrival_time:
+        type: integer
+        description: "The amount for the transaction"
+    required:
+      - customer_name
+      - arrival_time
+    additionalProperties: false
   output:
     type: string
-    description: Output description for agent-20
+    description: Calculated amount based on the input data
 
 
 ---
 metadata:
-  id: 87ad967d-d581-4c78-a4ec-34bf6841237d
   name: agent-21
-  namespace: production
+  namespace: sandbox
   description: |
     Description for agent-21
 spec:
   type: agent
-  lifecycle: stable
+  lifecycle: experimental
   owner: owner21@example.com
-  access_level: PUBLIC
-  category: Education
+  access_level: PRIVATE
+  category: Transport
   url: https://api.example.com/agent-21
-  input:
-    type: string
-    description: Input description for agent-21
+  parameters:
+    type: object
+    properties:
+      resolution_status:
+        type: boolean
+        description: "The timestamp of the event"
+      symbol:
+        type: string
+        description: "Material of the product"
+      clothing_size:
+        type: boolean
+        description: "A specific date in the format yyyy-mm-dd"
+      check_out_date:
+        type: string
+        description: "Expected delivery date"
+    required:
+      - resolution_status
+      - clothing_size
+      - check_out_date
+    additionalProperties: false
   output:
-    type: integer
-    description: Output description for agent-21
+    type: boolean
+    description: Confirmation message for the user
 
 
 ---
 metadata:
-  id: 172b092a-df9b-468e-963c-f83693bf88ee
   name: agent-22
-  namespace: sandbox
+  namespace: production
   description: |
     Description for agent-22
 spec:
   type: agent
-  lifecycle: experimental
+  lifecycle: stable
   owner: owner22@company.com
-  access_level: PRIVATE
-  category: Technology
+  access_level: PUBLIC
+  category: Media
   url: https://api.company.com/agent-22
-  input:
-    type: integer
-    description: Input description for agent-22
+  parameters:
+    type: object
+    properties:
+      currency:
+        type: float
+        description: "The product ID for the item"
+      customer_name:
+        type: integer
+        description: "The hotel name for the booking"
+      departure_time:
+        type: float
+        description: "Arrival time at the destination"
+      language:
+        type: float
+        description: "The product ID for the item"
+      clothing_size:
+        type: string
+        description: "Type of issue reported"
+    required:
+      - currency
+    additionalProperties: false
   output:
-    type: boolean
-    description: Output description for agent-22
+    type: float
+    description: Boolean flag indicating success or failure
 
 
 ---
 metadata:
-  id: dad0260b-57bd-4824-b74a-7a0fa76da2de
   name: agent-23
-  namespace: production
+  namespace: sandbox
   description: |
     Description for agent-23
 spec:
   type: agent
-  lifecycle: stable
+  lifecycle: experimental
   owner: owner23@service.com
-  access_level: PUBLIC
-  category: Transport
+  access_level: PRIVATE
+  category: Sports
   url: https://api.service.com/agent-23
-  input:
-    type: boolean
-    description: Input description for agent-23
-  output:
+  parameters:
     type: object
-    description: Output description for agent-23
+    properties:
+      destination:
+        type: boolean
+        description: "Type of room in the hotel"
+      arrival_time:
+        type: integer
+        description: "A specific date in the format yyyy-mm-dd"
+    required:
+      - 
+    additionalProperties: false
+  output:
+    type: integer
+    description: Confirmation message for the user
 
 
 ---
 metadata:
-  id: 51631f0c-0bf5-42a6-8d3f-8a708b4c69ab
   name: agent-24
-  namespace: sandbox
+  namespace: production
   description: |
     Description for agent-24
 spec:
   type: agent
-  lifecycle: experimental
+  lifecycle: stable
   owner: owner24@platform.com
-  access_level: PRIVATE
-  category: Media
+  access_level: PUBLIC
+  category: Travel
   url: https://api.platform.com/agent-24
-  input:
+  parameters:
     type: object
-    description: Input description for agent-24
+    properties:
+      user_id:
+        type: float
+        description: "The destination for travel"
+      language:
+        type: boolean
+        description: "Expected delivery date"
+      material:
+        type: integer
+        description: "The hotel name for the booking"
+      tracking_number:
+        type: string
+        description: "The location of the event"
+    required:
+      - user_id
+      - language
+      - material
+      - tracking_number
+    additionalProperties: false
   output:
-    type: array
-    description: Output description for agent-24
+    type: integer
+    description: Summary of the processed information
 
 
 ---
 metadata:
-  id: 15823c5b-7eae-4a05-ba36-59b8b8e9d775
   name: agent-25
-  namespace: production
+  namespace: sandbox
   description: |
     Description for agent-25
 spec:
   type: agent
-  lifecycle: stable
+  lifecycle: experimental
   owner: owner25@business.com
-  access_level: PUBLIC
-  category: Sports
+  access_level: PRIVATE
+  category: Clothing
   url: https://api.business.com/agent-25
-  input:
-    type: array
-    description: Input description for agent-25
+  parameters:
+    type: object
+    properties:
+      transaction_id:
+        type: float
+        description: "Color of the item"
+      resolution_status:
+        type: integer
+        description: "Flight number for the airline"
+      amount:
+        type: boolean
+        description: "The location of the event"
+      support_ticket_id:
+        type: string
+        description: "Expected delivery date"
+      arrival_time:
+        type: boolean
+        description: "The destination for travel"
+    required:
+      - amount
+      - support_ticket_id
+      - arrival_time
+    additionalProperties: false
   output:
-    type: string
-    description: Output description for agent-25
+    type: boolean
+    description: Status of the operation
 
 
 ---
 metadata:
-  id: 364a6fb3-d54b-41d8-b23c-5af9694d0d83
   name: agent-26
-  namespace: sandbox
+  namespace: production
   description: |
     Description for agent-26
 spec:
   type: agent
-  lifecycle: experimental
+  lifecycle: stable
   owner: owner26@example.com
-  access_level: PRIVATE
-  category: Finance
+  access_level: PUBLIC
+  category: Logistics
   url: https://api.example.com/agent-26
-  input:
-    type: string
-    description: Input description for agent-26
+  parameters:
+    type: object
+    properties:
+      departure_time:
+        type: boolean
+        description: "Tracking number for the shipment"
+      date:
+        type: integer
+        description: "Support ticket ID for the issue"
+    required:
+      - date
+    additionalProperties: false
   output:
-    type: integer
-    description: Output description for agent-26
+    type: boolean
+    description: Boolean flag indicating success or failure
 
 
 ---
 metadata:
-  id: 14a3a788-d5d0-40b4-b750-81c05ecfbd23
   name: agent-27
-  namespace: production
+  namespace: sandbox
   description: |
     Description for agent-27
 spec:
   type: agent
-  lifecycle: stable
+  lifecycle: experimental
   owner: owner27@company.com
-  access_level: PUBLIC
-  category: Customer Support
+  access_level: PRIVATE
+  category: Finance
   url: https://api.company.com/agent-27
-  input:
-    type: integer
-    description: Input description for agent-27
+  parameters:
+    type: object
+    properties:
+      arrival_time:
+        type: integer
+        description: "Status of the issue resolution"
+      user_id:
+        type: float
+        description: "Type of room in the hotel"
+      tracking_number:
+        type: float
+        description: "The amount for the transaction"
+      room_type:
+        type: string
+        description: "Arrival time at the destination"
+    required:
+      - arrival_time
+      - user_id
+      - tracking_number
+    additionalProperties: false
   output:
-    type: boolean
-    description: Output description for agent-27
+    type: float
+    description: ID of the created resource
 
 
 ---
 metadata:
-  id: 6a281d1d-0b4b-4680-8d26-fddb11e8382c
   name: agent-28
-  namespace: sandbox
+  namespace: production
   description: |
     Description for agent-28
 spec:
   type: agent
-  lifecycle: experimental
+  lifecycle: stable
   owner: owner28@service.com
-  access_level: PRIVATE
-  category: Weather
+  access_level: PUBLIC
+  category: Customer Support
   url: https://api.service.com/agent-28
-  input:
-    type: boolean
-    description: Input description for agent-28
-  output:
+  parameters:
     type: object
-    description: Output description for agent-28
+    properties:
+      currency:
+        type: integer
+        description: "Material of the product"
+      color:
+        type: float
+        description: "Size of the clothing item"
+      resolution_status:
+        type: string
+        description: "The amount for the transaction"
+    required:
+      - currency
+      - color
+    additionalProperties: false
+  output:
+    type: boolean
+    description: Boolean flag indicating success or failure
 
 
 ---
 metadata:
-  id: d8b103ce-9ab0-41f6-b4d0-a7635f67bcc2
   name: agent-29
-  namespace: production
+  namespace: sandbox
   description: |
     Description for agent-29
 spec:
   type: agent
-  lifecycle: stable
+  lifecycle: experimental
   owner: owner29@platform.com
-  access_level: PUBLIC
-  category: Health
+  access_level: PRIVATE
+  category: Weather
   url: https://api.platform.com/agent-29
-  input:
+  parameters:
     type: object
-    description: Input description for agent-29
+    properties:
+      location:
+        type: boolean
+        description: "Size of the clothing item"
+      clothing_size:
+        type: boolean
+        description: "The product ID for the item"
+      timestamp:
+        type: float
+        description: "Arrival time at the destination"
+      tracking_number:
+        type: float
+        description: "Flight number for the airline"
+      product_id:
+        type: integer
+        description: "Tracking number for the shipment"
+    required:
+      - location
+      - timestamp
+      - tracking_number
+      - product_id
+    additionalProperties: false
   output:
-    type: array
-    description: Output description for agent-29
+    type: boolean
+    description: Status of the operation
 
 
 ---
 metadata:
-  id: cb69b08b-3099-4861-9348-90685bb16762
   name: agent-30
-  namespace: sandbox
+  namespace: production
   description: |
     Description for agent-30
 spec:
   type: agent
-  lifecycle: experimental
+  lifecycle: stable
   owner: owner30@business.com
-  access_level: PRIVATE
-  category: E-commerce
+  access_level: PUBLIC
+  category: Health
   url: https://api.business.com/agent-30
-  input:
-    type: array
-    description: Input description for agent-30
+  parameters:
+    type: object
+    properties:
+      issue_type:
+        type: integer
+        description: "Tracking number for the shipment"
+      seat_number:
+        type: boolean
+        description: "The seat number for the passenger"
+      departure_time:
+        type: boolean
+        description: "The order ID for the purchase"
+      customer_name:
+        type: boolean
+        description: "The hotel name for the booking"
+    required:
+      - issue_type
+      - departure_time
+      - customer_name
+    additionalProperties: false
   output:
-    type: string
-    description: Output description for agent-30
+    type: float
+    description: Result of the operation
 
 
 ---
 metadata:
-  id: 0901ba8a-ee33-4544-8019-497c7ebc2c92
   name: agent-31
-  namespace: production
+  namespace: sandbox
   description: |
     Description for agent-31
 spec:
   type: agent
-  lifecycle: stable
+  lifecycle: experimental
   owner: owner31@example.com
-  access_level: PUBLIC
-  category: Education
+  access_level: PRIVATE
+  category: E-commerce
   url: https://api.example.com/agent-31
-  input:
-    type: string
-    description: Input description for agent-31
+  parameters:
+    type: object
+    properties:
+      user_id:
+        type: float
+        description: "The hotel name for the booking"
+      seat_number:
+        type: integer
+        description: "The amount for the transaction"
+    required:
+      - user_id
+    additionalProperties: false
   output:
-    type: integer
-    description: Output description for agent-31
+    type: string
+    description: Boolean flag indicating success or failure
 
 
 ---
 metadata:
-  id: 951eb5e8-0568-40d3-9be6-89798198bd34
   name: agent-32
-  namespace: sandbox
+  namespace: production
   description: |
     Description for agent-32
 spec:
   type: agent
-  lifecycle: experimental
+  lifecycle: stable
   owner: owner32@company.com
-  access_level: PRIVATE
-  category: Technology
+  access_level: PUBLIC
+  category: Education
   url: https://api.company.com/agent-32
-  input:
-    type: integer
-    description: Input description for agent-32
+  parameters:
+    type: object
+    properties:
+      tracking_number:
+        type: integer
+        description: "Departure time for the journey"
+      check_in_date:
+        type: integer
+        description: "Flight number for the airline"
+      hotel_name:
+        type: integer
+        description: "The user ID for the customer"
+      order_id:
+        type: integer
+        description: "Size of the clothing item"
+      departure_time:
+        type: string
+        description: "The order ID for the purchase"
+    required:
+      - departure_time
+    additionalProperties: false
   output:
-    type: boolean
-    description: Output description for agent-32
+    type: string
+    description: Output value for the requested data
 
 
 ---
 metadata:
-  id: 31beff3d-9cc8-4e91-82f1-924c035c029e
   name: agent-33
-  namespace: production
+  namespace: sandbox
   description: |
     Description for agent-33
 spec:
   type: agent
-  lifecycle: stable
+  lifecycle: experimental
   owner: owner33@service.com
-  access_level: PUBLIC
-  category: Transport
+  access_level: PRIVATE
+  category: Technology
   url: https://api.service.com/agent-33
-  input:
-    type: boolean
-    description: Input description for agent-33
-  output:
+  parameters:
     type: object
-    description: Output description for agent-33
+    properties:
+      issue_type:
+        type: string
+        description: "The location of the event"
+      color:
+        type: float
+        description: "The amount for the transaction"
+      timestamp:
+        type: float
+        description: "Departure time for the journey"
+      symbol:
+        type: string
+        description: "The hotel name for the booking"
+    required:
+      - symbol
+    additionalProperties: false
+  output:
+    type: string
+    description: Summary of the processed information
 
 
 ---
 metadata:
-  id: 43717bb3-022f-4ac7-bb2e-f08af9300918
   name: agent-34
-  namespace: sandbox
+  namespace: production
   description: |
     Description for agent-34
 spec:
   type: agent
-  lifecycle: experimental
+  lifecycle: stable
   owner: owner34@platform.com
-  access_level: PRIVATE
-  category: Media
+  access_level: PUBLIC
+  category: Transport
   url: https://api.platform.com/agent-34
-  input:
+  parameters:
     type: object
-    description: Input description for agent-34
+    properties:
+      room_type:
+        type: integer
+        description: "Color of the item"
+      check_out_date:
+        type: boolean
+        description: "Departure time for the journey"
+      check_in_date:
+        type: integer
+        description: "Check-out date from the hotel"
+    required:
+      - room_type
+      - check_in_date
+    additionalProperties: false
   output:
-    type: array
-    description: Output description for agent-34
+    type: string
+    description: Output value for the requested data
 
 
 ---
 metadata:
-  id: e3853786-7a1b-4b47-ae0b-4d7f22e30c3d
   name: agent-35
-  namespace: production
+  namespace: sandbox
   description: |
     Description for agent-35
 spec:
   type: agent
-  lifecycle: stable
+  lifecycle: experimental
   owner: owner35@business.com
-  access_level: PUBLIC
-  category: Sports
+  access_level: PRIVATE
+  category: Media
   url: https://api.business.com/agent-35
-  input:
-    type: array
-    description: Input description for agent-35
+  parameters:
+    type: object
+    properties:
+      symbol:
+        type: integer
+        description: "The product ID for the item"
+      check_out_date:
+        type: float
+        description: "Arrival time at the destination"
+      resolution_status:
+        type: integer
+        description: "Status of the issue resolution"
+      hotel_name:
+        type: integer
+        description: "The location of the event"
+      room_type:
+        type: integer
+        description: "The user ID for the customer"
+    required:
+      - symbol
+      - check_out_date
+      - hotel_name
+    additionalProperties: false
   output:
-    type: string
-    description: Output description for agent-35
+    type: boolean
+    description: Calculated amount based on the input data
 
 
 ---
 metadata:
-  id: 67cf3c34-c31d-4d18-a250-d31d590b113a
   name: agent-36
-  namespace: sandbox
+  namespace: production
   description: |
     Description for agent-36
 spec:
   type: agent
-  lifecycle: experimental
+  lifecycle: stable
   owner: owner36@example.com
-  access_level: PRIVATE
-  category: Finance
+  access_level: PUBLIC
+  category: Sports
   url: https://api.example.com/agent-36
-  input:
-    type: string
-    description: Input description for agent-36
+  parameters:
+    type: object
+    properties:
+      color:
+        type: boolean
+        description: "The user ID for the customer"
+      user_id:
+        type: float
+        description: "A specific date in the format yyyy-mm-dd"
+      order_id:
+        type: float
+        description: "Type of room in the hotel"
+      transaction_id:
+        type: string
+        description: "Material of the product"
+    required:
+      - user_id
+      - transaction_id
+    additionalProperties: false
   output:
-    type: integer
-    description: Output description for agent-36
+    type: boolean
+    description: Boolean flag indicating success or failure
 
 
 ---
 metadata:
-  id: e3a6e293-b9cb-4f16-b4ea-4738435e3232
   name: agent-37
-  namespace: production
+  namespace: sandbox
   description: |
     Description for agent-37
 spec:
   type: agent
-  lifecycle: stable
+  lifecycle: experimental
   owner: owner37@company.com
-  access_level: PUBLIC
-  category: Customer Support
+  access_level: PRIVATE
+  category: Travel
   url: https://api.company.com/agent-37
-  input:
-    type: integer
-    description: Input description for agent-37
+  parameters:
+    type: object
+    properties:
+      seat_number:
+        type: float
+        description: "A specific date in the format yyyy-mm-dd"
+      hotel_name:
+        type: string
+        description: "Expected delivery date"
+      check_in_date:
+        type: string
+        description: "The product ID for the item"
+    required:
+      - 
+    additionalProperties: false
   output:
-    type: boolean
-    description: Output description for agent-37
+    type: string
+    description: Result of the operation
 
 
 ---
 metadata:
-  id: f67ea4c4-3461-488c-85e8-f60ac32cdd00
   name: agent-38
-  namespace: sandbox
+  namespace: production
   description: |
     Description for agent-38
 spec:
   type: agent
-  lifecycle: experimental
+  lifecycle: stable
   owner: owner38@service.com
-  access_level: PRIVATE
-  category: Weather
+  access_level: PUBLIC
+  category: Clothing
   url: https://api.service.com/agent-38
-  input:
-    type: boolean
-    description: Input description for agent-38
-  output:
+  parameters:
     type: object
-    description: Output description for agent-38
+    properties:
+      issue_type:
+        type: boolean
+        description: "Check-in date at the hotel"
+      material:
+        type: string
+        description: "Status of the issue resolution"
+      clothing_size:
+        type: boolean
+        description: "Tracking number for the shipment"
+      check_in_date:
+        type: boolean
+        description: "Departure time for the journey"
+    required:
+      - issue_type
+    additionalProperties: false
+  output:
+    type: integer
+    description: Summary of the processed information
 
 
 ---
 metadata:
-  id: 89d8f40a-c8c2-403d-8ce4-4df13488a978
   name: agent-39
-  namespace: production
+  namespace: sandbox
   description: |
     Description for agent-39
 spec:
   type: agent
-  lifecycle: stable
+  lifecycle: experimental
   owner: owner39@platform.com
-  access_level: PUBLIC
-  category: Health
+  access_level: PRIVATE
+  category: Logistics
   url: https://api.platform.com/agent-39
-  input:
+  parameters:
     type: object
-    description: Input description for agent-39
+    properties:
+      destination:
+        type: string
+        description: "Check-out date from the hotel"
+      seat_number:
+        type: boolean
+        description: "The product ID for the item"
+      issue_type:
+        type: integer
+        description: "The destination for travel"
+    required:
+      - 
+    additionalProperties: false
   output:
-    type: array
-    description: Output description for agent-39
+    type: float
+    description: Calculated amount based on the input data
 
 
 ---
 metadata:
-  id: 8c7ad0dc-9def-4ad9-a7b3-a8bd07ab617a
   name: agent-40
-  namespace: sandbox
+  namespace: production
   description: |
     Description for agent-40
 spec:
   type: agent
-  lifecycle: experimental
+  lifecycle: stable
   owner: owner40@business.com
-  access_level: PRIVATE
-  category: E-commerce
+  access_level: PUBLIC
+  category: Finance
   url: https://api.business.com/agent-40
-  input:
-    type: array
-    description: Input description for agent-40
+  parameters:
+    type: object
+    properties:
+      seat_number:
+        type: float
+        description: "Check-out date from the hotel"
+      timestamp:
+        type: boolean
+        description: "Type of issue reported"
+    required:
+      - seat_number
+      - timestamp
+    additionalProperties: false
   output:
     type: string
-    description: Output description for agent-40
+    description: Status of the operation
 
 
 ---
 metadata:
-  id: f785d39b-8f5f-475c-82eb-382bfaaa5c86
   name: agent-41
-  namespace: production
+  namespace: sandbox
   description: |
     Description for agent-41
 spec:
   type: agent
-  lifecycle: stable
+  lifecycle: experimental
   owner: owner41@example.com
-  access_level: PUBLIC
-  category: Education
+  access_level: PRIVATE
+  category: Customer Support
   url: https://api.example.com/agent-41
-  input:
-    type: string
-    description: Input description for agent-41
+  parameters:
+    type: object
+    properties:
+      check_out_date:
+        type: string
+        description: "The transaction ID for the order"
+      currency:
+        type: integer
+        description: "Type of room in the hotel"
+      location:
+        type: integer
+        description: "Check-out date from the hotel"
+      check_in_date:
+        type: string
+        description: "The timestamp of the event"
+    required:
+      - currency
+      - check_in_date
+    additionalProperties: false
   output:
-    type: integer
-    description: Output description for agent-41
+    type: float
+    description: Boolean flag indicating success or failure
 
 
 ---
 metadata:
-  id: cab44162-9a30-4928-b6cd-151767bdd1df
   name: agent-42
-  namespace: sandbox
+  namespace: production
   description: |
     Description for agent-42
 spec:
   type: agent
-  lifecycle: experimental
+  lifecycle: stable
   owner: owner42@company.com
-  access_level: PRIVATE
-  category: Technology
+  access_level: PUBLIC
+  category: Weather
   url: https://api.company.com/agent-42
-  input:
-    type: integer
-    description: Input description for agent-42
+  parameters:
+    type: object
+    properties:
+      resolution_status:
+        type: float
+        description: "Material of the product"
+      product_id:
+        type: string
+        description: "Expected delivery date"
+    required:
+      - resolution_status
+    additionalProperties: false
   output:
-    type: boolean
-    description: Output description for agent-42
+    type: string
+    description: Result of the operation
 
 
 ---
 metadata:
-  id: aba903b5-aaa9-449d-bed7-026a289bc486
   name: agent-43
-  namespace: production
+  namespace: sandbox
   description: |
     Description for agent-43
 spec:
   type: agent
-  lifecycle: stable
+  lifecycle: experimental
   owner: owner43@service.com
-  access_level: PUBLIC
-  category: Transport
+  access_level: PRIVATE
+  category: Health
   url: https://api.service.com/agent-43
-  input:
-    type: boolean
-    description: Input description for agent-43
-  output:
+  parameters:
     type: object
-    description: Output description for agent-43
+    properties:
+      delivery_date:
+        type: boolean
+        description: "The amount for the transaction"
+      symbol:
+        type: boolean
+        description: "The destination for travel"
+      departure_time:
+        type: float
+        description: "The user ID for the customer"
+    required:
+      - delivery_date
+    additionalProperties: false
+  output:
+    type: boolean
+    description: Status of the operation
 
 
 ---
 metadata:
-  id: c43ec9cc-e326-4263-8469-23168f2a8e73
   name: agent-44
-  namespace: sandbox
+  namespace: production
   description: |
     Description for agent-44
 spec:
   type: agent
-  lifecycle: experimental
+  lifecycle: stable
   owner: owner44@platform.com
-  access_level: PRIVATE
-  category: Media
+  access_level: PUBLIC
+  category: E-commerce
   url: https://api.platform.com/agent-44
-  input:
+  parameters:
     type: object
-    description: Input description for agent-44
+    properties:
+      amount:
+        type: string
+        description: "The seat number for the passenger"
+      seat_number:
+        type: boolean
+        description: "Ticker symbol for financial data"
+      order_id:
+        type: string
+        description: "Name of the customer"
+    required:
+      - amount
+    additionalProperties: false
   output:
-    type: array
-    description: Output description for agent-44
+    type: boolean
+    description: Boolean flag indicating success or failure
 
 
 ---
 metadata:
-  id: 3590552b-b317-4944-b2a0-f91c4b31cfce
   name: agent-45
-  namespace: production
+  namespace: sandbox
   description: |
     Description for agent-45
 spec:
   type: agent
-  lifecycle: stable
+  lifecycle: experimental
   owner: owner45@business.com
-  access_level: PUBLIC
-  category: Sports
+  access_level: PRIVATE
+  category: Education
   url: https://api.business.com/agent-45
-  input:
-    type: array
-    description: Input description for agent-45
+  parameters:
+    type: object
+    properties:
+      material:
+        type: string
+        description: "Color of the item"
+      tracking_number:
+        type: float
+        description: "Tracking number for the shipment"
+      symbol:
+        type: integer
+        description: "Color of the item"
+      departure_time:
+        type: float
+        description: "The user ID for the customer"
+      issue_type:
+        type: float
+        description: "Expected delivery date"
+    required:
+      - tracking_number
+      - departure_time
+      - issue_type
+    additionalProperties: false
   output:
     type: string
-    description: Output description for agent-45
+    description: Confirmation message for the user
 
 
 ---
 metadata:
-  id: f28cbb7d-bb6d-4ca7-a365-7cec209c3618
   name: agent-46
-  namespace: sandbox
+  namespace: production
   description: |
     Description for agent-46
 spec:
   type: agent
-  lifecycle: experimental
+  lifecycle: stable
   owner: owner46@example.com
-  access_level: PRIVATE
-  category: Finance
+  access_level: PUBLIC
+  category: Technology
   url: https://api.example.com/agent-46
-  input:
-    type: string
-    description: Input description for agent-46
+  parameters:
+    type: object
+    properties:
+      resolution_status:
+        type: boolean
+        description: "Type of issue reported"
+      flight_number:
+        type: integer
+        description: "The seat number for the passenger"
+      seat_number:
+        type: integer
+        description: "The currency of the transaction"
+    required:
+      - resolution_status
+      - flight_number
+    additionalProperties: false
   output:
-    type: integer
-    description: Output description for agent-46
+    type: string
+    description: Calculated amount based on the input data
 
 
 ---
 metadata:
-  id: 9d55b809-e9e7-44de-8868-88962e910e8f
   name: agent-47
-  namespace: production
+  namespace: sandbox
   description: |
     Description for agent-47
 spec:
   type: agent
-  lifecycle: stable
+  lifecycle: experimental
   owner: owner47@company.com
-  access_level: PUBLIC
-  category: Customer Support
+  access_level: PRIVATE
+  category: Transport
   url: https://api.company.com/agent-47
-  input:
-    type: integer
-    description: Input description for agent-47
+  parameters:
+    type: object
+    properties:
+      transaction_id:
+        type: boolean
+        description: "Name of the customer"
+      seat_number:
+        type: float
+        description: "Departure time for the journey"
+    required:
+      - transaction_id
+    additionalProperties: false
   output:
-    type: boolean
-    description: Output description for agent-47
+    type: integer
+    description: Output value for the requested data
 
 
 ---
 metadata:
-  id: abcb13fa-af2c-41da-9189-4f8b1dcf6ef3
   name: agent-48
-  namespace: sandbox
+  namespace: production
   description: |
     Description for agent-48
 spec:
   type: agent
-  lifecycle: experimental
+  lifecycle: stable
   owner: owner48@service.com
-  access_level: PRIVATE
-  category: Weather
+  access_level: PUBLIC
+  category: Media
   url: https://api.service.com/agent-48
-  input:
-    type: boolean
-    description: Input description for agent-48
-  output:
+  parameters:
     type: object
-    description: Output description for agent-48
+    properties:
+      check_out_date:
+        type: string
+        description: "The currency of the transaction"
+      delivery_date:
+        type: boolean
+        description: "Name of the customer"
+    required:
+      - delivery_date
+    additionalProperties: false
+  output:
+    type: integer
+    description: Status of the operation
 
 
 ---
 metadata:
-  id: 3b849341-0ec4-489f-b967-43138ffa71fb
   name: agent-49
-  namespace: production
+  namespace: sandbox
   description: |
     Description for agent-49
 spec:
   type: agent
-  lifecycle: stable
+  lifecycle: experimental
   owner: owner49@platform.com
-  access_level: PUBLIC
-  category: Health
+  access_level: PRIVATE
+  category: Sports
   url: https://api.platform.com/agent-49
-  input:
+  parameters:
     type: object
-    description: Input description for agent-49
+    properties:
+      room_type:
+        type: boolean
+        description: "Arrival time at the destination"
+      order_id:
+        type: string
+        description: "The user ID for the customer"
+      departure_time:
+        type: string
+        description: "The location of the event"
+      clothing_size:
+        type: float
+        description: "Status of the issue resolution"
+      tracking_number:
+        type: integer
+        description: "Support ticket ID for the issue"
+    required:
+      - order_id
+      - departure_time
+      - tracking_number
+    additionalProperties: false
   output:
-    type: array
-    description: Output description for agent-49
+    type: integer
+    description: Status of the operation
 
 
 ---
 metadata:
-  id: 6aa792f5-85b3-4b23-8976-f22fa37b5929
   name: agent-50
-  namespace: sandbox
+  namespace: production
   description: |
     Description for agent-50
 spec:
   type: agent
-  lifecycle: experimental
+  lifecycle: stable
   owner: owner50@business.com
-  access_level: PRIVATE
-  category: E-commerce
+  access_level: PUBLIC
+  category: Travel
   url: https://api.business.com/agent-50
-  input:
-    type: array
-    description: Input description for agent-50
+  parameters:
+    type: object
+    properties:
+      room_type:
+        type: float
+        description: "Expected delivery date"
+      customer_name:
+        type: string
+        description: "The destination for travel"
+    required:
+      - room_type
+      - customer_name
+    additionalProperties: false
   output:
-    type: string
-    description: Output description for agent-50
+    type: boolean
+    description: Output value for the requested data
 

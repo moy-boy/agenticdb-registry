@@ -5,7 +5,7 @@ import warnings
 from fastapi.testclient import TestClient
 from unittest import IsolatedAsyncioTestCase
 
-from  app.server import create_app
+from app.server import create_app
 
 # Suppress DeprecationWarnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
@@ -15,7 +15,7 @@ class TestAddAgent(IsolatedAsyncioTestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.headers = {'Content-Type': 'application/x-yaml'}
+        cls.headers = {'Content-Type': 'application/json'}
 
     def setUp(self):
         self.test_yaml = """
@@ -56,7 +56,12 @@ spec:
 
     def test_post_yaml(self):
         with TestClient(create_app()) as c:
-            response = c.post("/agents", content=self.test_yaml, headers=self.headers)
+            # Parse the YAML string
+            print(self.test_yaml)
+            yaml_data = yaml.safe_load(self.test_yaml)
+            # Convert the parsed YAML data to JSON
+            json_data = json.dumps(yaml_data, indent=2)
+            response = c.post("/agents", content=json_data, headers=self.headers)
             self.assertEqual(200, response.status_code)
             response_json = response.json()
             required_keys = {"agent_manifest", "ratings_manifest"}

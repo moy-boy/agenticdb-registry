@@ -33,11 +33,26 @@ spec:
   access_level: PRIVATE
   category: Natural Language
   url: https://api.example.com/financial-data-oracle
-  input:
-    type: string
-    description: Input description for financial-data-oracle
+  parameters:
+    type: object
+    properties:
+      symbol:
+        type: string
+        description: ticker symbol
+      date:
+        type: string
+        description: A specific date in the format yyyy-mm-dd
+      currency:
+        type: string
+        enum:
+          - USD
+          - JPY
+        description: "the currency of the desired output value"
+    required:
+      - symbol
+    additionalProperties: false
   output:
-    type: string
+    type: float
     description: Output description for financial-data-oracle
 """
         self.ratings_yaml = f"""

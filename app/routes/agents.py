@@ -100,8 +100,10 @@ async def add_agent(request: Request, app_state: AppState = Depends(get_app_stat
             raise HTTPException(status_code=500, detail="Failed to split content")
 
         try:
-            app_state.agents_db.add_documents(agent_docs, ids=[agent_id])
-            app_state.ratings_db.add_documents(ratings_docs, ids=[ratings_id])
+            app_state.agents_db.add_documents(agent_docs, ids=[f"{agent_id}_{i}" for i in range(len(agent_docs))])
+            # app_state.agents_db.add_documents(agent_docs, ids=[agent_id for _ in agent_docs])
+            app_state.ratings_db.add_documents(ratings_docs, ids=[f"{ratings_id}_{i}" for i in range(len(ratings_docs))])
+            # app_state.ratings_db.add_documents(ratings_docs, ids=[ratings_id for _ in ratings_docs])
             logging.info("Documents added to Chroma DBs")
         except openai.RateLimitError as e:
             logging.error(f"OpenAI rate limit error: {str(e)}")

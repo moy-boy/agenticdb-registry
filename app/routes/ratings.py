@@ -13,7 +13,7 @@ router = APIRouter()
 
 
 @router.post("/ratings")
-async def add_rating(request: Request, app_state: AppState = Depends(get_app_state)):
+async def add_ratings(request: Request, app_state: AppState = Depends(get_app_state)):
     if app_state.agents_db is None or app_state.ratings_db is None:
         logging.error("Chroma DB not initialized")
         raise HTTPException(status_code=500, detail="Chroma DB not initialized")
@@ -99,7 +99,7 @@ async def add_rating(request: Request, app_state: AppState = Depends(get_app_sta
 
 
 @router.get("/ratings")
-async def get_agents(ratings_id: str, app_state: AppState = Depends(get_app_state)):
+async def get_ratings(ratings_id: str, app_state: AppState = Depends(get_app_state)):
     if app_state.agents_db is None or app_state.ratings_db is None:
         logging.error("Chroma DB not initialized")
         raise HTTPException(status_code=500, detail="Chroma DB not initialized")
