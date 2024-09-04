@@ -86,22 +86,21 @@ class TestAddAgent(IsolatedAsyncioTestCase):
                 self.assertTrue(required_metadata_keys.issubset(metadata.keys()))
                 print(json.dumps(response_json, indent=2))
 
-            query = "Which agents have a category of Natural Language?"
+            query = "Which agents can help interview candidates?"
             response = c.get("/agents", params={"query": query}, headers=self.get_headers)
             self.assertEqual(200, response.status_code)
-            response_json = response.json()
-            agents_yaml = response_json["agents"]
             try:
-                agents = list(yaml.safe_load_all(agents_yaml))
-                for agent in agents:
+                response_json = response.json()
+                agents_json = response_json["agents"]
+                for agent in agents_json:
                     required_keys = {"metadata", "ratings", "spec"}
                     self.assertTrue(required_keys.issubset(agent.keys()))
                     self.assertIn("name", agent["metadata"])
                     self.assertIn("score", agent["ratings"]["data"])
-                    self.assertEqual("financial-data-oracle", agent["metadata"]["name"])
-                    print(yaml.safe_dump(agent))
-            except yaml.YAMLError as e:
-                self.fail(f"Failed to parse YAML: {str(e)}")
+                    self.assertEqual("agent-50", agent["metadata"]["name"])
+                    print(json.dumps(agent))
+            except Exception as e:
+                self.fail(f"Failed to parse JSON: {str(e)}")
 
 
 if __name__ == "__main__":

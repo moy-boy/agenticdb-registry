@@ -196,3 +196,34 @@ async def get_agents(query: str, request: Request, app_state: AppState = Depends
             concatenated_yaml = concatenated_yaml[:-5]
 
         return JSONResponse(content={"agents": concatenated_yaml.strip()})
+
+    if accept_type == AcceptType.JSON:
+        json_object = []
+        for result in results["documents"]:
+            if len(result) == 0:
+                continue
+            agent_content = result[0].strip()
+            agent_data = json.loads(agent_content)
+            ratings_id = agent_data['metadata'].get('ratings_id')
+            try:
+                ratings_results = app_state.ratings_db.get(ids=[f"{ratings_id}"])
+                if len(ratings_results["documents"]) == 0:
+                    logging.error(f"Ratings ID not found in Chroma DB: {ratings_id}")
+                    raise HTTPException(status_code=404, detail="Ratings ID not found in Chroma DB")
+                logging.info(f"Similarity search query executed successfully for ratings with ID: {ratings_id}")
+            except HTTPException as http_exc:
+                # Catch explicitly raised HTTPException and re-raise
+                raise http_exc
+            except Exception as e:
+                logging.error(f"Failed to execute search query for ratings: {str(e)}")
+                raise HTTPException(status_code=500, detail="Failed to execute search query for ratings")
+
+            if ratings_results:
+                ratings_str = ratings_results["documents"][0]
+                ratings_dict = json.loads(ratings_str)
+                agent_data['ratings'] = ratings_dict
+
+            json_object.append(agent_data)
+
+        return JSONResponse(content={"agents": json_object})
+
