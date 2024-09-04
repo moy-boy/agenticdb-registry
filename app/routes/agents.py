@@ -104,9 +104,9 @@ async def add_agent(request: Request, app_state: AppState = Depends(get_app_stat
             agent_docs = [agent_content_str]
             ratings_docs = [ratings_content_str]
             app_state.agents_db.add(documents=agent_docs, metadatas=[{"id": agent_id, "version": 1, "timestamp": current_utc_time}], 
-                                              ids=[f"{ratings_id}_{i}" for i in range(len(ratings_docs))])
+                                              ids=[f"{agent_id}"])
             app_state.ratings_db.add(documents=ratings_docs, metadatas=[{"id": ratings_id, "version": 1, "timestamp": current_utc_time}], 
-                                               ids=[f"{ratings_id}_{i}" for i in range(len(ratings_docs))])
+                                               ids=[f"{ratings_id}"])
             logging.info("Documents added to Chroma DBs")
         except openai.RateLimitError as e:
             logging.error(f"OpenAI rate limit error: {str(e)}")
@@ -148,8 +148,7 @@ async def get_agents(query: str, app_state: AppState = Depends(get_app_state)):
         ratings_id = agent_data['metadata'].get('ratings_id')
 
         try:
-            # TODO: Cannot be hardcoded
-            ratings_results = app_state.ratings_db.get(ids=[f"{ratings_id}_0"])
+            ratings_results = app_state.ratings_db.get(ids=[f"{ratings_id}"])
             if len(ratings_results["documents"]) == 0:
                 logging.error(f"Ratings ID not found in Chroma DB: {ratings_id}")
                 raise HTTPException(status_code=404, detail="Ratings ID not found in Chroma DB")

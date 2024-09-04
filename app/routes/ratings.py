@@ -75,18 +75,19 @@ async def add_ratings(request: Request, app_state: AppState = Depends(get_app_st
     )
     # convert back to YAML
     ratings_yaml_content_str = yaml.dump(ratings_dict, sort_keys=False)
-    # Split the YAML content into documents but carry metadata from before
-    try:
-        ratings_docs = app_state.text_splitter.create_documents([ratings_yaml_content_str],
-                                                                metadatas=results["metadatas"])
-        logging.info("YAML content split into documents")
-    except Exception as e:
-        logging.error(f"Failed to split YAML content: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to split YAML content")
+    # # Split the YAML content into documents but carry metadata from before
+    # try:
+    #     ratings_docs = app_state.text_splitter.create_documents([ratings_yaml_content_str],
+    #                                                             metadatas=results["metadatas"])
+    #     logging.info("YAML content split into documents")
+    # except Exception as e:
+    #     logging.error(f"Failed to split YAML content: {str(e)}")
+    #     raise HTTPException(status_code=500, detail="Failed to split YAML content")
 
     try:
         # Update document
-        app_state.ratings_db.update_document(ratings_id, ratings_docs[0])
+        ratings_docs = [ratings_yaml_content_str]
+        app_state.ratings_db.update(ids=[ratings_id], documents=ratings_docs)
         logging.info("Update document in Chroma DBs")
     except openai.RateLimitError as e:
         logging.error(f"OpenAI rate limit error: {str(e)}")
