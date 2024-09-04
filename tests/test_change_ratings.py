@@ -66,7 +66,7 @@ spec:
     def test_change_ratings(self):
         with TestClient(create_app()) as c:
             response = c.post("/agents", content=self.test_agent_yaml, headers=self.headers)
-            self.assertEqual(response.status_code, 200)
+            self.assertEqual(200, response.status_code)
             response_json = response.json()
             required_keys = {"agent_manifest", "ratings_manifest"}
             for agent in response_json:

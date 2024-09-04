@@ -11,7 +11,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, field_validator
 
-from langchain_chroma import Chroma
+import chromadb
+from chromadb.utils.embedding_functions import OpenAIEmbeddingFunction
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnableLambda
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -54,7 +55,8 @@ def get_text_splitter():
 
 
 def get_embedding_function():
-    return OpenAIEmbeddings(model="text-embedding-3-large")
+    return OpenAIEmbeddingFunction(api_key=os.environ.get('OPENAI_API_KEY'), model_name="text-embedding-3-small")
+    # return OpenAIEmbeddings(model="text-embedding-3-small")
 
 
 class YAMLContent(BaseModel):
@@ -113,11 +115,13 @@ async def lifespan(fast_app: FastAPI):
         fast_app.state.app_state.text_splitter = get_text_splitter()
         fast_app.state.app_state.embedding_function = get_embedding_function()
 
+        chroma_client = chromadb.Client()
+
         # Initialize ChromaDB for agents
-        fast_app.state.app_state.agents_db = Chroma(collection_name="agents",
+        fast_app.state.app_state.agents_db = chroma_client.create_collection(name="agents",
                                                     embedding_function=fast_app.state.app_state.embedding_function)
         # Initialize ChromaDB for ratings
-        fast_app.state.app_state.ratings_db = Chroma(collection_name="ratings",
+        fast_app.state.app_state.ratings_db = chroma_client.create_collection(name="ratings",
                                                      embedding_function=fast_app.state.app_state.embedding_function)
 
         logging.info("App state initialized successfully")

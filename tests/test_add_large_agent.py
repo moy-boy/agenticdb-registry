@@ -20,17 +20,17 @@ class TestAddAgent(IsolatedAsyncioTestCase):
     def setUp(self):
         self.test_yaml = """
 metadata:
-  name: agent-2
+  name: financial-data-oracle
   namespace: production
   description: |
-    Description for agent-2
+    Description for agent financial-data-oracle
 spec:
   type: agent
   lifecycle: stable
   owner: owner2@company.com
   access_level: PUBLIC
   category: Customer Support
-  url: https://api.company.com/agent-2
+  url: https://api.company.com/financial-data-oracle
   parameters:
     type: object
     properties:

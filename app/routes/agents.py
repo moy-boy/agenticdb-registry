@@ -84,26 +84,29 @@ async def add_agent(request: Request, app_state: AppState = Depends(get_app_stat
             agent_content_str = yaml.dump(parsed_data, sort_keys=False)
             ratings_content_str = yaml.dump(ratings_manifest, sort_keys=False)
 
-        try:
-            current_utc_time = datetime.datetime.now(datetime.UTC).isoformat(timespec='milliseconds') + 'Z'
-            agent_docs = app_state.text_splitter.create_documents(
-                texts=[agent_content_str],
-                metadatas=[{"id": agent_id, "version": 1, "timestamp": current_utc_time}]
-            )
-            ratings_docs = app_state.text_splitter.create_documents(
-                texts=[ratings_content_str],
-                metadatas=[{"id": ratings_id, "version": 1, "timestamp": current_utc_time}]
-            )
-            logging.info("Content split into documents")
-        except Exception as e:
-            logging.error(f"Failed to split content: {str(e)}")
-            raise HTTPException(status_code=500, detail="Failed to split content")
+        # try:
+        #     current_utc_time = datetime.datetime.now(datetime.UTC).isoformat(timespec='milliseconds') + 'Z'
+        #     agent_docs = app_state.text_splitter.create_documents(
+        #         texts=[agent_content_str],
+        #         metadatas=[{"id": agent_id, "version": 1, "timestamp": current_utc_time}]
+        #     )
+        #     ratings_docs = app_state.text_splitter.create_documents(
+        #         texts=[ratings_content_str],
+        #         metadatas=[{"id": ratings_id, "version": 1, "timestamp": current_utc_time}]
+        #     )
+        #     logging.info("Content split into documents")
+        # except Exception as e:
+        #     logging.error(f"Failed to split content: {str(e)}")
+        #     raise HTTPException(status_code=500, detail="Failed to split content")
 
         try:
-            app_state.agents_db.add_documents(agent_docs, ids=[f"{agent_id}_{i}" for i in range(len(agent_docs))])
-            # app_state.agents_db.add_documents(agent_docs, ids=[agent_id for _ in agent_docs])
-            app_state.ratings_db.add_documents(ratings_docs, ids=[f"{ratings_id}_{i}" for i in range(len(ratings_docs))])
-            # app_state.ratings_db.add_documents(ratings_docs, ids=[ratings_id for _ in ratings_docs])
+            current_utc_time = datetime.datetime.now(datetime.UTC).isoformat(timespec='milliseconds') + 'Z'
+            agent_docs = [agent_content_str]
+            ratings_docs = [ratings_content_str]
+            app_state.agents_db.add(documents=agent_docs, metadatas=[{"id": agent_id, "version": 1, "timestamp": current_utc_time}], 
+                                              ids=[f"{ratings_id}_{i}" for i in range(len(ratings_docs))])
+            app_state.ratings_db.add(documents=ratings_docs, metadatas=[{"id": ratings_id, "version": 1, "timestamp": current_utc_time}], 
+                                               ids=[f"{ratings_id}_{i}" for i in range(len(ratings_docs))])
             logging.info("Documents added to Chroma DBs")
         except openai.RateLimitError as e:
             logging.error(f"OpenAI rate limit error: {str(e)}")
@@ -127,7 +130,7 @@ async def get_agents(query: str, app_state: AppState = Depends(get_app_state)):
         raise HTTPException(status_code=500, detail="Chroma DB not initialized")
 
     try:
-        results = app_state.agents_db.similarity_search(query)
+        results = app_state.agents_db.query(query_texts=[query])
         logging.info("Similarity search query executed successfully for agents")
     except HTTPException as http_exc:
         # Handle HTTPException separately
@@ -137,13 +140,16 @@ async def get_agents(query: str, app_state: AppState = Depends(get_app_state)):
         raise HTTPException(status_code=500, detail="Failed to execute similarity search query for agents")
 
     concatenated_yaml = "---\n"
-    for result in results:
-        agent_content = result.page_content.strip()
+    for result in results["documents"]:
+        if len(result) == 0:
+            continue
+        agent_content = result[0].strip()
         agent_data = yaml.safe_load(agent_content)
-        ratings_id = agent_data['metadata'].get('ratings')
+        ratings_id = agent_data['metadata'].get('ratings_id')
 
         try:
-            ratings_results = app_state.ratings_db.get(ratings_id)
+            # TODO: Cannot be hardcoded
+            ratings_results = app_state.ratings_db.get(ids=[f"{ratings_id}_0"])
             if len(ratings_results["documents"]) == 0:
                 logging.error(f"Ratings ID not found in Chroma DB: {ratings_id}")
                 raise HTTPException(status_code=404, detail="Ratings ID not found in Chroma DB")
