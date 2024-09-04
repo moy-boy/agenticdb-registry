@@ -9,7 +9,7 @@ from fastapi import Depends, HTTPException, APIRouter
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from app.state import AppState, get_app_state
-from accept_type import ResponseType
+from app.routes.accept_type import AcceptType
 
 
 router = APIRouter()
@@ -135,10 +135,10 @@ async def get_agents(query: str, request: Request, app_state: AppState = Depends
         accept_header = request.headers.get('Accept')
 
         if accept_header == "application/json":
-            accept_type = ResponseType.JSON
+            accept_type = AcceptType.JSON
             logging.info("Request for JSON response received")
         elif accept_header == "application/x-yaml" or accept_header == "text/yaml":
-            accept_type = ResponseType.YAML
+            accept_type = AcceptType.YAML
             logging.info("Request for JSON response received")
         else:
             logging.error("Unsupported Content-Type")
@@ -160,7 +160,7 @@ async def get_agents(query: str, request: Request, app_state: AppState = Depends
         logging.error(f"Failed to execute similarity search query for agents: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to execute similarity search query for agents")
 
-    if accept_type == ResponseType.YAML:
+    if accept_type == AcceptType.YAML:
 
         concatenated_yaml = "---\n"
         for result in results["documents"]:

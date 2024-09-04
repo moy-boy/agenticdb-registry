@@ -18,50 +18,64 @@ class TestAddAgent(IsolatedAsyncioTestCase):
         cls.post_headers = {'Content-Type': 'application/json'}
         cls.get_headers = {'Accept': 'application/json'}
     def setUp(self):
-        self.test_yaml = """
-metadata:
-  name: financial-data-oracle
-  namespace: sandbox
-  description: |
-    Retrieves financial price data for a variety of tickers and timeframes.
-spec:
-  type: agent
-  lifecycle: experimental
-  owner: buddy@example.com
-  access_level: PRIVATE
-  category: Natural Language
-  url: https://api.example.com/financial-data-oracle
-  parameters:
-    type: object
-    properties:
-      symbol:
-        type: string
-        description: ticker symbol
-      date:
-        type: string
-        description: A specific date in the format yyyy-mm-dd
-      currency:
-        type: string
-        enum:
-          - USD
-          - JPY
-        description: "the currency of the desired output value"
-    required:
-      - symbol
-    additionalProperties: false
-  output:
-    type: float
-    description: Output description for financial-data-oracle
+        self.test_json = """
+{
+    "metadata": {
+        "name": "agent-50",
+        "namespace": "production",
+        "description": "Description for agent-50"
+    },
+    "spec": {
+        "type": "agent",
+        "lifecycle": "stable",
+        "owner": "owner50@business.com",
+        "access_level": "PUBLIC",
+        "category": "Travel",
+        "url": "https://api.business.com/agent-50",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "currency": {
+                    "type": "string",
+                    "description": "Color of the item"
+                },
+                "customer_name": {
+                    "type": "integer",
+                    "description": "The hotel name for the booking"
+                },
+                "date": {
+                    "type": "boolean",
+                    "description": "Type of issue reported"
+                },
+                "clothing_size": {
+                    "type": "object",
+                    "description": "Type of issue reported"
+                },
+                "transaction_id": {
+                    "type": "object",
+                    "description": "Check-in date at the hotel"
+                }
+            },
+            "required": [
+                "currency",
+                "transaction_id"
+            ],
+            "additionalProperties": false
+        },
+        "output": {
+            "type": "object",
+            "description": "Boolean flag indicating success or failure"
+        }
+    }
+}
         """
 
     def test_post_yaml(self):
         with TestClient(create_app()) as c:
             # Parse the YAML string
-            print(self.test_yaml)
-            yaml_data = yaml.safe_load(self.test_yaml)
-            # Convert the parsed YAML data to JSON
-            json_data = json.dumps(yaml_data, indent=2)
-            response = c.post("/agents", content=json_data, headers=self.post_headers)
+            print(self.test_json)
+            json_data = json.loads(self.test_json)
+            response = c.post("/agents", json=json_data, headers=self.post_headers)
             self.assertEqual(200, response.status_code)
             response_json = response.json()
             required_keys = {"agent_manifest", "ratings_manifest"}
