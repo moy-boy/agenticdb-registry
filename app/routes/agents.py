@@ -1,4 +1,5 @@
 import datetime
+from http import HTTPStatus
 import json
 import logging
 import uuid
@@ -35,7 +36,7 @@ async def add_agent(request: Request, app_state: AppState = Depends(get_app_stat
         if content_type == "application/json":
             logging.info("JSON content received")
             try:
-                parsed_content = [json.loads(content_str)]
+                parsed_content = json.loads(content_str)
             except json.JSONDecodeError as e:
                 logging.error(f"Invalid JSON content: {str(e)}")
                 raise HTTPException(status_code=400, detail="Invalid JSON content received")
@@ -50,7 +51,7 @@ async def add_agent(request: Request, app_state: AppState = Depends(get_app_stat
                 raise HTTPException(status_code=400, detail="Invalid YAML content received")
         else:
             logging.error("Unsupported Content-Type")
-            raise HTTPException(status_code=415, detail="Unsupported Content-Type")
+            raise HTTPException(status_code=HTTPStatus.UNSUPPORTED_MEDIA_TYPE, detail="Unsupported Content-Type")
 
     except HTTPException as http_exc:
         raise http_exc
@@ -86,21 +87,6 @@ async def add_agent(request: Request, app_state: AppState = Depends(get_app_stat
         else:  # Assume YAML
             agent_content_str = yaml.dump(parsed_data, sort_keys=False)
             ratings_content_str = yaml.dump(ratings_manifest, sort_keys=False)
-
-        # try:
-        #     current_utc_time = datetime.datetime.now(datetime.UTC).isoformat(timespec='milliseconds') + 'Z'
-        #     agent_docs = app_state.text_splitter.create_documents(
-        #         texts=[agent_content_str],
-        #         metadatas=[{"id": agent_id, "version": 1, "timestamp": current_utc_time}]
-        #     )
-        #     ratings_docs = app_state.text_splitter.create_documents(
-        #         texts=[ratings_content_str],
-        #         metadatas=[{"id": ratings_id, "version": 1, "timestamp": current_utc_time}]
-        #     )
-        #     logging.info("Content split into documents")
-        # except Exception as e:
-        #     logging.error(f"Failed to split content: {str(e)}")
-        #     raise HTTPException(status_code=500, detail="Failed to split content")
 
         try:
             current_utc_time = datetime.datetime.now(datetime.UTC).isoformat(timespec='milliseconds') + 'Z'
@@ -198,11 +184,9 @@ async def get_agents(query: str, request: Request, app_state: AppState = Depends
 
     if accept_type == AcceptType.JSON:
         json_object = []
-        for result in results["documents"]:
-            if len(result) == 0:
-                continue
-            agent_content = result[0].strip()
-            agent_data = json.loads(agent_content)
+        agents = results["documents"][0]
+        for agent in agents:
+            agent_data = json.loads(agent)
             ratings_id = agent_data['metadata'].get('ratings_id')
             try:
                 ratings_results = app_state.ratings_db.get(ids=[f"{ratings_id}"])
@@ -219,8 +203,7 @@ async def get_agents(query: str, request: Request, app_state: AppState = Depends
 
             if ratings_results:
                 ratings_str = ratings_results["documents"][0]
-                ratings_dict = json.loads(ratings_str)
-                agent_data['ratings'] = ratings_dict
+                agent_data['ratings'] = json.loads(ratings_str)
 
             json_object.append(agent_data)
 

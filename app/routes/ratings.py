@@ -73,14 +73,6 @@ async def add_ratings(request: Request, app_state: AppState = Depends(get_app_st
     )
     # convert back to YAML
     ratings_yaml_content_str = yaml.dump(ratings_dict, sort_keys=False)
-    # # Split the YAML content into documents but carry metadata from before
-    # try:
-    #     ratings_docs = app_state.text_splitter.create_documents([ratings_yaml_content_str],
-    #                                                             metadatas=results["metadatas"])
-    #     logging.info("YAML content split into documents")
-    # except Exception as e:
-    #     logging.error(f"Failed to split YAML content: {str(e)}")
-    #     raise HTTPException(status_code=500, detail="Failed to split YAML content")
 
     try:
         # Update document

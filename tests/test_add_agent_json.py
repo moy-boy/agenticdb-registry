@@ -18,56 +18,57 @@ class TestAddAgent(IsolatedAsyncioTestCase):
         cls.post_headers = {'Content-Type': 'application/json'}
         cls.get_headers = {'Accept': 'application/json'}
     def setUp(self):
-        self.test_json = """
-{
-    "metadata": {
-        "name": "agent-50",
-        "namespace": "production",
-        "description": "Description for agent-50"
-    },
-    "spec": {
-        "type": "agent",
-        "lifecycle": "stable",
-        "owner": "owner50@business.com",
-        "access_level": "PUBLIC",
-        "category": "Travel",
-        "url": "https://api.business.com/agent-50",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "currency": {
-                    "type": "string",
-                    "description": "Color of the item"
-                },
-                "customer_name": {
-                    "type": "integer",
-                    "description": "The hotel name for the booking"
-                },
-                "date": {
-                    "type": "boolean",
-                    "description": "Type of issue reported"
-                },
-                "clothing_size": {
-                    "type": "object",
-                    "description": "Type of issue reported"
-                },
-                "transaction_id": {
-                    "type": "object",
-                    "description": "Check-in date at the hotel"
-                }
-            },
-            "required": [
-                "currency",
-                "transaction_id"
-            ],
-            "additionalProperties": false
+        self.test_json = """[
+    {
+        "metadata": {
+            "name": "agent-50",
+            "namespace": "production",
+            "description": "Description for agent-50"
         },
-        "output": {
-            "type": "object",
-            "description": "Boolean flag indicating success or failure"
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner50@business.com",
+            "access_level": "PUBLIC",
+            "category": "Travel",
+            "url": "https://api.business.com/agent-50",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "currency": {
+                        "type": "string",
+                        "description": "Color of the item"
+                    },
+                    "customer_name": {
+                        "type": "integer",
+                        "description": "The hotel name for the booking"
+                    },
+                    "date": {
+                        "type": "boolean",
+                        "description": "Type of issue reported"
+                    },
+                    "clothing_size": {
+                        "type": "object",
+                        "description": "Type of issue reported"
+                    },
+                    "transaction_id": {
+                        "type": "object",
+                        "description": "Check-in date at the hotel"
+                    }
+                },
+                "required": [
+                    "currency",
+                    "transaction_id"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "object",
+                "description": "Boolean flag indicating success or failure"
+            }
         }
     }
-}
+]
         """
 
     def test_post_json(self):
