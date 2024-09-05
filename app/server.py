@@ -1,5 +1,6 @@
 import logging
 import os
+import uvicorn
 from contextlib import asynccontextmanager
 from typing import Any, Dict
 
@@ -108,14 +109,15 @@ def add_cascade_agent_route(fast_app: FastAPI):
 async def lifespan(fast_app: FastAPI):
     try:
         # load_env_file()
-        add_joke_agent_route(fast_app)
-        add_cascade_agent_route(fast_app)
+        # add_joke_agent_route(fast_app)
+        # add_cascade_agent_route(fast_app)
         routes = [route.path for route in fast_app.router.routes]
         logging.info(f"Available routes: {routes}")
 
         fast_app.state.app_state = AppState()
         fast_app.state.app_state.text_splitter = get_text_splitter()
-        fast_app.state.app_state.embedding_function = get_embedding_function()
+        # Only when using OpenAI embeddings, not needed at this point. 
+        # fast_app.state.app_state.embedding_function = get_embedding_function()
 
         chroma_client = chromadb.Client()
 
@@ -125,10 +127,7 @@ async def lifespan(fast_app: FastAPI):
         if "ratings" in [c.name for c in chroma_client.list_collections()]:
             chroma_client.delete_collection(name="ratings")
         fast_app.state.app_state.agents_db = chroma_client.create_collection(name="agents")
-        #                                            embedding_function=fast_app.state.app_state.embedding_function)
-        # Initialize ChromaDB for ratings
         fast_app.state.app_state.ratings_db = chroma_client.create_collection(name="ratings")
-        #                                             embedding_function=fast_app.state.app_state.embedding_function)
 
         logging.info("App state initialized successfully")
         yield
@@ -180,8 +179,6 @@ def create_app():
 
 
 if __name__ == "__main__":
-    import uvicorn
-
     app = create_app()
     logging.info("Starting Agentic DB API...")
     uvicorn.run(app, host="localhost", port=8000)
