@@ -1,50 +1,2151 @@
 [
     {
         "metadata": {
-            "name": "agent-50",
+            "name": "agent-1",
+            "namespace": "sandbox",
+            "description": "Description for agent-1"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "experimental",
+            "owner": "owner1@example.com",
+            "access_level": "PRIVATE",
+            "category": "Finance",
+            "url": "https://api.example.com/agent-1",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "check_in_date": {
+                        "type": "number",
+                        "description": "Check-in date at the hotel"
+                    },
+                    "product_id": {
+                        "type": "object",
+                        "description": "The location of the event"
+                    }
+                },
+                "required": [
+                    "check_in_date",
+                    "product_id"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "array",
+                "description": "ID of the created resource"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-2",
             "namespace": "production",
-            "description": "Description for agent-50"
+            "description": "Description for agent-2"
         },
         "spec": {
             "type": "agent",
             "lifecycle": "stable",
-            "owner": "owner50@business.com",
+            "owner": "owner2@company.com",
             "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
+            "category": "Customer Support",
+            "url": "https://api.company.com/agent-2",
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
+                    "seat_number": {
+                        "type": "boolean",
+                        "description": "Material of the product"
                     },
-                    "customer_name": {
+                    "location": {
+                        "type": "boolean",
+                        "description": "Type of issue reported"
+                    },
+                    "departure_time": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Departure time for the journey"
+                    }
+                },
+                "required": [
+                    "seat_number",
+                    "location",
+                    "departure_time"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "number",
+                "description": "Boolean flag indicating success or failure"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-3",
+            "namespace": "sandbox",
+            "description": "Description for agent-3"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "experimental",
+            "owner": "owner3@service.com",
+            "access_level": "PRIVATE",
+            "category": "Weather",
+            "url": "https://api.service.com/agent-3",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "support_ticket_id": {
                         "type": "integer",
+                        "description": "The amount for the transaction"
+                    },
+                    "room_type": {
+                        "type": "boolean",
+                        "description": "Type of room in the hotel"
+                    },
+                    "departure_time": {
+                        "type": "string",
+                        "description": "Tracking number for the shipment"
+                    },
+                    "material": {
+                        "type": "boolean",
+                        "description": "The product ID for the item"
+                    }
+                },
+                "required": [
+                    "room_type"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "object",
+                "description": "ID of the created resource"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-4",
+            "namespace": "production",
+            "description": "Description for agent-4"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner4@platform.com",
+            "access_level": "PUBLIC",
+            "category": "Health",
+            "url": "https://api.platform.com/agent-4",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "arrival_time": {
+                        "type": "boolean",
                         "description": "The hotel name for the booking"
                     },
-                    "date": {
+                    "timestamp": {
                         "type": "boolean",
+                        "description": "Name of the customer"
+                    },
+                    "symbol": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Material of the product"
+                    }
+                },
+                "required": [
+                    "arrival_time",
+                    "symbol"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "string",
+                "description": "Status of the operation"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-5",
+            "namespace": "sandbox",
+            "description": "Description for agent-5"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "experimental",
+            "owner": "owner5@business.com",
+            "access_level": "PRIVATE",
+            "category": "E-commerce",
+            "url": "https://api.business.com/agent-5",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "resolution_status": {
+                        "type": "integer",
+                        "description": "The transaction ID for the order"
+                    },
+                    "departure_time": {
+                        "type": "string",
+                        "description": "The currency of the transaction"
+                    }
+                },
+                "required": [
+                    "resolution_status"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "object",
+                "description": "Result of the operation"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-6",
+            "namespace": "production",
+            "description": "Description for agent-6"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner6@example.com",
+            "access_level": "PUBLIC",
+            "category": "Education",
+            "url": "https://api.example.com/agent-6",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "room_type": {
+                        "type": "integer",
+                        "description": "The destination for travel"
+                    },
+                    "currency": {
+                        "type": "string",
+                        "description": "The transaction ID for the order"
+                    }
+                },
+                "required": [
+                    "room_type"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "array",
+                "description": "Status of the operation"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-7",
+            "namespace": "sandbox",
+            "description": "Description for agent-7"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "experimental",
+            "owner": "owner7@company.com",
+            "access_level": "PRIVATE",
+            "category": "Technology",
+            "url": "https://api.company.com/agent-7",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "product_id": {
+                        "type": "object",
+                        "description": "Material of the product"
+                    },
+                    "clothing_size": {
+                        "type": "number",
+                        "description": "Departure time for the journey"
+                    },
+                    "order_id": {
+                        "type": "object",
+                        "description": "The product ID for the item"
+                    }
+                },
+                "required": [
+                    "product_id",
+                    "order_id"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "string",
+                "description": "Calculated amount based on the input data"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-8",
+            "namespace": "production",
+            "description": "Description for agent-8"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner8@service.com",
+            "access_level": "PUBLIC",
+            "category": "Transport",
+            "url": "https://api.service.com/agent-8",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "language": {
+                        "type": "string",
+                        "description": "Size of the clothing item"
+                    },
+                    "delivery_date": {
+                        "type": "string",
+                        "description": "The amount for the transaction"
+                    },
+                    "user_id": {
+                        "type": "number",
+                        "description": "Ticker symbol for financial data"
+                    },
+                    "resolution_status": {
+                        "type": "string",
+                        "description": "The currency of the transaction"
+                    },
+                    "currency": {
+                        "type": "integer",
+                        "description": "The seat number for the passenger"
+                    }
+                },
+                "required": [
+                    "delivery_date",
+                    "user_id",
+                    "resolution_status",
+                    "currency"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "boolean",
+                "description": "Status of the operation"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-9",
+            "namespace": "sandbox",
+            "description": "Description for agent-9"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "experimental",
+            "owner": "owner9@platform.com",
+            "access_level": "PRIVATE",
+            "category": "Media",
+            "url": "https://api.platform.com/agent-9",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "language": {
+                        "type": "object",
+                        "description": "A specific date in the format yyyy-mm-dd"
+                    },
+                    "location": {
+                        "type": "integer",
+                        "description": "The currency of the transaction"
+                    },
+                    "customer_name": {
+                        "type": "object",
+                        "description": "Arrival time at the destination"
+                    },
+                    "tracking_number": {
+                        "type": "string",
+                        "description": "Tracking number for the shipment"
+                    },
+                    "order_id": {
+                        "type": "object",
+                        "description": "Material of the product"
+                    }
+                },
+                "required": [
+                    "language",
+                    "location",
+                    "tracking_number",
+                    "order_id"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "string",
+                "description": "Status of the operation"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-10",
+            "namespace": "production",
+            "description": "Description for agent-10"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner10@business.com",
+            "access_level": "PUBLIC",
+            "category": "Sports",
+            "url": "https://api.business.com/agent-10",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "tracking_number": {
+                        "type": "number",
+                        "description": "The language code for the content"
+                    },
+                    "material": {
+                        "type": "boolean",
+                        "description": "Ticker symbol for financial data"
+                    },
+                    "product_id": {
+                        "type": "object",
+                        "description": "The product ID for the item"
+                    }
+                },
+                "required": [
+                    "material"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "array",
+                "description": "ID of the created resource"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-11",
+            "namespace": "sandbox",
+            "description": "Description for agent-11"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "experimental",
+            "owner": "owner11@example.com",
+            "access_level": "PRIVATE",
+            "category": "Travel",
+            "url": "https://api.example.com/agent-11",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "departure_time": {
+                        "type": "number",
+                        "description": "Name of the customer"
+                    },
+                    "timestamp": {
+                        "type": "integer",
+                        "description": "The location of the event"
+                    }
+                },
+                "required": [
+                    "timestamp"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "number",
+                "description": "ID of the created resource"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-12",
+            "namespace": "production",
+            "description": "Description for agent-12"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner12@company.com",
+            "access_level": "PUBLIC",
+            "category": "Clothing",
+            "url": "https://api.company.com/agent-12",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "symbol": {
+                        "type": "number",
+                        "description": "The hotel name for the booking"
+                    },
+                    "seat_number": {
+                        "type": "integer",
+                        "description": "Support ticket ID for the issue"
+                    },
+                    "tracking_number": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "description": "Type of room in the hotel"
+                    },
+                    "issue_type": {
+                        "type": "number",
+                        "description": "The currency of the transaction"
+                    },
+                    "arrival_time": {
+                        "type": "boolean",
+                        "description": "The timestamp of the event"
+                    }
+                },
+                "required": [
+                    "symbol",
+                    "seat_number",
+                    "issue_type"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "number",
+                "description": "Confirmation message for the user"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-13",
+            "namespace": "sandbox",
+            "description": "Description for agent-13"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "experimental",
+            "owner": "owner13@service.com",
+            "access_level": "PRIVATE",
+            "category": "Logistics",
+            "url": "https://api.service.com/agent-13",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "flight_number": {
+                        "type": "boolean",
+                        "description": "Name of the customer"
+                    },
+                    "hotel_name": {
+                        "type": "string",
+                        "description": "Departure time for the journey"
+                    }
+                },
+                "required": [
+                    "flight_number"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "boolean",
+                "description": "Output value for the requested data"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-14",
+            "namespace": "production",
+            "description": "Description for agent-14"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner14@platform.com",
+            "access_level": "PUBLIC",
+            "category": "Finance",
+            "url": "https://api.platform.com/agent-14",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "date": {
+                        "type": "object",
+                        "description": "The destination for travel"
+                    },
+                    "hotel_name": {
+                        "type": "boolean",
+                        "description": "Color of the item"
+                    },
+                    "seat_number": {
+                        "type": "boolean",
+                        "description": "The hotel name for the booking"
+                    },
+                    "language": {
+                        "type": "string",
+                        "description": "Size of the clothing item"
+                    }
+                },
+                "required": [
+                    "language"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "boolean",
+                "description": "Result of the operation"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-15",
+            "namespace": "sandbox",
+            "description": "Description for agent-15"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "experimental",
+            "owner": "owner15@business.com",
+            "access_level": "PRIVATE",
+            "category": "Customer Support",
+            "url": "https://api.business.com/agent-15",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "flight_number": {
+                        "type": "boolean",
+                        "description": "Name of the customer"
+                    },
+                    "clothing_size": {
+                        "type": "string",
+                        "description": "Type of room in the hotel"
+                    },
+                    "amount": {
+                        "type": "boolean",
+                        "description": "The destination for travel"
+                    }
+                },
+                "required": [],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "object",
+                "description": "ID of the created resource"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-16",
+            "namespace": "production",
+            "description": "Description for agent-16"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner16@example.com",
+            "access_level": "PUBLIC",
+            "category": "Weather",
+            "url": "https://api.example.com/agent-16",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "product_id": {
+                        "type": "boolean",
+                        "description": "Flight number for the airline"
+                    },
+                    "issue_type": {
+                        "type": "integer",
+                        "description": "Check-in date at the hotel"
+                    },
+                    "tracking_number": {
+                        "type": "object",
+                        "description": "Check-out date from the hotel"
+                    },
+                    "hotel_name": {
+                        "type": "number",
+                        "description": "Type of room in the hotel"
+                    }
+                },
+                "required": [
+                    "product_id",
+                    "hotel_name"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "number",
+                "description": "Summary of the processed information"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-17",
+            "namespace": "sandbox",
+            "description": "Description for agent-17"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "experimental",
+            "owner": "owner17@company.com",
+            "access_level": "PRIVATE",
+            "category": "Health",
+            "url": "https://api.company.com/agent-17",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "order_id": {
+                        "type": "number",
+                        "description": "The language code for the content"
+                    },
+                    "location": {
+                        "type": "number",
+                        "description": "Flight number for the airline"
+                    }
+                },
+                "required": [
+                    "location"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "object",
+                "description": "Status of the operation"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-18",
+            "namespace": "production",
+            "description": "Description for agent-18"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner18@service.com",
+            "access_level": "PUBLIC",
+            "category": "E-commerce",
+            "url": "https://api.service.com/agent-18",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "issue_type": {
+                        "type": "boolean",
+                        "description": "Tracking number for the shipment"
+                    },
+                    "tracking_number": {
+                        "type": "array",
+                        "items": {
+                            "type": "number"
+                        },
+                        "description": "Type of room in the hotel"
+                    },
+                    "flight_number": {
+                        "type": "boolean",
+                        "description": "Type of issue reported"
+                    },
+                    "delivery_date": {
+                        "type": "number",
+                        "description": "Flight number for the airline"
+                    },
+                    "product_id": {
+                        "type": "object",
+                        "description": "Size of the clothing item"
+                    }
+                },
+                "required": [
+                    "issue_type",
+                    "tracking_number",
+                    "delivery_date"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "integer",
+                "description": "Output value for the requested data"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-19",
+            "namespace": "sandbox",
+            "description": "Description for agent-19"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "experimental",
+            "owner": "owner19@platform.com",
+            "access_level": "PRIVATE",
+            "category": "Education",
+            "url": "https://api.platform.com/agent-19",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "departure_time": {
+                        "type": "number",
+                        "description": "Departure time for the journey"
+                    },
+                    "issue_type": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Type of issue reported"
+                    },
+                    "customer_name": {
+                        "type": "string",
+                        "description": "The order ID for the purchase"
+                    }
+                },
+                "required": [
+                    "departure_time",
+                    "customer_name"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "object",
+                "description": "ID of the created resource"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-20",
+            "namespace": "production",
+            "description": "Description for agent-20"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner20@business.com",
+            "access_level": "PUBLIC",
+            "category": "Technology",
+            "url": "https://api.business.com/agent-20",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "order_id": {
+                        "type": "string",
+                        "description": "The currency of the transaction"
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "description": "The language code for the content"
+                    },
+                    "date": {
+                        "type": "object",
+                        "description": "Arrival time at the destination"
+                    },
+                    "seat_number": {
+                        "type": "integer",
+                        "description": "Status of the issue resolution"
+                    },
+                    "color": {
+                        "type": "integer",
+                        "description": "Color of the item"
+                    }
+                },
+                "required": [
+                    "order_id",
+                    "user_id",
+                    "date",
+                    "seat_number"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "number",
+                "description": "Status of the operation"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-21",
+            "namespace": "sandbox",
+            "description": "Description for agent-21"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "experimental",
+            "owner": "owner21@example.com",
+            "access_level": "PRIVATE",
+            "category": "Transport",
+            "url": "https://api.example.com/agent-21",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "color": {
+                        "type": "boolean",
+                        "description": "The location of the event"
+                    },
+                    "support_ticket_id": {
+                        "type": "integer",
+                        "description": "Tracking number for the shipment"
+                    }
+                },
+                "required": [
+                    "color",
+                    "support_ticket_id"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "integer",
+                "description": "Result of the operation"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-22",
+            "namespace": "production",
+            "description": "Description for agent-22"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner22@company.com",
+            "access_level": "PUBLIC",
+            "category": "Media",
+            "url": "https://api.company.com/agent-22",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "timestamp": {
+                        "type": "integer",
+                        "description": "The location of the event"
+                    },
+                    "customer_name": {
+                        "type": "object",
+                        "description": "Tracking number for the shipment"
+                    },
+                    "location": {
+                        "type": "integer",
+                        "description": "Check-out date from the hotel"
+                    },
+                    "tracking_number": {
+                        "type": "object",
+                        "description": "The transaction ID for the order"
+                    },
+                    "product_id": {
+                        "type": "object",
+                        "description": "Material of the product"
+                    }
+                },
+                "required": [
+                    "customer_name",
+                    "location",
+                    "product_id"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "string",
+                "description": "Boolean flag indicating success or failure"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-23",
+            "namespace": "sandbox",
+            "description": "Description for agent-23"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "experimental",
+            "owner": "owner23@service.com",
+            "access_level": "PRIVATE",
+            "category": "Sports",
+            "url": "https://api.service.com/agent-23",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "support_ticket_id": {
+                        "type": "boolean",
+                        "description": "The order ID for the purchase"
+                    },
+                    "room_type": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "The destination for travel"
+                    },
+                    "check_in_date": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "description": "The language code for the content"
+                    },
+                    "tracking_number": {
+                        "type": "string",
+                        "description": "Status of the issue resolution"
+                    },
+                    "customer_name": {
+                        "type": "boolean",
+                        "description": "The hotel name for the booking"
+                    }
+                },
+                "required": [
+                    "support_ticket_id",
+                    "room_type",
+                    "check_in_date"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "integer",
+                "description": "ID of the created resource"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-24",
+            "namespace": "production",
+            "description": "Description for agent-24"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner24@platform.com",
+            "access_level": "PUBLIC",
+            "category": "Travel",
+            "url": "https://api.platform.com/agent-24",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "seat_number": {
+                        "type": "array",
+                        "items": {
+                            "type": "number"
+                        },
+                        "description": "Check-out date from the hotel"
+                    },
+                    "symbol": {
+                        "type": "boolean",
+                        "description": "The order ID for the purchase"
+                    }
+                },
+                "required": [],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "integer",
+                "description": "ID of the created resource"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-25",
+            "namespace": "sandbox",
+            "description": "Description for agent-25"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "experimental",
+            "owner": "owner25@business.com",
+            "access_level": "PRIVATE",
+            "category": "Clothing",
+            "url": "https://api.business.com/agent-25",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "timestamp": {
+                        "type": "object",
+                        "description": "Arrival time at the destination"
+                    },
+                    "material": {
+                        "type": "object",
+                        "description": "The amount for the transaction"
+                    }
+                },
+                "required": [
+                    "timestamp"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "array",
+                "description": "Boolean flag indicating success or failure"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-26",
+            "namespace": "production",
+            "description": "Description for agent-26"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner26@example.com",
+            "access_level": "PUBLIC",
+            "category": "Logistics",
+            "url": "https://api.example.com/agent-26",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "arrival_time": {
+                        "type": "array",
+                        "items": {
+                            "type": "boolean"
+                        },
+                        "description": "Tracking number for the shipment"
+                    },
+                    "check_out_date": {
+                        "type": "integer",
+                        "description": "Check-in date at the hotel"
+                    },
+                    "room_type": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Departure time for the journey"
+                    },
+                    "language": {
+                        "type": "number",
+                        "description": "Ticker symbol for financial data"
+                    }
+                },
+                "required": [
+                    "arrival_time",
+                    "room_type",
+                    "language"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "object",
+                "description": "Output value for the requested data"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-27",
+            "namespace": "sandbox",
+            "description": "Description for agent-27"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "experimental",
+            "owner": "owner27@company.com",
+            "access_level": "PRIVATE",
+            "category": "Finance",
+            "url": "https://api.company.com/agent-27",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "check_out_date": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "description": "Check-in date at the hotel"
+                    },
+                    "hotel_name": {
+                        "type": "integer",
+                        "description": "Departure time for the journey"
+                    },
+                    "material": {
+                        "type": "integer",
+                        "description": "Color of the item"
+                    },
+                    "location": {
+                        "type": "integer",
+                        "description": "The amount for the transaction"
+                    }
+                },
+                "required": [
+                    "check_out_date",
+                    "hotel_name",
+                    "material",
+                    "location"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "integer",
+                "description": "Confirmation message for the user"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-28",
+            "namespace": "production",
+            "description": "Description for agent-28"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner28@service.com",
+            "access_level": "PUBLIC",
+            "category": "Customer Support",
+            "url": "https://api.service.com/agent-28",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "delivery_date": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Check-in date at the hotel"
+                    },
+                    "arrival_time": {
+                        "type": "number",
+                        "description": "The timestamp of the event"
+                    }
+                },
+                "required": [
+                    "delivery_date"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "object",
+                "description": "ID of the created resource"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-29",
+            "namespace": "sandbox",
+            "description": "Description for agent-29"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "experimental",
+            "owner": "owner29@platform.com",
+            "access_level": "PRIVATE",
+            "category": "Weather",
+            "url": "https://api.platform.com/agent-29",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "hotel_name": {
+                        "type": "boolean",
+                        "description": "Tracking number for the shipment"
+                    },
+                    "location": {
+                        "type": "number",
+                        "description": "The destination for travel"
+                    },
+                    "delivery_date": {
+                        "type": "number",
+                        "description": "Name of the customer"
+                    },
+                    "issue_type": {
+                        "type": "boolean",
+                        "description": "Flight number for the airline"
+                    },
+                    "arrival_time": {
+                        "type": "string",
+                        "description": "Ticker symbol for financial data"
+                    }
+                },
+                "required": [
+                    "hotel_name",
+                    "location"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "string",
+                "description": "Confirmation message for the user"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-30",
+            "namespace": "production",
+            "description": "Description for agent-30"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner30@business.com",
+            "access_level": "PUBLIC",
+            "category": "Health",
+            "url": "https://api.business.com/agent-30",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "delivery_date": {
+                        "type": "string",
+                        "description": "Type of room in the hotel"
+                    },
+                    "resolution_status": {
+                        "type": "string",
+                        "description": "The seat number for the passenger"
+                    },
+                    "color": {
+                        "type": "array",
+                        "items": {
+                            "type": "number"
+                        },
+                        "description": "Check-out date from the hotel"
+                    },
+                    "amount": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "description": "Type of issue reported"
+                    },
+                    "order_id": {
+                        "type": "number",
+                        "description": "Tracking number for the shipment"
+                    }
+                },
+                "required": [
+                    "resolution_status",
+                    "color",
+                    "amount"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "integer",
+                "description": "Result of the operation"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-31",
+            "namespace": "sandbox",
+            "description": "Description for agent-31"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "experimental",
+            "owner": "owner31@example.com",
+            "access_level": "PRIVATE",
+            "category": "E-commerce",
+            "url": "https://api.example.com/agent-31",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "symbol": {
+                        "type": "number",
+                        "description": "Type of issue reported"
+                    },
+                    "language": {
+                        "type": "integer",
+                        "description": "The timestamp of the event"
+                    },
+                    "hotel_name": {
+                        "type": "integer",
+                        "description": "Material of the product"
+                    },
+                    "clothing_size": {
+                        "type": "number",
+                        "description": "The hotel name for the booking"
+                    }
+                },
+                "required": [
+                    "symbol",
+                    "clothing_size"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "string",
+                "description": "Boolean flag indicating success or failure"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-32",
+            "namespace": "production",
+            "description": "Description for agent-32"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner32@company.com",
+            "access_level": "PUBLIC",
+            "category": "Education",
+            "url": "https://api.company.com/agent-32",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "color": {
+                        "type": "number",
+                        "description": "The seat number for the passenger"
+                    },
+                    "tracking_number": {
+                        "type": "number",
+                        "description": "The currency of the transaction"
+                    },
+                    "resolution_status": {
+                        "type": "object",
+                        "description": "Tracking number for the shipment"
+                    },
+                    "delivery_date": {
+                        "type": "array",
+                        "items": {
+                            "type": "boolean"
+                        },
+                        "description": "The currency of the transaction"
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "description": "Name of the customer"
+                    }
+                },
+                "required": [
+                    "color",
+                    "tracking_number"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "array",
+                "description": "Boolean flag indicating success or failure"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-33",
+            "namespace": "sandbox",
+            "description": "Description for agent-33"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "experimental",
+            "owner": "owner33@service.com",
+            "access_level": "PRIVATE",
+            "category": "Technology",
+            "url": "https://api.service.com/agent-33",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "material": {
+                        "type": "string",
+                        "description": "Check-out date from the hotel"
+                    },
+                    "delivery_date": {
+                        "type": "integer",
+                        "description": "The amount for the transaction"
+                    },
+                    "issue_type": {
+                        "type": "boolean",
+                        "description": "Size of the clothing item"
+                    }
+                },
+                "required": [
+                    "material"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "integer",
+                "description": "Summary of the processed information"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-34",
+            "namespace": "production",
+            "description": "Description for agent-34"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner34@platform.com",
+            "access_level": "PUBLIC",
+            "category": "Transport",
+            "url": "https://api.platform.com/agent-34",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "product_id": {
+                        "type": "string",
+                        "description": "The product ID for the item"
+                    },
+                    "order_id": {
+                        "type": "integer",
+                        "description": "Check-out date from the hotel"
+                    },
+                    "tracking_number": {
+                        "type": "array",
+                        "items": {
+                            "type": "number"
+                        },
+                        "description": "Departure time for the journey"
+                    }
+                },
+                "required": [
+                    "product_id",
+                    "order_id"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "number",
+                "description": "Status of the operation"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-35",
+            "namespace": "sandbox",
+            "description": "Description for agent-35"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "experimental",
+            "owner": "owner35@business.com",
+            "access_level": "PRIVATE",
+            "category": "Media",
+            "url": "https://api.business.com/agent-35",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "departure_time": {
+                        "type": "boolean",
+                        "description": "The location of the event"
+                    },
+                    "material": {
+                        "type": "array",
+                        "items": {
+                            "type": "number"
+                        },
+                        "description": "Ticker symbol for financial data"
+                    },
+                    "symbol": {
+                        "type": "number",
+                        "description": "Flight number for the airline"
+                    }
+                },
+                "required": [
+                    "departure_time"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "object",
+                "description": "Status of the operation"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-36",
+            "namespace": "production",
+            "description": "Description for agent-36"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner36@example.com",
+            "access_level": "PUBLIC",
+            "category": "Sports",
+            "url": "https://api.example.com/agent-36",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "seat_number": {
+                        "type": "string",
+                        "description": "Arrival time at the destination"
+                    },
+                    "customer_name": {
+                        "type": "boolean",
+                        "description": "Flight number for the airline"
+                    },
+                    "amount": {
+                        "type": "array",
+                        "items": {
+                            "type": "number"
+                        },
+                        "description": "Ticker symbol for financial data"
+                    },
+                    "hotel_name": {
+                        "type": "object",
+                        "description": "Check-out date from the hotel"
+                    },
+                    "departure_time": {
+                        "type": "integer",
+                        "description": "Departure time for the journey"
+                    }
+                },
+                "required": [
+                    "seat_number",
+                    "departure_time"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "object",
+                "description": "Confirmation message for the user"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-37",
+            "namespace": "sandbox",
+            "description": "Description for agent-37"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "experimental",
+            "owner": "owner37@company.com",
+            "access_level": "PRIVATE",
+            "category": "Travel",
+            "url": "https://api.company.com/agent-37",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "color": {
+                        "type": "integer",
+                        "description": "Support ticket ID for the issue"
+                    },
+                    "seat_number": {
+                        "type": "number",
+                        "description": "Type of issue reported"
+                    }
+                },
+                "required": [
+                    "color"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "integer",
+                "description": "ID of the created resource"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-38",
+            "namespace": "production",
+            "description": "Description for agent-38"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner38@service.com",
+            "access_level": "PUBLIC",
+            "category": "Clothing",
+            "url": "https://api.service.com/agent-38",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "timestamp": {
+                        "type": "string",
+                        "description": "Size of the clothing item"
+                    },
+                    "user_id": {
+                        "type": "boolean",
+                        "description": "Name of the customer"
+                    },
+                    "customer_name": {
+                        "type": "number",
+                        "description": "The destination for travel"
+                    }
+                },
+                "required": [
+                    "timestamp"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "string",
+                "description": "Boolean flag indicating success or failure"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-39",
+            "namespace": "sandbox",
+            "description": "Description for agent-39"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "experimental",
+            "owner": "owner39@platform.com",
+            "access_level": "PRIVATE",
+            "category": "Logistics",
+            "url": "https://api.platform.com/agent-39",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "hotel_name": {
+                        "type": "boolean",
+                        "description": "Support ticket ID for the issue"
+                    },
+                    "delivery_date": {
+                        "type": "integer",
+                        "description": "A specific date in the format yyyy-mm-dd"
+                    },
+                    "support_ticket_id": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "description": "The language code for the content"
+                    }
+                },
+                "required": [
+                    "delivery_date"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "number",
+                "description": "Confirmation message for the user"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-40",
+            "namespace": "production",
+            "description": "Description for agent-40"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner40@business.com",
+            "access_level": "PUBLIC",
+            "category": "Finance",
+            "url": "https://api.business.com/agent-40",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "material": {
+                        "type": "integer",
                         "description": "Type of issue reported"
                     },
                     "clothing_size": {
                         "type": "object",
                         "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
                     }
                 },
                 "required": [
-                    "currency",
+                    "material"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "object",
+                "description": "ID of the created resource"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-41",
+            "namespace": "sandbox",
+            "description": "Description for agent-41"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "experimental",
+            "owner": "owner41@example.com",
+            "access_level": "PRIVATE",
+            "category": "Customer Support",
+            "url": "https://api.example.com/agent-41",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "timestamp": {
+                        "type": "number",
+                        "description": "The timestamp of the event"
+                    },
+                    "arrival_time": {
+                        "type": "object",
+                        "description": "Support ticket ID for the issue"
+                    },
+                    "check_in_date": {
+                        "type": "string",
+                        "description": "The seat number for the passenger"
+                    },
+                    "date": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Check-out date from the hotel"
+                    },
+                    "flight_number": {
+                        "type": "boolean",
+                        "description": "Expected delivery date"
+                    }
+                },
+                "required": [
+                    "timestamp",
+                    "flight_number"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "number",
+                "description": "Boolean flag indicating success or failure"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-42",
+            "namespace": "production",
+            "description": "Description for agent-42"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner42@company.com",
+            "access_level": "PUBLIC",
+            "category": "Weather",
+            "url": "https://api.company.com/agent-42",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "room_type": {
+                        "type": "integer",
+                        "description": "Size of the clothing item"
+                    },
+                    "flight_number": {
+                        "type": "integer",
+                        "description": "Status of the issue resolution"
+                    },
+                    "symbol": {
+                        "type": "array",
+                        "items": {
+                            "type": "boolean"
+                        },
+                        "description": "Status of the issue resolution"
+                    },
+                    "date": {
+                        "type": "boolean",
+                        "description": "The hotel name for the booking"
+                    },
+                    "amount": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "The seat number for the passenger"
+                    }
+                },
+                "required": [
+                    "room_type"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "number",
+                "description": "Result of the operation"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-43",
+            "namespace": "sandbox",
+            "description": "Description for agent-43"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "experimental",
+            "owner": "owner43@service.com",
+            "access_level": "PRIVATE",
+            "category": "Health",
+            "url": "https://api.service.com/agent-43",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "clothing_size": {
+                        "type": "boolean",
+                        "description": "The location of the event"
+                    },
+                    "transaction_id": {
+                        "type": "number",
+                        "description": "Material of the product"
+                    }
+                },
+                "required": [
+                    "transaction_id"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "boolean",
+                "description": "ID of the created resource"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-44",
+            "namespace": "production",
+            "description": "Description for agent-44"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner44@platform.com",
+            "access_level": "PUBLIC",
+            "category": "E-commerce",
+            "url": "https://api.platform.com/agent-44",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "issue_type": {
+                        "type": "number",
+                        "description": "Check-in date at the hotel"
+                    },
+                    "amount": {
+                        "type": "boolean",
+                        "description": "Ticker symbol for financial data"
+                    },
+                    "flight_number": {
+                        "type": "integer",
+                        "description": "Departure time for the journey"
+                    }
+                },
+                "required": [
+                    "issue_type",
+                    "amount",
+                    "flight_number"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "string",
+                "description": "Result of the operation"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-45",
+            "namespace": "sandbox",
+            "description": "Description for agent-45"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "experimental",
+            "owner": "owner45@business.com",
+            "access_level": "PRIVATE",
+            "category": "Education",
+            "url": "https://api.business.com/agent-45",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "user_id": {
+                        "type": "object",
+                        "description": "Expected delivery date"
+                    },
+                    "symbol": {
+                        "type": "boolean",
+                        "description": "Material of the product"
+                    }
+                },
+                "required": [
+                    "user_id"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "object",
+                "description": "Status of the operation"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-46",
+            "namespace": "production",
+            "description": "Description for agent-46"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner46@example.com",
+            "access_level": "PUBLIC",
+            "category": "Technology",
+            "url": "https://api.example.com/agent-46",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "timestamp": {
+                        "type": "boolean",
+                        "description": "Type of room in the hotel"
+                    },
+                    "destination": {
+                        "type": "object",
+                        "description": "The currency of the transaction"
+                    }
+                },
+                "required": [
+                    "timestamp"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "object",
+                "description": "Result of the operation"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-47",
+            "namespace": "sandbox",
+            "description": "Description for agent-47"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "experimental",
+            "owner": "owner47@company.com",
+            "access_level": "PRIVATE",
+            "category": "Transport",
+            "url": "https://api.company.com/agent-47",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "hotel_name": {
+                        "type": "boolean",
+                        "description": "The product ID for the item"
+                    },
+                    "seat_number": {
+                        "type": "object",
+                        "description": "The amount for the transaction"
+                    },
+                    "tracking_number": {
+                        "type": "integer",
+                        "description": "The destination for travel"
+                    },
+                    "transaction_id": {
+                        "type": "integer",
+                        "description": "Type of issue reported"
+                    }
+                },
+                "required": [
+                    "hotel_name",
+                    "seat_number",
+                    "tracking_number"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "integer",
+                "description": "Result of the operation"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-48",
+            "namespace": "production",
+            "description": "Description for agent-48"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner48@service.com",
+            "access_level": "PUBLIC",
+            "category": "Media",
+            "url": "https://api.service.com/agent-48",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "product_id": {
+                        "type": "integer",
+                        "description": "Material of the product"
+                    },
+                    "check_in_date": {
+                        "type": "object",
+                        "description": "Color of the item"
+                    },
+                    "order_id": {
+                        "type": "boolean",
+                        "description": "Name of the customer"
+                    },
+                    "destination": {
+                        "type": "number",
+                        "description": "Type of room in the hotel"
+                    }
+                },
+                "required": [
+                    "check_in_date"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "string",
+                "description": "Calculated amount based on the input data"
+            }
+        }
+    },
+    {
+        "metadata": {
+            "name": "agent-49",
+            "namespace": "sandbox",
+            "description": "Description for agent-49"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "experimental",
+            "owner": "owner49@platform.com",
+            "access_level": "PRIVATE",
+            "category": "Sports",
+            "url": "https://api.platform.com/agent-49",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "currency": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "description": "Type of room in the hotel"
+                    },
+                    "destination": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "The timestamp of the event"
+                    },
+                    "transaction_id": {
+                        "type": "object",
+                        "description": "A specific date in the format yyyy-mm-dd"
+                    },
+                    "check_out_date": {
+                        "type": "boolean",
+                        "description": "The timestamp of the event"
+                    }
+                },
+                "required": [
                     "transaction_id"
                 ],
                 "additionalProperties": false
             },
             "output": {
                 "type": "object",
-                "description": "Boolean flag indicating success or failure"
+                "description": "Summary of the processed information"
             }
         }
     },
@@ -64,2382 +2165,41 @@
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
+                    "seat_number": {
+                        "type": "array",
+                        "items": {
+                            "type": "boolean"
+                        },
+                        "description": "Ticker symbol for financial data"
                     },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
+                    "location": {
+                        "type": "number",
+                        "description": "Departure time for the journey"
                     },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
+                    "destination": {
                         "type": "object",
-                        "description": "Type of issue reported"
+                        "description": "Check-out date from the hotel"
                     },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
+                    "user_id": {
+                        "type": "array",
+                        "items": {
+                            "type": "number"
+                        },
+                        "description": "The language code for the content"
+                    },
+                    "flight_number": {
+                        "type": "array",
+                        "items": {
+                            "type": "boolean"
+                        },
+                        "description": "A specific date in the format yyyy-mm-dd"
                     }
                 },
                 "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "description": "Boolean flag indicating success or failure"
-            }
-        }
-    },
-    {
-        "metadata": {
-            "name": "agent-50",
-            "namespace": "production",
-            "description": "Description for agent-50"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "url": "https://api.business.com/agent-50",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "currency": {
-                        "type": "string",
-                        "description": "Color of the item"
-                    },
-                    "customer_name": {
-                        "type": "integer",
-                        "description": "The hotel name for the booking"
-                    },
-                    "date": {
-                        "type": "boolean",
-                        "description": "Type of issue reported"
-                    },
-                    "clothing_size": {
-                        "type": "object",
-                        "description": "Type of issue reported"
-                    },
-                    "transaction_id": {
-                        "type": "object",
-                        "description": "Check-in date at the hotel"
-                    }
-                },
-                "required": [
-                    "currency",
-                    "transaction_id"
+                    "seat_number",
+                    "destination",
+                    "user_id",
+                    "flight_number"
                 ],
                 "additionalProperties": false
             },

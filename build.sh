@@ -1,4 +1,5 @@
-docker rmi agenticdb
-docker builder prune --all --force
+# Uncomment if needed
+# docker rmi agenticdb
+# docker builder prune --all --force
 docker build --no-cache -t agenticdb .
 

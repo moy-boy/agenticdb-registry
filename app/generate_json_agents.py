@@ -1,3 +1,4 @@
+from copy import deepcopy
 import random
 import json
 
@@ -94,7 +95,7 @@ for i in range(50):
             required_fields.append(property_name)
 
     # Copy base_json and set values for each agent
-    agent_json = base_json.copy()
+    agent_json = deepcopy(base_json)
     agent_json["metadata"]["name"] = f"agent-{i + 1}"
     agent_json["metadata"]["namespace"] = "sandbox" if i % 2 == 0 else "production"
     agent_json["metadata"]["description"] = f"Description for agent-{i + 1}"
