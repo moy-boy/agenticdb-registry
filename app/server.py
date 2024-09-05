@@ -26,6 +26,9 @@ from app.state import AppState
 
 def load_env_file():
     # Try to find and load the default .env file first
+    if any(key in os.environ for key in ['OPENAI_API_KEY', 'AZURE_OPENAI_API_KEY']):
+        logging.info("Environment variables already set, skipping .env file loading.")
+        return
     env_path = find_dotenv()
     if env_path != "":
         load_dotenv(dotenv_path=env_path, override=True)
@@ -56,7 +59,6 @@ def get_text_splitter():
 
 def get_embedding_function():
     return OpenAIEmbeddingFunction(api_key=os.environ.get('OPENAI_API_KEY'), model_name="text-embedding-3-small")
-    # return OpenAIEmbeddings(model="text-embedding-3-small")
 
 
 class YAMLContent(BaseModel):
@@ -105,7 +107,7 @@ def add_cascade_agent_route(fast_app: FastAPI):
 @asynccontextmanager
 async def lifespan(fast_app: FastAPI):
     try:
-        load_env_file()
+        # load_env_file()
         add_joke_agent_route(fast_app)
         add_cascade_agent_route(fast_app)
         routes = [route.path for route in fast_app.router.routes]
@@ -122,11 +124,11 @@ async def lifespan(fast_app: FastAPI):
             chroma_client.delete_collection(name="agents")
         if "ratings" in [c.name for c in chroma_client.list_collections()]:
             chroma_client.delete_collection(name="ratings")
-        fast_app.state.app_state.agents_db = chroma_client.create_collection(name="agents",
-                                                    embedding_function=fast_app.state.app_state.embedding_function)
+        fast_app.state.app_state.agents_db = chroma_client.create_collection(name="agents")
+        #                                            embedding_function=fast_app.state.app_state.embedding_function)
         # Initialize ChromaDB for ratings
-        fast_app.state.app_state.ratings_db = chroma_client.create_collection(name="ratings",
-                                                     embedding_function=fast_app.state.app_state.embedding_function)
+        fast_app.state.app_state.ratings_db = chroma_client.create_collection(name="ratings")
+        #                                             embedding_function=fast_app.state.app_state.embedding_function)
 
         logging.info("App state initialized successfully")
         yield
