@@ -2,7 +2,7 @@
 FROM python:3.12.5-bookworm
 
 # Set the working directory
-WORKDIR /app
+WORKDIR /app/app
 
 # Set the PYTHONPATH environment variable
 ENV PYTHONPATH=/app
