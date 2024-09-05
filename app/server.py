@@ -118,6 +118,10 @@ async def lifespan(fast_app: FastAPI):
         chroma_client = chromadb.Client()
 
         # Initialize ChromaDB for agents
+        if "agents" in [c.name for c in chroma_client.list_collections()]:
+            chroma_client.delete_collection(name="agents")
+        if "ratings" in [c.name for c in chroma_client.list_collections()]:
+            chroma_client.delete_collection(name="ratings")
         fast_app.state.app_state.agents_db = chroma_client.create_collection(name="agents",
                                                     embedding_function=fast_app.state.app_state.embedding_function)
         # Initialize ChromaDB for ratings
