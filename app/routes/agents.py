@@ -25,6 +25,7 @@ async def add_agent(request: Request, app_state: AppState = Depends(get_app_stat
 
     try:
         content_type = request.headers.get('Content-Type')
+        accept_header = request.headers.get('Accept')
         raw_body = await request.body()
 
         if not raw_body.strip():
@@ -60,6 +61,10 @@ async def add_agent(request: Request, app_state: AppState = Depends(get_app_stat
         raise HTTPException(status_code=400, detail=f"Failed to read request body: {str(e)}")
 
     response = []
+    agents_json_object = []
+    ratings_json_object = []
+    agents_concatenated_yaml = "---\n"
+    ratings_concatenated_yaml = "---\n"
 
     for parsed_data in parsed_content:
         agent_id = str(uuid.uuid4())
@@ -81,12 +86,16 @@ async def add_agent(request: Request, app_state: AppState = Depends(get_app_stat
             }
         }
 
-        if content_type == "application/json":
+        if accept_header == "application/json":
+            agents_json_object.append(parsed_data)
+            ratings_json_object.append(ratings_manifest)
             agent_content_str = json.dumps(parsed_data)
             ratings_content_str = json.dumps(ratings_manifest)
         else:  # Assume YAML
             agent_content_str = yaml.dump(parsed_data, sort_keys=False)
             ratings_content_str = yaml.dump(ratings_manifest, sort_keys=False)
+            agents_concatenated_yaml += agent_content_str + "\n---\n"
+            ratings_concatenated_yaml += ratings_content_str + "\n---\n"
 
         try:
             current_utc_time = datetime.datetime.now(datetime.UTC).isoformat(timespec='milliseconds') + 'Z'
@@ -104,12 +113,20 @@ async def add_agent(request: Request, app_state: AppState = Depends(get_app_stat
             logging.error(f"Failed to add documents to Chroma DB: {str(e)}")
             raise HTTPException(status_code=500, detail="Failed to add documents to Chroma DB")
 
-        response.append({
-            "agent_manifest": parsed_data,
-            "ratings_manifest": ratings_manifest
-        })
+        # response.append({
+        #     "agent_manifest": parsed_data,
+        #     "ratings_manifest": ratings_manifest
+        # })
 
-    return response
+    if accept_header == "application/json":
+        return JSONResponse(content=agents_json_object)
+    else:
+        # Remove the last separator if it exists
+        if agents_concatenated_yaml.endswith("\n---\n"):
+            agents_concatenated_yaml = agents_concatenated_yaml[:-5]
+        return Response(content=agents_concatenated_yaml.strip(), media_type="application/x-yaml")
+
+
 
 
 @router.get("/agents")
@@ -180,7 +197,6 @@ async def get_agents(query: str, request: Request, app_state: AppState = Depends
             concatenated_yaml = concatenated_yaml[:-5]
 
         return Response(content=concatenated_yaml.strip(), media_type="application/x-yaml")
-        # return JSONResponse(content={"agents": concatenated_yaml.strip()})
 
     if accept_type == AcceptType.JSON:
         json_object = []

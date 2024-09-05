@@ -1,6 +1,6 @@
+from http import HTTPStatus
 import unittest
 import yaml
-import json
 import warnings
 from fastapi.testclient import TestClient
 from unittest import IsolatedAsyncioTestCase
@@ -58,19 +58,19 @@ spec:
     def test_post_yaml(self):
         with TestClient(create_app()) as c:
             response = c.post("/agents", content=self.test_yaml, headers=self.post_headers)
-            self.assertEqual(200, response.status_code)
-            response_json = response.json()
-            required_keys = {"agent_manifest", "ratings_manifest"}
-            for agent in response_json:
+            self.assertEqual(HTTPStatus.OK, response.status_code)
+            agents = list(yaml.safe_load_all(response.content))
+            required_keys = {"metadata", "spec"}
+            for agent in agents:
                 self.assertTrue(required_keys.issubset(agent.keys()))
-                metadata = agent["agent_manifest"]["metadata"]
+                metadata = agent["metadata"]
                 required_metadata_keys = {"id", "ratings_id"}
                 self.assertTrue(required_metadata_keys.issubset(metadata.keys()))
-                print(json.dumps(response_json, indent=2))
+                print(yaml.safe_dump(agent, indent=2))
 
             query = "Which agents have a category of Natural Language?"
             response = c.get("/agents", params={"query": query}, headers=self.get_headers)
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             try:
                 agents = list(yaml.safe_load_all(response.content))
                 for agent in agents:

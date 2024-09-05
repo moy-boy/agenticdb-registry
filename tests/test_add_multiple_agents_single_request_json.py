@@ -1,3 +1,4 @@
+from http import HTTPStatus
 import unittest
 import json
 import warnings
@@ -26,22 +27,29 @@ class TestAddMultipleAgentsSingleRequest(IsolatedAsyncioTestCase):
         with TestClient(create_app()) as c:
             with open(self.agent_test_file, "r") as file:
                 json_data = json.load(file)
-                response = c.post("/agents", json=json_data, headers=self.post_headers)
-                self.assertEqual(response.status_code, 200)
+                merged_headers = {**self.post_headers, **self.get_headers}
+                response = c.post("/agents", json=json_data, headers=merged_headers)
+                self.assertEqual(HTTPStatus.OK, response.status_code)
                 response_json = response.json()
-                required_keys = {"agent_manifest", "ratings_manifest"}
+                required_keys = {"metadata", "spec"}
                 for agent in response_json:
                     self.assertTrue(required_keys.issubset(agent.keys()))
+                    metadata = agent["metadata"]
+                    required_metadata_keys = {"id", "ratings_id"}
+                    self.assertTrue(required_metadata_keys.issubset(metadata.keys()))
+                    print(json.dumps(response_json, indent=2))
 
             query = "Which agents have a category of Customer Support?"
             response = c.get("/agents", params={"query": query}, headers=self.get_headers)
-            self.assertEqual(response.status_code, 200)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             try:
                 agents = response.json()
                 self.assertEqual(10, len(agents))
                 for agent in agents:
                     required_keys = {"metadata", "ratings", "spec"}
                     self.assertTrue(required_keys.issubset(agent.keys()))
+                    self.assertIn("name", agent["metadata"])
+                    self.assertIn("score", agent["ratings"]["data"])
                     print(json.dumps(agent))
             except Exception as e:
                 self.fail(f"Failed to parse YAML: {str(e)}")

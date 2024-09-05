@@ -1,3 +1,4 @@
+from http import HTTPStatus
 import unittest
 import yaml
 import json
@@ -75,20 +76,22 @@ class TestAddAgent(IsolatedAsyncioTestCase):
         with TestClient(create_app()) as c:
             print(self.test_json)
             json_data = json.loads(self.test_json)
-            response = c.post("/agents", json=json_data, headers=self.post_headers)
-            self.assertEqual(200, response.status_code)
+            # Assuming self.post_headers and self.get_headers are dictionaries
+            merged_headers = {**self.post_headers, **self.get_headers}
+            response = c.post("/agents", json=json_data, headers=merged_headers)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             response_json = response.json()
-            required_keys = {"agent_manifest", "ratings_manifest"}
+            required_keys = {"metadata", "spec"}
             for agent in response_json:
                 self.assertTrue(required_keys.issubset(agent.keys()))
-                metadata = agent["agent_manifest"]["metadata"]
+                metadata = agent["metadata"]
                 required_metadata_keys = {"id", "ratings_id"}
                 self.assertTrue(required_metadata_keys.issubset(metadata.keys()))
                 print(json.dumps(response_json, indent=2))
 
             query = "Which agents can help interview candidates?"
             response = c.get("/agents", params={"query": query}, headers=self.get_headers)
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             try:
                 agents_json = response.json()
                 for agent in agents_json:

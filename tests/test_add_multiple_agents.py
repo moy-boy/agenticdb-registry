@@ -1,3 +1,4 @@
+from http import HTTPStatus
 import unittest
 import yaml
 import warnings
@@ -33,15 +34,19 @@ class TestAddMultipleAgents(IsolatedAsyncioTestCase):
                     # Serialize each agent back to a YAML string
                     agent_yaml = yaml.dump(agent)
                     response = c.post("/agents", content=agent_yaml, headers=self.post_headers)
-                    self.assertEqual(200, response.status_code)
-                    response_json = response.json()
-                    required_keys = {"agent_manifest", "ratings_manifest"}
-                    for response_agent in response_json:
-                        self.assertTrue(required_keys.issubset(response_agent.keys()))
+                    self.assertEqual(HTTPStatus.OK, response.status_code)
+                    response_agents = list(yaml.safe_load_all(response.content))
+                    required_keys = {"metadata", "spec"}
+                    single_agent = response_agents[0]
+                    self.assertTrue(required_keys.issubset(single_agent.keys()))
+                    metadata = single_agent["metadata"]
+                    required_metadata_keys = {"id", "ratings_id"}
+                    self.assertTrue(required_metadata_keys.issubset(metadata.keys()))
+                    print(yaml.safe_dump(agent, indent=2))
 
             query = "Which agents have a category of Customer Support?"
             response = c.get("/agents", params={"query": query}, headers=self.get_headers)
-            self.assertEqual(response.status_code, 200)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             try:
                 agents = list(yaml.safe_load_all(response.content))
                 self.assertEqual(10, len(agents))

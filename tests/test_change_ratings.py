@@ -1,3 +1,4 @@
+from http import HTTPStatus
 import unittest
 import warnings
 import random
@@ -67,21 +68,24 @@ spec:
     def test_change_ratings(self):
         with TestClient(create_app()) as c:
             response = c.post("/agents", content=self.test_agent_yaml, headers=self.post_headers)
-            self.assertEqual(200, response.status_code)
-            response_json = response.json()
-            required_keys = {"agent_manifest", "ratings_manifest"}
-            for agent in response_json:
+            self.assertEqual(HTTPStatus.OK, response.status_code)
+            agents = list(yaml.safe_load_all(response.content))
+            required_keys = {"metadata", "spec"}
+            for agent in agents:
                 self.assertTrue(required_keys.issubset(agent.keys()))
+                # Update ratings
                 ratings_dict = yaml.safe_load(self.ratings_yaml)
-                ratings_dict["ratings"]["agent_id"] = agent["agent_manifest"]["metadata"]["id"]
-                ratings_dict["ratings"]["id"] = agent["agent_manifest"]["metadata"]["ratings_id"]
+                ratings_dict["ratings"]["agent_id"] = agent["metadata"]["id"]
+                ratings_dict["ratings"]["id"] = agent["metadata"]["ratings_id"]
                 updated_ratings_yaml = yaml.dump(ratings_dict)
+                # Post new ratings
                 response = c.post("/ratings", content=updated_ratings_yaml, headers=self.post_headers)
-                self.assertEqual(response.status_code, 200)
+                self.assertEqual(HTTPStatus.OK, response.status_code)
                 response_json = response.json()
                 self.assertEqual(ratings_dict["ratings"]["data"]["score"], response_json["ratings"]["data"]["score"])
+                # round trip and get new ratings
                 response = c.get("/ratings", params={"ratings_id": ratings_dict["ratings"]["id"]}, headers=self.get_headers)
-                self.assertEqual(200, response.status_code)
+                self.assertEqual(HTTPStatus.OK, response.status_code)
                 response_json = response.json()
                 self.assertEqual(ratings_dict["ratings"]["data"]["score"], response_json["data"]["score"])
                 self.assertEqual(ratings_dict["ratings"]["id"], response_json["id"])
