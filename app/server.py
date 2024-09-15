@@ -126,8 +126,8 @@ async def lifespan(fast_app: FastAPI):
             chroma_client.delete_collection(name="agents")
         if "ratings" in [c.name for c in chroma_client.list_collections()]:
             chroma_client.delete_collection(name="ratings")
-        fast_app.state.app_state.agents_db = chroma_client.create_collection(name="agents")
-        fast_app.state.app_state.ratings_db = chroma_client.create_collection(name="ratings")
+        fast_app.state.app_state.agents_db = chroma_client.create_collection(name="agents", metadata={"hnsw:space": "cosine"})
+        fast_app.state.app_state.ratings_db = chroma_client.create_collection(name="ratings", metadata={"hnsw:space": "cosine"})
 
         logging.info("App state initialized successfully")
         yield
