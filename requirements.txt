@@ -1,10 +1,10 @@
-fastapi==0.112.2
+fastapi==0.114.2
 uvicorn==0.30.6
-langchain-text-splitters==0.2.4
-langchain-community==0.2.16
-langchain-openai==0.1.23
+langchain-text-splitters==0.3.0
+langchain-community==0.3.0
+langchain-openai==0.2.0
 python-dotenv==1.0.1
-langserve[all]==0.2.3
-langchain-core==0.2.38
+langserve[all]==0.3.0
+langchain-core==0.3.0
 httpx==0.27.2
 chromadb==0.5.5
