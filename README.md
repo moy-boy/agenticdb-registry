@@ -7,16 +7,16 @@ Wouldn't be cool if you could store and search for GenAI agents in a database? A
 The icing on the cake is that you can also rate your experience with the agent and provide feedback to the agent owner.
 
 This is an implementation of a VectorDB that stores GenAI Agent manifests. It supports adding and searching for agents.
-When searching for an agent (see example), similarity search is used, a 
-maximum of 4 agents are returned
+When searching for an agent (see example), similarity search is used, a maximum of 10 agents are returned
 
-It comes with a built-in example agent that tells jokes to show remote execution of agent code chains 
-based on the URL in the manifest. In order to invoke the agent you need a `.env` file with the following content:
+It comes with a built-in example agent that tells jokes to show remote execution of agent code chains based on the URL in the manifest. In order to invoke the agent you need a `.env` file with the following content:
 
 ```shell
 OPENAI_API_KEY=<openai key>
 OPENAI_MODEL_NAME=gpt-4o
 ````
+
+**If you do not plan to remote invoke an agent, there is no dependency on OpenAI.**
 
 ## Server
 
@@ -26,13 +26,17 @@ Run Server
 python server.py
 ```
 
-
 ## Add Agent
+
+The API supports both JSON and YAMl agent monifests.  The example below uses YAML but a similar example can use JSON. You can find many examples under the `tests` folder.
+
+Notice that both `Content-Type` and `Accept-Encoding` are mandatory so Server knows the preferred format.
 
 ```shell
 
 curl -X POST "http://127.0.0.1:8000/agents" \
      -H "Content-Type: application/x-yaml" \
+     -H "Accept-Encoding: x-yaml" \
      --data-binary @- <<EOF
 metadata:
   name: financial-data-oracle
@@ -46,58 +50,36 @@ spec:
   access_level: PRIVATE
   category: Natural Language
   url: https://api.example.com/financial-data-oracle
-  input:
-    type: string
-    description: Input description for financial-data-oracle
+  parameters:
+    type: object
+    properties:
+      symbol:
+        type: string
+        description: ticker symbol
+      date:
+        type: string
+        description: A specific date in the format yyyy-mm-dd
+      currency:
+        type: string
+        enum:
+          - USD
+          - JPY
+        description: "the currency of the desired output value"
+    required:
+      - symbol
+    additionalProperties: false
   output:
-    type: string
+    type: float
     description: Output description for financial-data-oracle
 EOF
-
 ```
 
 Response:
 
-```json
-{
-    "original_content": "metadata:\n  description: 'Retrieves financial price data for a variety of tickers and timeframes.\n\n    '\n  id: bd833e57-97e6-4586-8c40-fd1ebf92e7af\n  name: financial-data-oracle\n  namespace: sandbox\n  ratings: c5fa8063-0718-4d6b-8296-f99371344f40\nspec:\n  access_level: PRIVATE\n  category: Natural Language\n  input:\n    description: Input description for financial-data-oracle\n    type: string\n  lifecycle: experimental\n  output:\n    description: Output description for financial-data-oracle\n    type: string\n  owner: buddy@example.com\n  type: agent\n  url: https://api.example.com/financial-data-oracle\n",
-    "parsed_content": {
-        "metadata": {
-            "name": "financial-data-oracle",
-            "namespace": "sandbox",
-            "description": "Retrieves financial price data for a variety of tickers and timeframes.\n",
-            "id": "bd833e57-97e6-4586-8c40-fd1ebf92e7af",
-            "ratings": "c5fa8063-0718-4d6b-8296-f99371344f40"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "experimental",
-            "owner": "buddy@example.com",
-            "access_level": "PRIVATE",
-            "category": "Natural Language",
-            "url": "https://api.example.com/financial-data-oracle",
-            "input": {
-                "type": "string",
-                "description": "Input description for financial-data-oracle"
-            },
-            "output": {
-                "type": "string",
-                "description": "Output description for financial-data-oracle"
-            }
-        }
-    },
-    "agent_id": "bd833e57-97e6-4586-8c40-fd1ebf92e7af",
-    "ratings_id": "c5fa8063-0718-4d6b-8296-f99371344f40",
-    "ratings_manifest": {
-        "id": "c5fa8063-0718-4d6b-8296-f99371344f40",
-        "agent_id": "bd833e57-97e6-4586-8c40-fd1ebf92e7af",
-        "data": {
-            "score": 0,
-            "samples": 0
-        }
-    }
-}
+```yaml
+
 ```
+
 ## Search for Agents (similarity search)
 
 ```shell
@@ -108,10 +90,44 @@ curl -G "http://127.0.0.1:8000/agents" \
 
 Response
 
-```json
-{
-  "agents": "---\nmetadata:\n  name: financial-data-oracle\n  namespace: sandbox\n  description: 'Retrieves financial price data for a variety of tickers and timeframes.\n\n    '\n  id: 09e3e7b1-37b2-4eb4-b372-d94cdff05a75\n  ratings: 1bcba589-3366-4fea-be78-5b5ad0daf93f\nspec:\n  type: agent\n  lifecycle: experimental\n  owner: buddy@example.com\n  access_level: PRIVATE\n  category: Natural Language\n  url: https://api.example.com/financial-data-oracle\n  input:\n    type: string\n    description: Input description for financial-data-oracle\n  output:\n    type: string\n    description: Output description for financial-data-oracle\nratings:\n  id: 1bcba589-3366-4fea-be78-5b5ad0daf93f\n  agent_id: 09e3e7b1-37b2-4eb4-b372-d94cdff05a75\n  data:\n    score: 0\n    samples: 0"
-}
+```yaml
+---
+metadata:
+  name: financial-data-oracle
+  namespace: sandbox
+  description: 'Retrieves financial price data for a variety of tickers and timeframes.
+
+    '
+  id: 413c718e-e686-4fdf-bb3e-91c44fc94c7c
+  ratings_id: 8b9b8114-f69c-4cf0-a723-8239c33cb5b5
+spec:
+  type: agent
+  lifecycle: experimental
+  owner: buddy@example.com
+  access_level: PRIVATE
+  category: Natural Language
+  url: https://api.example.com/financial-data-oracle
+  parameters:
+    type: object
+    properties:
+      symbol:
+        type: string
+        description: ticker symbol
+      date:
+        type: string
+        description: A specific date in the format yyyy-mm-dd
+      currency:
+        type: string
+        enum:
+        - USD
+        - JPY
+        description: the currency of the desired output value
+    required:
+    - symbol
+    additionalProperties: false
+  output:
+    type: float
+    description: Output description for financial-data-oracle
 ```
 
 ## Invoke Example Joke Agent with cURL
