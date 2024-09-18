@@ -30,7 +30,7 @@ python server.py
 
 The API supports both JSON and YAMl agent monifests.  The example below uses YAML but a similar example can use JSON. You can find many examples under the `tests` folder.
 
-Notice that both `Content-Type` and `Accept-Encoding` are mandatory so Server knows the preferred format.
+Notice that both `Content-Type` and `Accept-Encoding` are mandatory so Server knows the preferred format, YAML or JSON.
 
 ```shell
 
@@ -85,6 +85,7 @@ Response:
 ```shell
 
 curl -G "http://127.0.0.1:8000/agents" \
+     -H "Accept-Encoding: application/x-yaml" 
      --data-urlencode "query=Which agents have a category of Natural Language?"
 ```
 

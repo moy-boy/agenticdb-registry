@@ -25,12 +25,15 @@ async function submitAdd() {
     }
     showLoadingSpinner();
     try {
+        // Parse the content to ensure it's valid JSON
+        const parsedContent = JSON.parse(content);
         const response = await fetch('/agents', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-yaml',
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
-            body: content,
+            body: JSON.stringify(parsedContent),
         });
         const responseText = await response.json();
         if (response.ok) {
