@@ -61,6 +61,9 @@ async function submitSearch() {
     try {
         const response = await fetch(`/agents?query=${encodeURIComponent(query)}`, {
             method: 'GET',
+            headers: {
+                'Accept': 'application/json'  // Add Accept header here
+            }
         });
         const responseText = await response.json();
         if (response.ok) {
