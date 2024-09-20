@@ -1,9 +1,9 @@
 [
     {
         "metadata": {
-            "name": "agent-50",
+            "name": "Inventory Agent",
             "namespace": "production",
-            "description": "Description for agent-50"
+            "description": "Keeps track of item ids"
         },
         "spec": {
             "type": "agent",
