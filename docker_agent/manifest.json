@@ -1,0 +1,59 @@
+[
+    {
+        "metadata": {
+            "name": "agent-50",
+            "namespace": "production",
+            "description": "Description for agent-50"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner50@business.com",
+            "access_level": "PUBLIC",
+            "category": "Travel",
+            "setup": {
+                "docker": {
+                    "registry_url": "https://index.docker.io/v1/",
+                    "image_name": "rapenno/fastapi_agent",
+                    "image_tag": "latest",
+                    "run_command": "docker run -d -p 8001:8001 rapenno/fastapi_agent"
+                }
+            },
+            "url": "http://localhost:8001/items/{itemid}",
+            "method": "GET",
+            "example": "http://localhost:8001/items/5?q=somequery",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "itemid": {
+                        "type": "integer",
+                        "description": "item number"
+                    },
+                    "query": {
+                        "type": "string",
+                        "description": "a query string"
+                    }
+                },
+                "required": [
+                    "itemid",
+                    "query"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "object",
+                "properties": {
+                    "item_id": {
+                        "type": "integer",
+                        "description": "the item id"
+                    },
+                    "q": {
+                        "type": "string",
+                        "description": "query string"
+                    }
+                },
+                "description": "Boolean flag indicating success or failure"
+            }
+        }
+    }
+]
