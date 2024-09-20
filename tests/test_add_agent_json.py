@@ -1,6 +1,5 @@
 from http import HTTPStatus
 import unittest
-import yaml
 import json
 import warnings
 from fastapi.testclient import TestClient
