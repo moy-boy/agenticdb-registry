@@ -1,5 +1,16 @@
 # AgenticDB
 
+- [AgenticDB](#agenticdb)
+  - [Run Server](#run-server)
+  - [Add Agent](#add-agent)
+  - [Search for Agents (similarity search)](#search-for-agents-similarity-search)
+  - [Add a Docker Agent](#add-a-docker-agent)
+  - [Invoke Example Joke Agent with cURL](#invoke-example-joke-agent-with-curl)
+  - [Invoke Example Joke Agent with Remote Execution](#invoke-example-joke-agent-with-remote-execution)
+  - [Rate an Agent ★★★★☆](#rate-an-agent-)
+  - [Retrieve Ratings](#retrieve-ratings)
+
+
 ![Agentic Dashboard](docs/images/landing.png "Agentic Dashboard Screenshot")
 
 Wouldn't be cool if you could store and search for GenAI agents in a database? And when you found one you liked, you could invoke it remotely?
@@ -18,7 +29,7 @@ OPENAI_MODEL_NAME=gpt-4o
 
 **If you do not plan to remote invoke an agent, there is no dependency on OpenAI.**
 
-## Server
+## Run Server
 
 Run Server
 
@@ -129,6 +140,73 @@ spec:
   output:
     type: float
     description: Output description for financial-data-oracle
+```
+
+## Add a Docker Agent
+
+```
+curl -X POST http://localhost:8000/agents \
+-H "Content-Type: application/json" \
+-H "Accept: application/json" \
+-d '[
+    {
+        "metadata": {
+            "name": "Inventory Agent",
+            "namespace": "production",
+            "description": "Keeps track of item ids"
+        },
+        "spec": {
+            "type": "agent",
+            "lifecycle": "stable",
+            "owner": "owner50@business.com",
+            "access_level": "PUBLIC",
+            "category": "Travel",
+            "setup": {
+                "docker": {
+                    "registry_url": "https://index.docker.io/v1/",
+                    "image_name": "rapenno/fastapi_agent",
+                    "image_tag": "latest",
+                    "run_command": "docker run -d -p 8001:8001 rapenno/fastapi_agent"
+                }
+            },
+            "url": "http://localhost:8001/items/{itemid}",
+            "method": "GET",
+            "example": "http://localhost:8001/items/5?q=somequery",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "itemid": {
+                        "type": "integer",
+                        "description": "item number"
+                    },
+                    "query": {
+                        "type": "string",
+                        "description": "a query string"
+                    }
+                },
+                "required": [
+                    "itemid",
+                    "query"
+                ],
+                "additionalProperties": false
+            },
+            "output": {
+                "type": "object",
+                "properties": {
+                    "item_id": {
+                        "type": "integer",
+                        "description": "the item id"
+                    },
+                    "q": {
+                        "type": "string",
+                        "description": "query string"
+                    }
+                },
+                "description": "Boolean flag indicating success or failure"
+            }
+        }
+    }
+]'
 ```
 
 ## Invoke Example Joke Agent with cURL
