@@ -5,6 +5,7 @@ from chromadb.types import Database, Tenant, Collection
 from typing import Optional, Callable
 
 class AppState(BaseModel):
+    applications_db: Optional[Collection] = Field(None, description="Chroma DB for applications")
     agents_db: Optional[Collection] = Field(None, description="Chroma DB for agents")
     ratings_db: Optional[Collection] = Field(None, description="Chroma DB for ratings")
     text_splitter: Optional[Callable] = Field(None, description="Function or callable for text splitting")

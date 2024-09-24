@@ -20,8 +20,8 @@ router = APIRouter()
 @router.post("/agents")
 async def add_agent(request: Request, app_state: AppState = Depends(get_app_state)):
     if app_state.agents_db is None or app_state.ratings_db is None:
-        logging.error("Chroma DB not initialized")
-        raise HTTPException(status_code=500, detail="Chroma DB not initialized")
+        logging.error("Agents DB not initialized")
+        raise HTTPException(status_code=500, detail="Agents DB not initialized")
 
     try:
         content_type = request.headers.get('Content-Type')
@@ -58,9 +58,8 @@ async def add_agent(request: Request, app_state: AppState = Depends(get_app_stat
         raise http_exc
     except Exception as e:
         logging.error(f"Failed to read request body: {str(e)}")
-        raise HTTPException(status_code=400, detail=f"Failed to read request body: {str(e)}")
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail=f"Failed to read request body: {str(e)}")
 
-    response = []
     agents_json_object = []
     ratings_json_object = []
     agents_concatenated_yaml = "---\n"
@@ -111,7 +110,7 @@ async def add_agent(request: Request, app_state: AppState = Depends(get_app_stat
             raise HTTPException(status_code=500, detail="OpenAI rate limit error")
         except Exception as e:
             logging.error(f"Failed to add documents to Chroma DB: {str(e)}")
-            raise HTTPException(status_code=500, detail="Failed to add documents to Chroma DB")
+            raise HTTPException(status_code=HTTPStatus.INTERNAL_SERVER_ERROR, detail="Failed to add documents to Chroma DB")
 
         # response.append({
         #     "agent_manifest": parsed_data,
@@ -133,7 +132,7 @@ async def add_agent(request: Request, app_state: AppState = Depends(get_app_stat
 async def get_agents(query: str, request: Request, app_state: AppState = Depends(get_app_state)):
     if app_state.agents_db is None or app_state.ratings_db is None:
         logging.error("Chroma DB not initialized")
-        raise HTTPException(status_code=500, detail="Chroma DB not initialized")
+        raise HTTPException(status_code=HTTPStatus.INTERNAL_SERVER_ERROR, detail="Chroma DB not initialized")
     
     try:
         accept_header = request.headers.get('Accept')
@@ -146,13 +145,13 @@ async def get_agents(query: str, request: Request, app_state: AppState = Depends
             logging.info("Request for JSON response received")
         else:
             logging.error("Unsupported Content-Type")
-            raise HTTPException(status_code=415, detail="Unsupported Content-Type")
+            raise HTTPException(status_code=HTTPStatus.UNSUPPORTED_MEDIA_TYPE, detail="Unsupported Content-Type")
 
     except HTTPException as http_exc:
         raise http_exc
     except Exception as e:
         logging.error(f"Failed to get HTTP headers: {str(e)}")
-        raise HTTPException(status_code=400, detail=f"Failed to get HTTP headers: {str(e)}")    
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail=f"Failed to get HTTP headers: {str(e)}")    
 
     try:
         results = app_state.agents_db.query(query_texts=[query], n_results=10)
@@ -162,7 +161,7 @@ async def get_agents(query: str, request: Request, app_state: AppState = Depends
         raise http_exc
     except Exception as e:
         logging.error(f"Failed to execute similarity search query for agents: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to execute similarity search query for agents")
+        raise HTTPException(status_code=HTTPStatus.INTERNAL_SERVER_ERROR, detail="Failed to execute similarity search query for agents")
 
     if accept_type == AcceptType.YAML:
 
@@ -183,7 +182,7 @@ async def get_agents(query: str, request: Request, app_state: AppState = Depends
                 raise http_exc
             except Exception as e:
                 logging.error(f"Failed to execute search query for ratings: {str(e)}")
-                raise HTTPException(status_code=500, detail="Failed to execute search query for ratings")
+                raise HTTPException(status_code=HTTPStatus.INTERNAL_SERVER_ERROR, detail="Failed to execute search query for ratings")
 
             if ratings_results:
                 ratings_str = ratings_results["documents"][0] 
@@ -208,14 +207,14 @@ async def get_agents(query: str, request: Request, app_state: AppState = Depends
                 ratings_results = app_state.ratings_db.get(ids=[f"{ratings_id}"])
                 if len(ratings_results["documents"]) == 0:
                     logging.error(f"Ratings ID not found in Chroma DB: {ratings_id}")
-                    raise HTTPException(status_code=404, detail="Ratings ID not found in Chroma DB")
+                    raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Ratings ID not found in Chroma DB")
                 logging.info(f"Similarity search query executed successfully for ratings with ID: {ratings_id}")
             except HTTPException as http_exc:
                 # Catch explicitly raised HTTPException and re-raise
                 raise http_exc
             except Exception as e:
                 logging.error(f"Failed to execute search query for ratings: {str(e)}")
-                raise HTTPException(status_code=500, detail="Failed to execute search query for ratings")
+                raise HTTPException(status_code=HTTPStatus.INTERNAL_SERVER_ERROR, detail="Failed to execute search query for ratings")
 
             if ratings_results:
                 ratings_str = ratings_results["documents"][0]

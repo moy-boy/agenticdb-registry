@@ -22,6 +22,7 @@ from langserve import add_routes
 
 from app.routes.agents import router as agents_router
 from app.routes.ratings import router as ratings_router
+from app.routes.applications import router as applications_router
 from app.state import AppState
 
 
@@ -124,9 +125,12 @@ async def lifespan(fast_app: FastAPI):
         # Initialize ChromaDB for agents
         if "agents" in [c.name for c in chroma_client.list_collections()]:
             chroma_client.delete_collection(name="agents")
+        if "applications" in [c.name for c in chroma_client.list_collections()]:
+            chroma_client.delete_collection(name="applications")
         if "ratings" in [c.name for c in chroma_client.list_collections()]:
             chroma_client.delete_collection(name="ratings")
         fast_app.state.app_state.agents_db = chroma_client.create_collection(name="agents", metadata={"hnsw:space": "cosine"})
+        fast_app.state.app_state.applications_db = chroma_client.create_collection(name="applications", metadata={"hnsw:space": "cosine"})
         fast_app.state.app_state.ratings_db = chroma_client.create_collection(name="ratings", metadata={"hnsw:space": "cosine"})
 
         logging.info("App state initialized successfully")
@@ -174,6 +178,7 @@ def create_app():
     add_handlers(app)
     app.include_router(ratings_router)
     app.include_router(agents_router)
+    app.include_router(applications_router)
 
     return app
 
