@@ -128,7 +128,7 @@ async def get_applications(query: str, request: Request, app_state: AppState = D
         raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail=f"Failed to get HTTP headers: {str(e)}")    
 
     try:
-        results = app_state.agents_db.query(query_texts=[query], n_results=10)
+        results = app_state.applications_db.query(query_texts=[query], n_results=10)
         logging.info("Similarity search query executed successfully for agents")
     except HTTPException as http_exc:
         # Handle HTTPException separately

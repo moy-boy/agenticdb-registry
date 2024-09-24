@@ -138,7 +138,6 @@ class TestAddAgent(IsolatedAsyncioTestCase):
 ]
 """
 
-    @SkipTest
     def test_post_json(self):
         with TestClient(create_app()) as c:
             print(self.test_json)
@@ -149,11 +148,12 @@ class TestAddAgent(IsolatedAsyncioTestCase):
             self.assertEqual(HTTPStatus.OK, response.status_code)
             response_json = response.json()
             required_keys = {"metadata", "spec"}
-            for agent in response_json:
-                self.assertTrue(required_keys.issubset(agent.keys()))
-                spec = agent["spec"]
+            for application in response_json:
+                self.assertTrue(required_keys.issubset(application.keys()))
+                spec = application["spec"]
                 required_spec_keys = {"setup", "example"}
                 self.assertTrue(required_spec_keys.issubset(spec.keys()))
+                self.assertIn("compose", spec["setup"])
                 print(json.dumps(response_json, indent=2))
 
             query = "Which application can provide stock price?"
@@ -169,7 +169,6 @@ class TestAddAgent(IsolatedAsyncioTestCase):
                     self.assertIn("setup", application["spec"])
                     compose_info = application["spec"]["setup"]["compose"]
                     print(json.dumps(compose_info))
-                    self.main_docker()
             except Exception as e:
                 self.fail(f"Failed to parse JSON: {str(e)}")
 
