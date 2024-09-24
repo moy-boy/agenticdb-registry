@@ -73,6 +73,8 @@ spec:
             required_keys = {"metadata", "spec"}
             for agent in agents:
                 self.assertTrue(required_keys.issubset(agent.keys()))
+                self.assertIn("type", agent["spec"])
+                self.assertEqual("agent", agent["spec"]["type"])
                 # Update ratings
                 ratings_dict = yaml.safe_load(self.ratings_yaml)
                 ratings_dict["ratings"]["agent_id"] = agent["metadata"]["id"]

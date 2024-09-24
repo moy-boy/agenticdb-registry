@@ -47,6 +47,8 @@ class TestAddMultipleAgentsSingleRequest(IsolatedAsyncioTestCase):
                 for agent in agents:
                     required_keys = {"metadata", "ratings", "spec"}
                     self.assertTrue(required_keys.issubset(agent.keys()))
+                    self.assertIn("type", agent["spec"])
+                    self.assertEqual("agent", agent["spec"]["type"])
                     print(yaml.safe_dump(agent))
             except yaml.YAMLError as e:
                 self.fail(f"Failed to parse YAML: {str(e)}")

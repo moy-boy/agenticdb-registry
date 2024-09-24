@@ -48,6 +48,8 @@ class TestAddMultipleAgentsSingleRequest(IsolatedAsyncioTestCase):
                 for agent in agents:
                     required_keys = {"metadata", "ratings", "spec"}
                     self.assertTrue(required_keys.issubset(agent.keys()))
+                    self.assertIn("type", agent["spec"])
+                    self.assertEqual("agent", agent["spec"]["type"])
                     self.assertIn("name", agent["metadata"])
                     self.assertIn("score", agent["ratings"]["data"])
                     print(json.dumps(agent))

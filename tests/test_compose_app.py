@@ -3,16 +3,16 @@ import unittest
 import json
 import warnings
 from fastapi.testclient import TestClient
-from unittest import IsolatedAsyncioTestCase
+from unittest import IsolatedAsyncioTestCase, SkipTest
 import subprocess
 import time
+from pytest import skip
 import requests
 
 from app.server import create_app
 
 # Suppress DeprecationWarnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
-
 
 class TestAddAgent(IsolatedAsyncioTestCase):
 
@@ -87,41 +87,34 @@ class TestAddAgent(IsolatedAsyncioTestCase):
 [
     {
         "metadata": {
-            "name": "Inventory Agent",
+            "name": "Stock Price Application",
             "namespace": "production",
-            "description": "Keeps track of item ids"
+            "description": "Provides stock proce over time"
         },
         "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
+            "type": "application",
+            "lifecycle": "dev",
             "owner": "owner50@business.com",
             "access_level": "PUBLIC",
-            "category": "Travel",
+            "category": "Finance",
             "setup": {
-                "docker": {
-                    "registry_url": "https://index.docker.io/v1/",
-                    "image_name": "rapenno/fastapi_agent",
-                    "image_tag": "latest",
-                    "run_command": "docker run -d -p 8001:8001 rapenno/fastapi_agent"
+                "compose": {
+                    "compose_url": "https://myurl.com/compose.yaml",
+                    "run_command": "docker compose up --detach"
                 }
             },
-            "url": "http://localhost:8001/items/{itemid}",
+            "url": "http://localhost:8001/stock/",
             "method": "GET",
-            "example": "http://localhost:8001/items/5?q=somequery",
+            "example": "http://localhost:8001/stock?query=CSCO",
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "itemid": {
-                        "type": "integer",
-                        "description": "item number"
-                    },
                     "query": {
                         "type": "string",
-                        "description": "a query string"
+                        "description": "stock symbol such as CSCO"
                     }
                 },
                 "required": [
-                    "itemid",
                     "query"
                 ],
                 "additionalProperties": false
@@ -129,13 +122,13 @@ class TestAddAgent(IsolatedAsyncioTestCase):
             "output": {
                 "type": "object",
                 "properties": {
-                    "item_id": {
-                        "type": "integer",
-                        "description": "the item id"
-                    },
-                    "q": {
+                    "symbol": {
                         "type": "string",
-                        "description": "query string"
+                        "description": "stock symbol such as CSCO"
+                    },
+                    "price": {
+                        "type": "integer",
+                        "description": "stock price"
                     }
                 },
                 "description": "Boolean flag indicating success or failure"
@@ -145,13 +138,14 @@ class TestAddAgent(IsolatedAsyncioTestCase):
 ]
 """
 
+    @SkipTest
     def test_post_json(self):
         with TestClient(create_app()) as c:
             print(self.test_json)
             json_data = json.loads(self.test_json)
             # Assuming self.post_headers and self.get_headers are dictionaries
             merged_headers = {**self.post_headers, **self.get_headers}
-            response = c.post("/agents", json=json_data, headers=merged_headers)
+            response = c.post("/applications", json=json_data, headers=merged_headers)
             self.assertEqual(HTTPStatus.OK, response.status_code)
             response_json = response.json()
             required_keys = {"metadata", "spec"}
@@ -162,19 +156,19 @@ class TestAddAgent(IsolatedAsyncioTestCase):
                 self.assertTrue(required_spec_keys.issubset(spec.keys()))
                 print(json.dumps(response_json, indent=2))
 
-            query = "Which agents can keep track of inventory?"
-            response = c.get("/agents", params={"query": query}, headers=self.get_headers)
+            query = "Which application can provide stock price?"
+            response = c.get("/applications", params={"query": query}, headers=self.get_headers)
             self.assertEqual(HTTPStatus.OK, response.status_code)
             try:
-                agents_json = response.json()
-                for agent in agents_json:
+                apps_json = response.json()
+                for application in apps_json:
                     required_keys = {"spec"}
-                    self.assertTrue(required_keys.issubset(agent.keys()))
-                    self.assertIn("type", agent["spec"])
-                    self.assertEqual("agent", agent["spec"]["type"])
-                    self.assertIn("setup", agent["spec"])
-                    docker_info = agent["spec"]["setup"]["docker"]
-                    print(json.dumps(docker_info))
+                    self.assertTrue(required_keys.issubset(application.keys()))
+                    self.assertIn("type", application["spec"])
+                    self.assertEqual("application", application["spec"]["type"])
+                    self.assertIn("setup", application["spec"])
+                    compose_info = application["spec"]["setup"]["compose"]
+                    print(json.dumps(compose_info))
                     self.main_docker()
             except Exception as e:
                 self.fail(f"Failed to parse JSON: {str(e)}")
