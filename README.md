@@ -1,280 +1,211 @@
 # AgenticDB
 
+**AgenticDB** is a cutting-edge database designed to store and manage GenAI agent and agentic application manifests. It enables developers and users to easily add, search, invoke, and rate agents while supporting advanced use cases like Docker-based agent management and remote execution. With its ability to handle agentic applications, AgenticDB is highly adaptable for a wide variety of GenAI workflows.
+
+With **AgenticDB**, you can:
+- **Store** and manage agent manifests.
+- **Search** for agents using similarity search.
+- **Invoke** agents via local and remote execution models.
+- **Rate** agents based on performance and interaction results.
+
+---
+
+## Table of Contents
+
 - [AgenticDB](#agenticdb)
+  - [Table of Contents](#table-of-contents)
   - [Run Server](#run-server)
-  - [Add Agent](#add-agent)
-  - [Search for Agents (similarity search)](#search-for-agents-similarity-search)
-  - [Add a Docker Agent](#add-a-docker-agent)
-  - [Invoke Example Joke Agent with cURL](#invoke-example-joke-agent-with-curl)
-  - [Invoke Example Joke Agent with Remote Execution](#invoke-example-joke-agent-with-remote-execution)
-  - [Rate an Agent ★★★★☆](#rate-an-agent-)
+  - [Add an Agent](#add-an-agent)
+  - [Search for Agents (Similarity Search)](#search-for-agents-similarity-search)
+  - [Add an Application](#add-an-application)
+  - [Invoke an Agent with cURL](#invoke-an-agent-with-curl)
+  - [Rate an Agent](#rate-an-agent)
   - [Retrieve Ratings](#retrieve-ratings)
 
-
-![Agentic Dashboard](docs/images/landing.png "Agentic Dashboard Screenshot")
-
-Wouldn't be cool if you could store and search for GenAI agents in a database? And when you found one you liked, you could invoke it remotely?
-
-The icing on the cake is that you can also rate your experience with the agent and provide feedback to the agent owner.
-
-This is an implementation of a VectorDB that stores GenAI Agent manifests. It supports adding and searching for agents.
-When searching for an agent (see example), similarity search is used, a maximum of 10 agents are returned
-
-It comes with a built-in example agent that tells jokes to show remote execution of agent code chains based on the URL in the manifest. In order to invoke the agent you need a `.env` file with the following content:
-
-```shell
-OPENAI_API_KEY=<openai key>
-OPENAI_MODEL_NAME=gpt-4o
-````
-
-**If you do not plan to remote invoke an agent, there is no dependency on OpenAI.**
+---
 
 ## Run Server
 
-Run Server
+To start the AgenticDB server locally, run the following command:
 
-```shell
+```bash
 python server.py
 ```
 
-## Add Agent
+The API will be available at `http://127.0.0.1:8000`.
 
-The API supports both JSON and YAMl agent monifests.  The example below uses YAML but a similar example can use JSON. You can find many examples under the `tests` folder.
+---
 
-Notice that both `Content-Type` and `Accept-Encoding` are mandatory so Server knows the preferred format, YAML or JSON.
+## Add an Agent
 
-```shell
+You can add an agent to the database using the following `curl` command. This example sends a JSON request to add a new agent called `code-gen-chart-agent`.
 
+```bash
 curl -X POST "http://127.0.0.1:8000/agents" \
-     -H "Content-Type: application/x-yaml" \
-     -H "Accept-Encoding: x-yaml" \
-     --data-binary @- <<EOF
-metadata:
-  name: financial-data-oracle
-  namespace: sandbox
-  description: |
-    Retrieves financial price data for a variety of tickers and timeframes.
-spec:
-  type: agent
-  lifecycle: experimental
-  owner: buddy@example.com
-  access_level: PRIVATE
-  category: Natural Language
-  url: https://api.example.com/financial-data-oracle
-  parameters:
-    type: object
-    properties:
-      symbol:
-        type: string
-        description: ticker symbol
-      date:
-        type: string
-        description: A specific date in the format yyyy-mm-dd
-      currency:
-        type: string
-        enum:
-          - USD
-          - JPY
-        description: "the currency of the desired output value"
-    required:
-      - symbol
-    additionalProperties: false
-  output:
-    type: float
-    description: Output description for financial-data-oracle
-EOF
+     -H "Content-Type: application/json" \
+     -H "Accept: application/json" \
+     -d '[
+            {
+                "metadata": {
+                    "name": "code-gen-chart-agent",
+                    "namespace": "agents",
+                    "description": "Requests for a javascript code generator to plot a chart with supplied free-form data."
+                },
+                "spec": {
+                    "type": "agent",
+                    "lifecycle": "dev",
+                    "owner": "admin@company.com",
+                    "access_level": "Public",
+                    "category": "Natural Language",
+                    "url": "https://api.example.com/code-gen-chart-agent/agent",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "message": {
+                                "type": "string",
+                                "description": "The request message for the chart code generator agent."
+                            },
+                            "thread": {
+                                "type": "string",
+                                "description": "The id to separate parallel message threads."
+                            }
+                        },
+                        "required": ["message", "thread"],
+                        "additionalProperties": false
+                    },
+                    "output": {
+                        "type": "string",
+                        "description": "The result of the request, including any generated image location."
+                    }
+                }
+            }
+        ]'
 ```
 
-Response:
+This will add the agent manifest to AgenticDB, making it available for future searches and invocations.
 
-```yaml
+---
 
-```
+## Search for Agents (Similarity Search)
 
-## Search for Agents (similarity search)
+To search for agents based on a natural language query, use the following `curl` command. This example searches for agents related to "Natural Language."
 
-```shell
-
+```bash
 curl -G "http://127.0.0.1:8000/agents" \
-     -H "Accept-Encoding: application/x-yaml" 
+     -H "Accept: application/json" \
      --data-urlencode "query=Which agents have a category of Natural Language?"
 ```
 
-Response
+AgenticDB will perform a similarity search and return a list of matching agents based on the query.
 
-```yaml
 ---
-metadata:
-  name: financial-data-oracle
-  namespace: sandbox
-  description: 'Retrieves financial price data for a variety of tickers and timeframes.
 
-    '
-  id: 413c718e-e686-4fdf-bb3e-91c44fc94c7c
-  ratings_id: 8b9b8114-f69c-4cf0-a723-8239c33cb5b5
-spec:
-  type: agent
-  lifecycle: experimental
-  owner: buddy@example.com
-  access_level: PRIVATE
-  category: Natural Language
-  url: https://api.example.com/financial-data-oracle
-  parameters:
-    type: object
-    properties:
-      symbol:
-        type: string
-        description: ticker symbol
-      date:
-        type: string
-        description: A specific date in the format yyyy-mm-dd
-      currency:
-        type: string
-        enum:
-        - USD
-        - JPY
-        description: the currency of the desired output value
-    required:
-    - symbol
-    additionalProperties: false
-  output:
-    type: float
-    description: Output description for financial-data-oracle
-```
+## Add an Application
 
-## Add a Docker Agent
+You can also add an agentic application to AgenticDB using a similar `curl` command. Here’s an example for adding a "Stock Price Charting Application" that tracks stock prices and generates charts.
 
-```
-curl -X POST http://localhost:8000/agents \
--H "Content-Type: application/json" \
--H "Accept: application/json" \
--d '[
-    {
-        "metadata": {
-            "name": "Inventory Agent",
-            "namespace": "production",
-            "description": "Keeps track of item ids"
-        },
-        "spec": {
-            "type": "agent",
-            "lifecycle": "stable",
-            "owner": "owner50@business.com",
-            "access_level": "PUBLIC",
-            "category": "Travel",
-            "setup": {
-                "docker": {
-                    "registry_url": "https://index.docker.io/v1/",
-                    "image_name": "rapenno/fastapi_agent",
-                    "image_tag": "latest",
-                    "run_command": "docker run -d -p 8001:8001 rapenno/fastapi_agent"
+```bash
+curl -X POST "http://127.0.0.1:8000/applications" \
+     -H "Content-Type: application/json" \
+     -H "Accept: application/json" \
+     -d '[
+            {
+                "metadata": {
+                    "name": "Stock Price Charting Application",
+                    "namespace": "production",
+                    "description": "Provides access to daily open, high, low, close stock prices over time and the ability to generate charts for the requested data"
+                },
+                "spec": {
+                    "type": "application",
+                    "lifecycle": "dev",
+                    "owner": "admin@company.com",
+                    "access_level": "PUBLIC",
+                    "category": "Finance",
+                    "setup": {
+                        "compose": {
+                            "compose_url": "https://ipfs.filebase.io/ipfs/somehash",
+                            "run_command": "gunzip docker-compose.yml.gz && docker compose -f ./docker-compose.yml up -d"
+                        }
+                    },
+                    "url": "http://localhost:3000/agent",
+                    "method": "POST",
+                    "example": "http://localhost:3000/agent 'Content-Type':'application/json' {'input':'what was the Nvidia close price on August 22nd 2024', 'thread':'nvidia'}",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "input": {
+                                "type": "string",
+                                "description": "natural language request for stock price data and charting of the data as required"
+                                },
+                                "thread": {
+                                    "type": "string",
+                                    "description": "thread context id for the request"
+                                }
+                        },
+                        "required": ["input"],
+                        "additionalProperties": false
+                    },
+                    "output": {
+                        "type": "object",
+                        "properties": {
+                            "content": {
+                                "type": "string",
+                                "description": "the natural language response and the Final Answer to the request with a chart location if requested"
+                            }
+                        },
+                        "description": "the answer to the request"
+                    }
                 }
-            },
-            "url": "http://localhost:8001/items/{itemid}",
-            "method": "GET",
-            "example": "http://localhost:8001/items/5?q=somequery",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "itemid": {
-                        "type": "integer",
-                        "description": "item number"
-                    },
-                    "query": {
-                        "type": "string",
-                        "description": "a query string"
-                    }
-                },
-                "required": [
-                    "itemid",
-                    "query"
-                ],
-                "additionalProperties": false
-            },
-            "output": {
-                "type": "object",
-                "properties": {
-                    "item_id": {
-                        "type": "integer",
-                        "description": "the item id"
-                    },
-                    "q": {
-                        "type": "string",
-                        "description": "query string"
-                    }
-                },
-                "description": "Boolean flag indicating success or failure"
             }
-        }
-    }
-]'
+        ]'
 ```
 
-## Invoke Example Joke Agent with cURL
+---
 
-```shell
+## Invoke an Agent with cURL
+
+To invoke an agent via cURL, you can send a request to the agent's specific endpoint. For example, to invoke the `joke-agent`, use the following command:
+
+```bash
 curl -X POST "http://127.0.0.1:8000/joke/invoke" \
      -H "Content-Type: application/json" \
      -d '{"input": {"topic": "cats"}}'
 ```
 
-## Invoke Example Joke Agent with Remote Execution
+This will invoke the `joke-agent` with the topic "cats" and return a joke response.
 
-```python
-from langserve import RemoteRunnable
+---
 
-joke_chain = RemoteRunnable("http://localhost:8000/joke/")
+## Rate an Agent
 
-response = joke_chain.invoke({"topic": "parrots"})
-print(response.content)
-```
+After interacting with an agent, you can submit a rating for the agent using this `curl` command. Replace `placeholder_agent_id` and `placeholder_some_id` with the actual agent and rating IDs.
 
-## Rate an Agent ★★★★☆
-
-```shell
+```bash
 curl -X POST "http://127.0.0.1:8000/ratings" \
-     -H "Content-Type: application/x-yaml" \
-     --data-binary @- <<EOF
-ratings:
-  agent_id: placeholder_agent_id  # Replace with actual agent_id
-  id: placeholder_some_id         # Replace with actual ratings_id
-  data:
-    score: <score>                # Example with 3 stars: ★★★☆☆
-EOF
-
+     -H "Content-Type: application/json" \
+     -d '{
+           "ratings": {
+               "agent_id": "placeholder_agent_id",
+               "id": "placeholder_some_id",
+               "data": {
+                   "score": 4
+               }
+           }
+         }'
 ```
 
-Response:
-
-```json
-{
-    "ratings": {
-
-        "id":"1bcba589-3366-4fea-be78-5b5ad0daf93f",
-        "agent_id":"09e3e7b1-37b2-4eb4-b372-d94cdff05a75",
-        "data": {
-            "score": 3.0, "samples":1
-        }
-    }
-}
-```
+---
 
 ## Retrieve Ratings
 
-```shell
+You can retrieve agent ratings using this `curl` command. Replace `<ratings_id>` with the actual ratings ID.
+
+```bash
 curl -X GET "http://127.0.0.1:8000/ratings?ratings_id=<ratings_id>"
 ```
 
-Response
+AgenticDB will return the score and feedback associated with the provided ratings ID.
 
-```json
-{
+---
 
-    "agent_id":"09e3e7b1-37b2-4eb4-b372-d94cdff05a75",
-    "data": {
-        "samples": 1, "score":3.0
-    }
-
-    ,
-    "id":"1bcba589-3366-4fea-be78-5b5ad0daf93f"
-}
-```
+This enhanced README focuses on executing the operations stand-alone via `curl` commands, emphasizing how to interact with agents and applications directly through HTTP requests. It introduces AgenticDB as a powerful tool for managing GenAI agents and applications, enabling seamless search, invocation, and rating functionality.
