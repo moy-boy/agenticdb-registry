@@ -3,6 +3,7 @@
 **AgenticDB** is a cutting-edge database designed to store and manage GenAI agent and agentic application manifests. It enables developers and users to easily add, search, invoke, and rate agents while supporting advanced use cases like Docker-based agent management and remote execution. With its ability to handle agentic applications, AgenticDB is highly adaptable for a wide variety of GenAI workflows.
 
 With **AgenticDB**, you can:
+
 - **Store** and manage agent manifests.
 - **Search** for agents using similarity search.
 - **Invoke** agents via local and remote execution models.
