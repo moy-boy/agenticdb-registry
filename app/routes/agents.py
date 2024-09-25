@@ -112,11 +112,6 @@ async def add_agent(request: Request, app_state: AppState = Depends(get_app_stat
             logging.error(f"Failed to add documents to Chroma DB: {str(e)}")
             raise HTTPException(status_code=HTTPStatus.INTERNAL_SERVER_ERROR, detail="Failed to add documents to Chroma DB")
 
-        # response.append({
-        #     "agent_manifest": parsed_data,
-        #     "ratings_manifest": ratings_manifest
-        # })
-
     if accept_header == "application/json":
         return JSONResponse(content=agents_json_object)
     else:
