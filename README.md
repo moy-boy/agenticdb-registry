@@ -16,6 +16,11 @@ With **AgenticDB**, you can:
 - [AgenticDB](#agenticdb)
   - [Table of Contents](#table-of-contents)
   - [Run Server](#run-server)
+  - [Delete All Collections](#delete-all-collections)
+    - [cURL Command](#curl-command)
+    - [Response](#response)
+      - [Example Response:](#example-response)
+    - [Explanation](#explanation)
   - [Add an Agent](#add-an-agent)
   - [Search for Agents (Similarity Search)](#search-for-agents-similarity-search)
   - [Add an Application](#add-an-application)
@@ -35,7 +40,39 @@ python server.py
 
 The API will be available at `http://127.0.0.1:8000`.
 
+Here's an updated version of the **Delete All Collections** section in the README, reflecting the actual JSON response format from the provided Python code.
+
 ---
+
+## Delete All Collections
+
+You can delete all agent, application, and rating collections from AgenticDB with a single `DELETE` request. This operation will attempt to remove the stored collections: `agents`, `applications`, and `ratings`. Each collection deletion is handled separately, and the results will reflect whether each collection was successfully deleted.
+
+### cURL Command
+
+```bash
+curl -X DELETE "http://127.0.0.1:8000/collections"
+```
+
+### Response
+
+The response will provide the status of each deletion attempt in the form of a JSON object. If a collection is successfully deleted, the value will be `0`. If there was an error, the value will contain the corresponding error message.
+
+#### Example Response:
+
+```json
+{
+    "agents": 0,
+    "applications": 0,
+    "ratings": "Failed to delete ratings collection: some_error_message"
+}
+```
+
+### Explanation
+
+- **agents**: `0` indicates the `agents` collection was successfully deleted.
+- **applications**: `0` indicates the `applications` collection was successfully deleted.
+- **ratings**: Contains an error message if the deletion failed (replace `"some_error_message"` with the actual error encountered).
 
 ## Add an Agent
 
