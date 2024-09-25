@@ -133,6 +133,8 @@ async def lifespan(fast_app: FastAPI):
         fast_app.state.app_state.agents_db = chroma_client.create_collection(name="agents", metadata={"hnsw:space": "cosine"})
         fast_app.state.app_state.applications_db = chroma_client.create_collection(name="applications", metadata={"hnsw:space": "cosine"})
         fast_app.state.app_state.ratings_db = chroma_client.create_collection(name="ratings", metadata={"hnsw:space": "cosine"})
+        fast_app.state.app_state.db_client = chroma_client
+
 
         logging.info("App state initialized successfully")
         yield

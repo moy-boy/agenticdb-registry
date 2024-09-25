@@ -21,22 +21,22 @@ async def delete_all_collections(app_state: AppState = Depends(get_app_state)):
     
     # Attempt to delete the agents collection
     try:
-        app_state.agents_db.delete()
-        results['agents'] = "Successfully deleted agents collection"
+        ret = app_state.db_client.delete_collection(name="agents")
+        results['agents'] = 0
     except Exception as e:
         results['agents'] = f"Failed to delete agents collection: {str(e)}"
 
     # Attempt to delete the applications collection
     try:
-        app_state.applications_db.delete()
-        results['applications'] = "Successfully deleted applications collection"
+        ret = app_state.db_client.delete_collection(name="applications")
+        results['applications'] = 0
     except Exception as e:
         results['applications'] = f"Failed to delete applications collection: {str(e)}"
 
     # Attempt to delete the ratings collection
     try:
-        app_state.ratings_db.delete()
-        results['ratings'] = "Successfully deleted ratings collection"
+        ret = app_state.db_client.delete_collection(name="ratings")
+        results['ratings'] = 0
     except Exception as e:
         results['ratings'] = f"Failed to delete ratings collection: {str(e)}"
 
