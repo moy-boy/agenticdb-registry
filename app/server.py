@@ -23,6 +23,7 @@ from langserve import add_routes
 from app.routes.agents import router as agents_router
 from app.routes.ratings import router as ratings_router
 from app.routes.applications import router as applications_router
+from app.routes.database import database as database_router
 from app.state import AppState
 
 
@@ -179,6 +180,7 @@ def create_app():
     app.include_router(ratings_router)
     app.include_router(agents_router)
     app.include_router(applications_router)
+    app.include_router(database_router)
 
     return app
 
