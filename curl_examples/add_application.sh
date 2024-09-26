@@ -38,7 +38,7 @@ curl -X POST "$url" \
                     },
                     "url": "http://localhost:3000/agent",
                     "method": "POST",
-                    "example": "http://localhost:3000/agent 'Content-Type':'application/json' {'input':'what was the Nvidia close price on August 22nd 2024', 'thread':'nvidia'}",
+                    "example": "http://localhost:3000/agent \"Content-Type\":\"application/json\" {\"input\":\"what was the Nvidia close price on August 22nd 2024\", \"thread\":\"nvidia\"}",
                     "parameters": {
                         "type": "object",
                         "properties": {
