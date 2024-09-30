@@ -11,7 +11,7 @@ from app.server import create_app
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
-class TestResetDB(IsolatedAsyncioTestCase):
+class TestAddAgent(IsolatedAsyncioTestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -71,9 +71,8 @@ class TestResetDB(IsolatedAsyncioTestCase):
 ]
         """
 
-    def test_reset_db(self):
+    def test_get_no_query_string(self):
         with TestClient(create_app()) as c:
-            print(self.test_json)
             json_data = json.loads(self.test_json)
             # Assuming self.post_headers and self.get_headers are dictionaries
             merged_headers = {**self.post_headers, **self.get_headers}
@@ -86,18 +85,30 @@ class TestResetDB(IsolatedAsyncioTestCase):
                 metadata = agent["metadata"]
                 required_metadata_keys = {"id", "ratings_id"}
                 self.assertTrue(required_metadata_keys.issubset(metadata.keys()))
-                print(json.dumps(response_json, indent=2))
+
+            response = c.get("/agents", headers=self.get_headers)
+            self.assertEqual(HTTPStatus.UNPROCESSABLE_ENTITY, response.status_code)
 
 
-            response = c.delete("/collections")
-            results = response.json()
-            self.assertEqual(0, results['agents'])
-            self.assertEqual(0, results['applications'])
-            self.assertEqual(0, results['ratings'])
-
-            query = "Which agents can help interview candidates?"
-            response = c.get("/agents", params={"query": query}, headers=self.get_headers)
+    def test_get_empty_query_string(self):
+        with TestClient(create_app()) as c:
+            json_data = json.loads(self.test_json)
+            # Assuming self.post_headers and self.get_headers are dictionaries
+            merged_headers = {**self.post_headers, **self.get_headers}
+            response = c.post("/agents", json=json_data, headers=merged_headers)
             self.assertEqual(HTTPStatus.OK, response.status_code)
+            response_json = response.json()
+            required_keys = {"metadata", "spec"}
+            for agent in response_json:
+                self.assertTrue(required_keys.issubset(agent.keys()))
+                metadata = agent["metadata"]
+                required_metadata_keys = {"id", "ratings_id"}
+                self.assertTrue(required_metadata_keys.issubset(metadata.keys()))
+
+            query = ""
+            response = c.get("/agents", params={"query": query}, headers=self.get_headers)
+            self.assertEqual(HTTPStatus.OK, response.status_code)            
+            
 
 
 if __name__ == "__main__":

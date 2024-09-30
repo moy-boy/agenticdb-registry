@@ -153,7 +153,8 @@ async def get_agents(query: str, request: Request, app_state: AppState = Depends
         logging.info("Similarity search query executed successfully for agents")
     except HTTPException as http_exc:
         # Handle HTTPException separately
-        raise http_exc
+        logging.error(f"No query string: {str(e)}")
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="no query string")
     except Exception as e:
         logging.error(f"Failed to execute similarity search query for agents: {str(e)}")
         raise HTTPException(status_code=HTTPStatus.INTERNAL_SERVER_ERROR, detail="Failed to execute similarity search query for agents")
