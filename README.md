@@ -1,12 +1,12 @@
-# AgenticDB
+# AgenticDB Registry
 
-The world of GenAI agents is fragmented, with frameworks like LangGraph, AWS Bedrock, and Semantic Kernel each operating in their own silos. This lack of interoperability creates hurdles for developers and enterprises needing to integrate agents across different platforms, APIs, or legacy systems.
+AgenticDB Registry is a lightweight registry and API service for GenAI agents and agentic applications. It stores structured manifests for agents, applications, and ratings so teams can discover available capabilities, search for suitable agents, invoke them, and track feedback from interactions.
 
-AgenticDB emerges as the solution to unify this scattered landscape. It's a database specifically designed to store and manage GenAI agent and application manifests. With AgenticDB, you can effortlessly add, search, invoke, and rate agents, all from a centralized repository. Advanced features like Docker-based agent management and remote execution expand its versatility, making it adaptable for a wide array of GenAI workflows.
+The project addresses a common problem in agent-based systems: agents are often scattered across different frameworks, APIs, local services, and deployment models. AgenticDB Registry provides a central place to describe those agents with metadata, input schemas, output schemas, lifecycle information, access level, category, ownership, and runtime details.
 
-By streamlining the way we handle agents, AgenticDB not only saves time but also fosters innovation by making it easier to find and utilize the right agent for any task. It's the bridge that connects disparate frameworks, enabling seamless collaboration and accelerating progress in the GenAI ecosystem.
+AgenticDB Registry exposes a FastAPI server for managing manifests and includes examples for adding agents, adding applications, searching agents by natural language query, invoking agents, resetting collections, and storing ratings. It also includes Docker-based examples for packaging remote runnable agents.
 
-With **AgenticDB**, you can:
+With **AgenticDB Registry**, you can:
 
 - **Store** and manage agent manifests.
 - **Search** for agents using similarity search.
@@ -17,7 +17,7 @@ With **AgenticDB**, you can:
 
 ## Table of Contents
 
-- [AgenticDB](#agenticdb)
+- [AgenticDB Registry](#agenticdb-registry)
   - [Table of Contents](#table-of-contents)
   - [Run Server](#run-server)
   - [Add an Agent](#add-an-agent)
@@ -35,15 +35,13 @@ With **AgenticDB**, you can:
 
 ## Run Server
 
-To start the AgenticDB server locally, run the following command:
+To start the AgenticDB Registry server locally, run the following command:
 
 ```bash
 python server.py
 ```
 
 The API will be available at `http://127.0.0.1:8000`.
-
-Here's an updated version of the **Delete All Collections** section in the README, reflecting the actual JSON response format from the provided Python code.
 
 ---
 
@@ -107,7 +105,7 @@ curl -G "http://127.0.0.1:8000/agents" \
      --data-urlencode "query=Which agents can book travel?"
 ```
 
-AgenticDB will perform a similarity search and return a list of matching agents based on the query.
+AgenticDB Registry will perform a similarity search and return a list of matching agents based on the query.
 
 ---
 
@@ -233,5 +231,4 @@ You can retrieve agent ratings using this `curl` command. Replace `<ratings_id>`
 curl -X GET "http://127.0.0.1:8000/ratings?ratings_id=<ratings_id>"
 ```
 
-AgenticDB will return the score and feedback associated with the provided ratings ID.
-
+AgenticDB Registry will return the score and feedback associated with the provided ratings ID.
