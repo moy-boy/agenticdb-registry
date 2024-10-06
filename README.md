@@ -20,15 +20,14 @@ With **AgenticDB**, you can:
 - [AgenticDB](#agenticdb)
   - [Table of Contents](#table-of-contents)
   - [Run Server](#run-server)
-  - [Delete All Collections](#delete-all-collections)
-    - [cURL Command](#curl-command)
-    - [Response](#response)
-      - [Example Response:](#example-response)
-    - [Explanation](#explanation)
   - [Add an Agent](#add-an-agent)
   - [Search for Agents (Similarity Search)](#search-for-agents-similarity-search)
   - [Add an Application](#add-an-application)
-  - [Invoke an Agent with cURL](#invoke-an-agent-with-curl)
+  - [Delete All Collections](#delete-all-collections)
+    - [cURL Command](#curl-command)
+    - [Response](#response)
+      - [Example Response](#example-response)
+    - [Explanation](#explanation)
   - [Rate an Agent](#rate-an-agent)
   - [Retrieve Ratings](#retrieve-ratings)
 
@@ -47,36 +46,6 @@ The API will be available at `http://127.0.0.1:8000`.
 Here's an updated version of the **Delete All Collections** section in the README, reflecting the actual JSON response format from the provided Python code.
 
 ---
-
-## Delete All Collections
-
-You can delete all agent, application, and rating collections from AgenticDB with a single `DELETE` request. This operation will attempt to remove the stored collections: `agents`, `applications`, and `ratings`. Each collection deletion is handled separately, and the results will reflect whether each collection was successfully deleted.
-
-### cURL Command
-
-```bash
-curl -X DELETE "http://127.0.0.1:8000/collections"
-```
-
-### Response
-
-The response will provide the status of each deletion attempt in the form of a JSON object. If a collection is successfully deleted, the value will be `0`. If there was an error, the value will contain the corresponding error message.
-
-#### Example Response:
-
-```json
-{
-    "agents": 0,
-    "applications": 0,
-    "ratings": "Failed to delete ratings collection: some_error_message"
-}
-```
-
-### Explanation
-
-- **agents**: `0` indicates the `agents` collection was successfully deleted.
-- **applications**: `0` indicates the `applications` collection was successfully deleted.
-- **ratings**: Contains an error message if the deletion failed (replace `"some_error_message"` with the actual error encountered).
 
 ## Add an Agent
 
@@ -98,7 +67,7 @@ curl -X POST "http://127.0.0.1:8000/agents" \
                     "lifecycle": "dev",
                     "owner": "admin@company.com",
                     "access_level": "Public",
-                    "category": "Natural Language",
+                    "category": "Travel Agent",
                     "url": "https://api.example.com/code-gen-chart-agent/agent",
                     "parameters": {
                         "type": "object",
@@ -135,7 +104,7 @@ To search for agents based on a natural language query, use the following `curl`
 ```bash
 curl -G "http://127.0.0.1:8000/agents" \
      -H "Accept: application/json" \
-     --data-urlencode "query=Which agents have a category of Natural Language?"
+     --data-urlencode "query=Which agents can book travel?"
 ```
 
 AgenticDB will perform a similarity search and return a list of matching agents based on the query.
@@ -204,17 +173,35 @@ curl -X POST "http://127.0.0.1:8000/applications" \
 
 ---
 
-## Invoke an Agent with cURL
+## Delete All Collections
 
-To invoke an agent via cURL, you can send a request to the agent's specific endpoint. For example, to invoke the `joke-agent`, use the following command:
+You can delete all agent, application, and rating collections from AgenticDB with a single `DELETE` request. This operation will attempt to remove the stored collections: `agents`, `applications`, and `ratings`. Each collection deletion is handled separately, and the results will reflect whether each collection was successfully deleted.
+
+### cURL Command
 
 ```bash
-curl -X POST "http://127.0.0.1:8000/joke/invoke" \
-     -H "Content-Type: application/json" \
-     -d '{"input": {"topic": "cats"}}'
+curl -X DELETE "http://127.0.0.1:8000/collections"
 ```
 
-This will invoke the `joke-agent` with the topic "cats" and return a joke response.
+### Response
+
+The response will provide the status of each deletion attempt in the form of a JSON object. If a collection is successfully deleted, the value will be `0`. If there was an error, the value will contain the corresponding error message.
+
+#### Example Response
+
+```json
+{
+    "agents": 0,
+    "applications": 0,
+    "ratings": "Failed to delete ratings collection: some_error_message"
+}
+```
+
+### Explanation
+
+- **agents**: `0` indicates the `agents` collection was successfully deleted.
+- **applications**: `0` indicates the `applications` collection was successfully deleted.
+- **ratings**: Contains an error message if the deletion failed (replace `"some_error_message"` with the actual error encountered).
 
 ---
 
