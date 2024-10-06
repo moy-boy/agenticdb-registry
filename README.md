@@ -235,6 +235,3 @@ curl -X GET "http://127.0.0.1:8000/ratings?ratings_id=<ratings_id>"
 
 AgenticDB will return the score and feedback associated with the provided ratings ID.
 
----
-
-This enhanced README focuses on executing the operations stand-alone via `curl` commands, emphasizing how to interact with agents and applications directly through HTTP requests. It introduces AgenticDB as a powerful tool for managing GenAI agents and applications, enabling seamless search, invocation, and rating functionality.
